@@ -1,22 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-
-function randomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-let problemCounter = 0;
-function generateId(): string {
-  return `prob-${Date.now()}-${++problemCounter}-${randomInt(1000, 9999)}`;
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const result = [...arr];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = randomInt(0, i);
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
+import { randomInt, generateId, shuffle } from './utils';
 
 // ============================================
 // Tell Time to the Hour

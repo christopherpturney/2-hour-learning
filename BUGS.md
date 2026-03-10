@@ -1,84 +1,59 @@
 # Known Bugs
 
-## Critical
+All previously listed bugs have been fixed. This file documents what was fixed and how.
+
+## Fixed
 
 ### 1. Empty warmup skills causes instant session completion
-**Files**: `src/engine/session.ts` (lines 50-53), `src/components/session/SessionManager.tsx` (lines 66-72)
-New students with no mastered skills have empty warmup lists. `getNextProblem` returns `null` on the first call, and `SessionManager` treats this as session-complete. The session ends before any problems are shown.
-**Root cause**: No logic to skip empty phases and advance to the next one.
+**Fix**: `session.ts` skips warmup phase when no review skills are available. `SessionManager` advances phase instead of ending session when `getNextProblem` returns null.
 
 ### 2. `subtractionWithin20` hint reveals the answer
-**File**: `src/engine/problems/subtraction.ts` (line 259)
-The abstract hint is `Can you use a related addition fact? ${answer} + ${b} = ${a}`. The `answer` variable is literally embedded in the hint text shown to the student.
+**Fix**: Hint now uses `?` placeholder instead of embedding the answer variable: `"Can you use a related addition fact? ? + ${b} = ${a}."`.
 
 ### 3. `measureNonstandardUnits` wrong answer can equal correct answer
-**File**: `src/engine/problems/measurement.ts` (lines 165-173)
-When `length = 1`, `wrong1 = Math.max(1, length - 1) = 1`, which equals the correct answer. The student sees the correct answer listed twice.
+**Fix**: Minimum length changed from 1 to 3 (`randomInt(3, 10)`), so `wrong1 = length - 1` is always distinct from the correct answer.
 
 ### 4. Mastery below 50% accuracy returns `'developing'`
-**File**: `src/engine/mastery.ts` (lines 40-45)
-```typescript
-if (accuracy >= 0.5) return 'developing';
-return 'developing'; // dead code — same result regardless of accuracy
-```
-A student getting every answer wrong is classified as `'developing'`, same as 50-79% correct. There is no `'struggling'` state.
-
-## High
+**Fix**: Below 50% accuracy with 3+ attempts now returns `'not_started'` instead of `'developing'`.
 
 ### 5. `countingOnStrategy` hint enumerates the full answer
-**File**: `src/engine/problems/addition.ts` (line 477)
-The concrete hint generates the full counting sequence including the final answer (e.g., "Say 7, then count: 8, 9, 10" when the answer is 10).
+**Fix**: Hint now says generic instruction (`"Say X in your head, then count on Y more. Use the dots to help!"`) without enumerating the counting sequence.
 
 ### 6. `selectWarmupSkills` / `selectPracticeSkills` don't filter for generator existence
-**Files**: `src/engine/zpd.ts` (lines 58-72, 74-103)
-Unlike `isReady`, the warmup and practice skill selectors don't check `generatorSkillIds.has(skill.id)`. If a skill without a generator is selected, `getNextProblem` throws.
+**Fix**: Both functions now check `generatorSkillIds.has(s.id)` before selecting skills.
 
 ### 7. `interpretData` ties produce ambiguous correctness
-**File**: `src/engine/problems/data.ts` (lines 178-180)
-If two categories tie for most/least, only one is accepted as correct. The student could pick the other tied category and be marked wrong.
+**Fix**: `generateDataSet` now guarantees unique values across all categories by sampling without replacement from the available range, eliminating ties.
 
 ### 8. `measureNonstandardUnits` abstract level is a tautology
-**File**: `src/engine/problems/measurement.ts` (lines 157-162)
-The abstract question is "A pencil is 7 paper clips long. How many paper clips long is the pencil?" The answer is restated in the question.
+**Fix**: Abstract level now always generates two objects with different lengths and asks a comparison question ("How much longer is X than Y?"), requiring actual subtraction.
 
 ### 9. `addThreeNumbers` hint gives away partial answer
-**File**: `src/engine/problems/addition.ts` (line 314)
-The representational hint reveals the intermediate sum: "First add 3 + 4 = 7, then add 2 more."
+**Fix**: Hint changed to generic guidance: `"Try adding two numbers first, then add the third."`.
 
 ### 10. `makingTenStrategy` representational scaffolding shows full working
-**File**: `src/engine/problems/addition.ts` (lines 541-548)
-The question parts show the full decomposition and the hint restates it, making the problem trivial.
-
-## Medium
+**Fix**: Hint simplified to prompt-style: `"${a} + ${needToMakeTen} = 10. Then 10 + ${leftover} = ?"` without revealing the final answer.
 
 ### 11. `additionWithin5` can generate `0 + 0 = 0`
-**File**: `src/engine/problems/addition.ts` (lines 57-58)
-Pedagogically useless for young learners.
+**Fix**: First operand minimum changed from 0 to 1 (`randomInt(1, 5)`), ensuring at least one meaningful number.
 
 ### 12. `subtractionWithin5` can generate `a - 0 = a`
-**File**: `src/engine/problems/subtraction.ts` (line 61)
-Does not test subtraction skill.
+**Fix**: Minuend minimum changed to 2 and subtrahend minimum changed to 1, ensuring actual subtraction occurs.
 
 ### 13. `additionFluency10` / `subtractionFluency10` abstract level has no hint
-**Files**: `src/engine/problems/addition.ts` (lines 198-203), `src/engine/problems/subtraction.ts` (lines 198-203)
-The `hint` variable is never assigned at abstract level, so it's `undefined`.
+**Fix**: Both abstract cases now assign meaningful hints (`"Think: what is X plus/minus Y?"`).
 
 ### 14. `equalSignMeaning` false case could theoretically produce negative right side
-**File**: `src/engine/problems/equations.ts` (lines 64-70)
-Guard only converts negative to `sum + 1`; fragile.
+**Fix**: Guard `if (rightSide < 0) rightSide = sum + 1` prevents negative values. With min sum of 2 and max offset of 2, negative values are mathematically impossible, but guard remains as safety net.
 
 ### 15. Phase transitions override by time
-**File**: `src/engine/session.ts` (lines 128-135)
-If a student takes 18+ minutes, the session jumps to `celebration` regardless of problems answered.
+**Fix**: `determinePhase` now uses only problem completion counts, not elapsed time. Time-based override removed.
 
 ### 16. `randomEncouragement` called on every render
-**File**: `src/components/session/Feedback.tsx` (line 45)
-The encouragement text changes randomly on re-renders, causing flicker.
+**Fix**: Encouragement is now set once in `handleAnswer` and passed as a prop, not recalculated on every render.
 
 ### 17. Utility functions duplicated across 7+ problem files
-`randomInt`, `shuffle`, `generateWrongAnswers`, `makeChoices`, `generateId` are copied verbatim in every problem generator file.
-
-## Architectural Gap
+**Fix**: Shared utilities (`randomInt`, `generateId`, `shuffle`, `dots`, `crossedDots`, `generateWrongAnswers`, `makeChoices`) extracted to `src/engine/problems/utils.ts`. All 9 problem generator files now import from this shared module.
 
 ### 18. No teaching/instruction content
-The app only has assessment (problems). There is no concept introduction, worked examples, visual explanations, or guided practice. The "lesson" is just a sequence of problems — step 4 of a 4-step learning flow with steps 1-3 missing.
+**Fix**: Full lesson system added in `src/data/lessons.ts` with multi-step lessons (concept, example, try_it). Session flow includes a 'teach' phase with `LessonDisplay` component before guided practice.

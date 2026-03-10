@@ -1,22 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-
-function randomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-let problemCounter = 0;
-function generateId(): string {
-  return `prob-${Date.now()}-${++problemCounter}-${randomInt(1000, 9999)}`;
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const result = [...arr];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = randomInt(0, i);
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
+import { randomInt, generateId, shuffle } from './utils';
 
 interface LengthObject {
   name: string;
@@ -156,20 +139,17 @@ const measureNonstandardUnits: ProblemGenerator = {
       case 'abstract': {
         const otherObjects = MEDIUM_OBJECTS.filter(o => o.name !== object.name);
         const object2 = otherObjects[randomInt(0, otherObjects.length - 1)];
-        const length2 = randomInt(3, 10);
+        // Ensure different lengths so the comparison question is meaningful
+        let length2 = randomInt(3, 10);
+        if (length2 === length) {
+          length2 = length < 10 ? length + 1 : length - 1;
+        }
         const longer = length >= length2 ? object.name : object2.name;
         const longerLength = Math.max(length, length2);
         const shorter = length < length2 ? object.name : object2.name;
         const shorterLength = Math.min(length, length2);
         const diff = longerLength - shorterLength;
-        if (diff === 0) {
-          question = `A ${object.name} is ${length} ${unit} long. A ${object2.name} is also ${length2} ${unit} long. How many ${unit} long is the ${object.name}?`;
-          questionParts = [
-            { type: 'text', value: `${object.name}: ${length} ${unit}` },
-            { type: 'text', value: `${object2.name}: ${length2} ${unit}` },
-            { type: 'text', value: `How long is the ${object.name}?` },
-          ];
-        } else {
+        {
           question = `A ${object.name} is ${length} ${unit} long. A ${object2.name} is ${length2} ${unit} long. How much longer is the ${longer} than the ${shorter}?`;
           questionParts = [
             { type: 'text', value: `${object.name}: ${length} ${unit}` },
@@ -178,8 +158,7 @@ const measureNonstandardUnits: ProblemGenerator = {
           ];
         }
         hint = `Compare the two measurements. What is the difference?`;
-        // Override answer for abstract: it's the difference (or same length)
-        const abstractAnswer = diff === 0 ? length : diff;
+        const abstractAnswer = diff;
         // Ensure wrong answers are distinct from correct answer
         const wrongs = new Set<number>();
         for (const candidate of [abstractAnswer - 1, abstractAnswer + 1, abstractAnswer + 2, abstractAnswer - 2, abstractAnswer + 3]) {
@@ -201,9 +180,7 @@ const measureNonstandardUnits: ProblemGenerator = {
           correctAnswer: abstractAnswer.toString(),
           choices: abstractChoices,
           hint,
-          explanation: diff === 0
-            ? `Both the ${object.name} and ${object2.name} are ${length} ${unit} long.`
-            : `The ${longer} is ${longerLength} ${unit} and the ${shorter} is ${shorterLength} ${unit}. ${longerLength} - ${shorterLength} = ${diff} ${unit} longer.`,
+          explanation: `The ${longer} is ${longerLength} ${unit} and the ${shorter} is ${shorterLength} ${unit}. ${longerLength} - ${shorterLength} = ${diff} ${unit} longer.`,
         };
       }
     }
