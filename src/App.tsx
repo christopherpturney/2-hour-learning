@@ -11,6 +11,7 @@ import AssessmentFlow from './components/assessment/AssessmentFlow';
 import SessionManager from './components/session/SessionManager';
 import SkillMap from './components/skillMap/SkillMap';
 import WorksheetGenerator from './components/worksheets/WorksheetGenerator';
+import ProblemPreview from './components/problems/ProblemPreview';
 import ParentDashboard from './components/parent/ParentDashboard';
 import { Loader2 } from 'lucide-react';
 
@@ -243,6 +244,10 @@ function AppContent() {
         <Route
           path="/worksheets"
           element={<WorksheetGenerator scores={scores} />}
+        />
+        <Route
+          path="/problems"
+          element={<ProblemPreview />}
         />
         <Route
           path="/parent"
