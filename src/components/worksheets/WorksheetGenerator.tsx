@@ -2,6 +2,8 @@ import { useState, useRef, useCallback } from 'react';
 import type { SkillScore, ScaffoldingLevel, Problem, Domain } from '../../types';
 import { skills, domainNames } from '../../data/skills';
 import { generateProblem, getRegisteredSkillIds } from '../../engine/problems/index';
+import ClockFace, { parseClockValue } from '../ClockFace';
+import ShapeVisual, { parseShapeValue } from '../ShapeVisual';
 
 interface WorksheetGeneratorProps {
   scores: Map<string, SkillScore>;
@@ -176,6 +178,37 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
     return 'bg-green-400';
   };
 
+  /** Render any visual elements (clocks, shapes) found in a problem's questionParts */
+  function renderVisuals(problem: Problem, size: number) {
+    if (!problem.questionParts) return null;
+    const imageParts = problem.questionParts.filter((p) => p.type === 'image');
+    if (imageParts.length === 0) return null;
+
+    const elements: React.ReactNode[] = [];
+    for (let i = 0; i < imageParts.length; i++) {
+      const part = imageParts[i];
+      const clock = parseClockValue(part.value);
+      if (clock) {
+        elements.push(
+          <ClockFace key={i} hour={clock.hour} minute={clock.minute} size={size} />
+        );
+        continue;
+      }
+      const shapeInfo = parseShapeValue(part.value);
+      if (shapeInfo) {
+        elements.push(
+          <ShapeVisual key={i} value={part.value} size={size} />
+        );
+      }
+    }
+    if (elements.length === 0) return null;
+    return (
+      <div className="flex justify-center gap-4 my-2">
+        {elements}
+      </div>
+    );
+  }
+
   // ---- Render print view ----
   if (showPrintPreview && worksheet) {
     return (
@@ -224,6 +257,7 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
                   <p className="text-base text-gray-800 leading-relaxed">
                     {problem.question}
                   </p>
+                  {renderVisuals(problem, 120)}
                   {problem.choices && problem.choices.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-4">
                       {problem.choices.map((choice, ci) => (
@@ -234,7 +268,7 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
                       ))}
                     </div>
                   )}
-                  {!problem.choices && problem.type === 'number_input' && (
+                  {!problem.choices && (problem.type === 'number_input' || problem.type === 'fill_blank') && (
                     <div className="mt-2">
                       <span className="text-sm text-gray-500">Answer: </span>
                       <span className="inline-block w-20 border-b-2 border-gray-400" />
@@ -537,6 +571,7 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
                   </span>
                   <div className="flex-1">
                     <p className="text-sm text-gray-800">{problem.question}</p>
+                    {renderVisuals(problem, 100)}
                     {problem.choices && (
                       <div className="mt-1.5 flex flex-wrap gap-3 text-xs text-gray-600">
                         {problem.choices.map((choice, ci) => (

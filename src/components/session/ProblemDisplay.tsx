@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { Problem } from '../../types';
+import ClockFace, { parseClockValue } from '../ClockFace';
+import ShapeVisual, { parseShapeValue } from '../ShapeVisual';
 
 interface ProblemDisplayProps {
   problem: Problem;
@@ -35,6 +37,25 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
       <div className="flex flex-wrap items-center justify-center gap-2 my-4">
         {problem.questionParts.map((part, idx) => {
           switch (part.type) {
+            case 'image': {
+              const clock = parseClockValue(part.value);
+              if (clock) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <ClockFace hour={clock.hour} minute={clock.minute} size={200} />
+                  </div>
+                );
+              }
+              const shapeInfo = parseShapeValue(part.value);
+              if (shapeInfo) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <ShapeVisual value={part.value} size={180} />
+                  </div>
+                );
+              }
+              return null;
+            }
             case 'dots':
               return <div key={idx}>{renderDots(part.count || 0)}</div>;
             case 'blank':
@@ -56,17 +77,34 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
                   {part.value}
                 </span>
               );
-            case 'number_line':
+            case 'number_line': {
+              // Parse range from value like "0-10", "0-20", "0-5"
+              let nlMin = 0;
+              let nlMax = 10;
+              const nlMatch = part.value.match(/^(\d+)-(\d+)$/);
+              if (nlMatch) {
+                nlMin = parseInt(nlMatch[1], 10);
+                nlMax = parseInt(nlMatch[2], 10);
+              }
+              const nlCount = nlMax - nlMin + 1;
+              // For large ranges, show every 5th or 10th number
+              const step = nlCount > 20 ? 10 : nlCount > 10 ? 5 : 1;
+              const ticks = [];
+              for (let n = nlMin; n <= nlMax; n += step) {
+                ticks.push(n);
+              }
+              if (ticks[ticks.length - 1] !== nlMax) ticks.push(nlMax);
               return (
-                <div key={idx} className="w-full flex items-center gap-1 justify-center my-2">
-                  {Array.from({ length: 11 }, (_, i) => (
-                    <div key={i} className="flex flex-col items-center">
+                <div key={idx} className="w-full flex items-center gap-1 justify-center my-2 overflow-x-auto">
+                  {ticks.map((n) => (
+                    <div key={n} className="flex flex-col items-center">
                       <div className="w-1 h-4 bg-slate-400" />
-                      <span className="text-sm text-slate-500 font-medium">{i}</span>
+                      <span className="text-sm text-slate-500 font-medium">{n}</span>
                     </div>
                   ))}
                 </div>
               );
+            }
             default:
               return (
                 <span key={idx} className="text-xl text-slate-700">

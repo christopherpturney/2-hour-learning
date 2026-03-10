@@ -326,7 +326,6 @@ const subtractionAsUnknownAddend: ProblemGenerator = {
       question,
       questionParts,
       correctAnswer: answer.toString(),
-      choices: makeChoices(answer, 0, 10),
       hint,
       explanation: `${known} + ${answer} = ${total}. You need ${answer} more to go from ${known} to ${total}. This is the same as ${total} - ${known} = ${answer}.`,
     };

@@ -154,11 +154,13 @@ const measureNonstandardUnits: ProblemGenerator = {
         hint = `How many ${unit} did you line up?`;
         break;
       case 'abstract':
-        question = `A ${object.name} is ${length} ${unit} long. How many ${unit} long is the ${object.name}?`;
+        question = `A ${object.name} was measured with ${unit}. The ${unit} are shown below. How many ${unit} long is the ${object.name}?`;
         questionParts = [
-          { type: 'text', value: `${object.name} = ? ${unit}` },
+          { type: 'text', value: `${object.name} measured in ${unit}:` },
+          { type: 'text', value: '▢'.repeat(length) },
+          { type: 'text', value: `How many ${unit}?` },
         ];
-        hint = `The answer is already in the problem!`;
+        hint = `Count the ${unit} one by one.`;
         break;
     }
 

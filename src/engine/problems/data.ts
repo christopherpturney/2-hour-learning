@@ -57,10 +57,19 @@ const DATA_THEMES: DataCategory[] = [
 ];
 
 function generateDataSet(categories: string[]): Record<string, number> {
-  const data: Record<string, number> = {};
-  for (const cat of categories) {
-    data[cat] = randomInt(1, 8);
-  }
+  let data: Record<string, number>;
+  let attempts = 0;
+  // Ensure no ties between min and max values (avoids misleading "how many more" questions)
+  do {
+    data = {};
+    for (const cat of categories) {
+      data[cat] = randomInt(1, 8);
+    }
+    attempts++;
+  } while (
+    attempts < 20 &&
+    new Set(Object.values(data)).size < categories.length
+  );
   return data;
 }
 
