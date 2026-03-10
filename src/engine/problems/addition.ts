@@ -1,0 +1,583 @@
+import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
+
+function randomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+let problemCounter = 0;
+function generateId(): string {
+  return `prob-${Date.now()}-${++problemCounter}-${randomInt(1000, 9999)}`;
+}
+
+function dots(n: number): string {
+  return '●'.repeat(n);
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = randomInt(0, i);
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function generateWrongAnswers(correct: number, count: number, min: number, max: number): number[] {
+  const wrong = new Set<number>();
+  // Add common mistake answers first
+  const candidates = [correct + 1, correct - 1, correct + 2, correct - 2, correct + 10, correct - 10];
+  for (const c of candidates) {
+    if (c !== correct && c >= min && c <= max) {
+      wrong.add(c);
+    }
+  }
+  // Fill with random if needed
+  let attempts = 0;
+  while (wrong.size < count && attempts < 50) {
+    const w = randomInt(min, max);
+    if (w !== correct) {
+      wrong.add(w);
+    }
+    attempts++;
+  }
+  return shuffle([...wrong].slice(0, count));
+}
+
+function makeChoices(correct: number, min: number, max: number): string[] {
+  const wrongAnswers = generateWrongAnswers(correct, 3, min, max);
+  return shuffle([correct.toString(), ...wrongAnswers.map(String)]);
+}
+
+// ============================================
+// Addition Within 5
+// ============================================
+const additionWithin5: ProblemGenerator = {
+  skillId: 'addition-within-5',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const a = randomInt(0, 5);
+    const b = randomInt(0, 5 - a);
+    const answer = a + b;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `Count all the dots: ${dots(a)} and ${dots(b)}. How many in all?`;
+        questionParts = [
+          { type: 'text', value: 'Count all the dots:' },
+          { type: 'dots', value: dots(a), count: a },
+          { type: 'text', value: 'and' },
+          { type: 'dots', value: dots(b), count: b },
+          { type: 'text', value: 'How many in all?' },
+        ];
+        hint = `Count each dot one by one: ${dots(a)}${dots(b)}`;
+        break;
+      case 'representational':
+        question = `Use the number line: Start at ${a}, jump ${b} more. Where do you land?`;
+        questionParts = [
+          { type: 'number_line', value: `0-5`, count: 5 },
+          { type: 'text', value: `Start at ${a}, jump ${b} more.` },
+        ];
+        hint = `Start at ${a} on the number line and count ${b} jumps forward.`;
+        break;
+      case 'abstract':
+        question = `${a} + ${b} = ?`;
+        questionParts = [
+          { type: 'equation', value: `${a} + ${b} = ?` },
+        ];
+        hint = `Think: what is ${a} plus ${b}?`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'addition-within-5',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 5),
+      hint,
+      explanation: `${a} + ${b} = ${answer}. When you put ${a} and ${b} together, you get ${answer}.`,
+    };
+  },
+};
+
+// ============================================
+// Addition Within 10
+// ============================================
+const additionWithin10: ProblemGenerator = {
+  skillId: 'addition-within-10',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const a = randomInt(1, 9);
+    const b = randomInt(1, 10 - a);
+    const answer = a + b;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `Count all the dots: ${dots(a)} and ${dots(b)}. How many altogether?`;
+        questionParts = [
+          { type: 'text', value: 'Count all the dots:' },
+          { type: 'dots', value: dots(a), count: a },
+          { type: 'text', value: 'and' },
+          { type: 'dots', value: dots(b), count: b },
+        ];
+        hint = `Count each dot: ${dots(a)}${dots(b)}`;
+        break;
+      case 'representational':
+        question = `Use the number line: Start at ${a}, jump ${b} more. Where do you land?`;
+        questionParts = [
+          { type: 'number_line', value: '0-10', count: 10 },
+          { type: 'text', value: `Start at ${a}, jump ${b} more.` },
+        ];
+        hint = `Put your finger on ${a} and count forward ${b} spaces.`;
+        break;
+      case 'abstract':
+        question = `${a} + ${b} = ?`;
+        questionParts = [
+          { type: 'equation', value: `${a} + ${b} = ?` },
+        ];
+        hint = `What is ${a} plus ${b}?`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'addition-within-10',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 10),
+      hint,
+      explanation: `${a} + ${b} = ${answer}. If you have ${a} and add ${b} more, you get ${answer}.`,
+    };
+  },
+};
+
+// ============================================
+// Addition Fluency Within 10
+// ============================================
+const additionFluency10: ProblemGenerator = {
+  skillId: 'addition-fluency-10',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const a = randomInt(1, 9);
+    const b = randomInt(1, 10 - a);
+    const answer = a + b;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `How many dots in all? ${dots(a)} + ${dots(b)}`;
+        questionParts = [
+          { type: 'dots', value: dots(a), count: a },
+          { type: 'text', value: '+' },
+          { type: 'dots', value: dots(b), count: b },
+        ];
+        hint = `Count all the dots together.`;
+        break;
+      case 'representational':
+        question = `What is ${a} + ${b}? Use the number line to help.`;
+        questionParts = [
+          { type: 'number_line', value: '0-10', count: 10 },
+          { type: 'equation', value: `${a} + ${b} = ?` },
+        ];
+        hint = `Start at ${a} and count up ${b}.`;
+        break;
+      case 'abstract':
+        question = `${a} + ${b} = ?`;
+        questionParts = [
+          { type: 'equation', value: `${a} + ${b} = ?` },
+        ];
+        break;
+    }
+
+    // Fluency uses number_input for speed practice
+    return {
+      id: generateId(),
+      skillId: 'addition-fluency-10',
+      type: 'number_input',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      hint,
+      explanation: `${a} + ${b} = ${answer}.`,
+    };
+  },
+};
+
+// ============================================
+// Addition Within 20
+// ============================================
+const additionWithin20: ProblemGenerator = {
+  skillId: 'addition-within-20',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const a = randomInt(1, 19);
+    const b = randomInt(1, 20 - a);
+    const answer = a + b;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete': {
+        const groupA = a <= 10 ? dots(a) : `${dots(10)} ${dots(a - 10)}`;
+        const groupB = b <= 10 ? dots(b) : `${dots(10)} ${dots(b - 10)}`;
+        question = `Count all the dots: ${groupA} and ${groupB}. How many in all?`;
+        questionParts = [
+          { type: 'text', value: 'Count all the dots:' },
+          { type: 'dots', value: groupA, count: a },
+          { type: 'text', value: 'and' },
+          { type: 'dots', value: groupB, count: b },
+        ];
+        hint = `Try grouping by tens first, then count the rest.`;
+        break;
+      }
+      case 'representational':
+        question = `Use the number line: Start at ${a}, jump ${b} more. Where do you land?`;
+        questionParts = [
+          { type: 'number_line', value: '0-20', count: 20 },
+          { type: 'text', value: `Start at ${a}, jump ${b} more.` },
+        ];
+        hint = `Start at ${a} on the number line and count forward ${b}.`;
+        break;
+      case 'abstract':
+        question = `${a} + ${b} = ?`;
+        questionParts = [
+          { type: 'equation', value: `${a} + ${b} = ?` },
+        ];
+        hint = `Can you break ${b} apart to make a ten first?`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'addition-within-20',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 20),
+      hint,
+      explanation: `${a} + ${b} = ${answer}.`,
+    };
+  },
+};
+
+// ============================================
+// Add Three Numbers
+// ============================================
+const addThreeNumbers: ProblemGenerator = {
+  skillId: 'add-three-numbers',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const a = randomInt(1, 6);
+    const b = randomInt(1, 6);
+    const c = randomInt(1, Math.min(6, 20 - a - b));
+    const answer = a + b + c;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `Count all the dots: ${dots(a)} and ${dots(b)} and ${dots(c)}. How many in all?`;
+        questionParts = [
+          { type: 'dots', value: dots(a), count: a },
+          { type: 'text', value: '+' },
+          { type: 'dots', value: dots(b), count: b },
+          { type: 'text', value: '+' },
+          { type: 'dots', value: dots(c), count: c },
+        ];
+        hint = `Count all the dots from left to right.`;
+        break;
+      case 'representational':
+        question = `${a} + ${b} + ${c} = ? Use the number line.`;
+        questionParts = [
+          { type: 'number_line', value: '0-20', count: 20 },
+          { type: 'equation', value: `${a} + ${b} + ${c} = ?` },
+        ];
+        hint = `First add ${a} + ${b} = ${a + b}, then add ${c} more.`;
+        break;
+      case 'abstract':
+        question = `${a} + ${b} + ${c} = ?`;
+        questionParts = [
+          { type: 'equation', value: `${a} + ${b} + ${c} = ?` },
+        ];
+        hint = `Try adding two numbers first, then add the third.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'add-three-numbers',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 20),
+      hint,
+      explanation: `${a} + ${b} + ${c} = ${answer}. First, ${a} + ${b} = ${a + b}. Then ${a + b} + ${c} = ${answer}.`,
+    };
+  },
+};
+
+// ============================================
+// Commutative Property
+// ============================================
+const commutativeProperty: ProblemGenerator = {
+  skillId: 'commutative-property',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const a = randomInt(1, 9);
+    const b = randomInt(1, 10 - a);
+    const answer = a + b;
+    // We show both orders and ask if they are equal
+    const useTrue = Math.random() > 0.5;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    if (useTrue) {
+      // True case: a + b = b + a
+      switch (scaffolding) {
+        case 'concrete':
+          question = `Is this true? ${dots(a)} + ${dots(b)} = ${dots(b)} + ${dots(a)}`;
+          questionParts = [
+            { type: 'dots', value: dots(a), count: a },
+            { type: 'text', value: '+' },
+            { type: 'dots', value: dots(b), count: b },
+            { type: 'text', value: '=' },
+            { type: 'dots', value: dots(b), count: b },
+            { type: 'text', value: '+' },
+            { type: 'dots', value: dots(a), count: a },
+          ];
+          hint = `Count the dots on each side.`;
+          break;
+        case 'representational':
+          question = `Is ${a} + ${b} the same as ${b} + ${a}?`;
+          questionParts = [
+            { type: 'equation', value: `${a} + ${b}` },
+            { type: 'text', value: 'same as' },
+            { type: 'equation', value: `${b} + ${a}` },
+          ];
+          hint = `Add both sides. What do you get?`;
+          break;
+        case 'abstract':
+          question = `True or False: ${a} + ${b} = ${b} + ${a}`;
+          questionParts = [
+            { type: 'equation', value: `${a} + ${b} = ${b} + ${a}` },
+          ];
+          hint = `You can add numbers in any order.`;
+          break;
+      }
+
+      return {
+        id: generateId(),
+        skillId: 'commutative-property',
+        type: 'true_false',
+        scaffolding,
+        question,
+        questionParts,
+        correctAnswer: 'true',
+        choices: ['true', 'false'],
+        hint,
+        explanation: `True! ${a} + ${b} = ${answer} and ${b} + ${a} = ${answer}. You can add numbers in any order and get the same answer.`,
+      };
+    } else {
+      // False case: a + b = c (where c != b + a result, we use a different sum)
+      const wrongSecondA = a + randomInt(1, 2);
+      const wrongSum = wrongSecondA + b;
+      switch (scaffolding) {
+        case 'concrete':
+          question = `Is this true? ${dots(a)} + ${dots(b)} = ${dots(b)} + ${dots(wrongSecondA)}`;
+          questionParts = [
+            { type: 'dots', value: dots(a), count: a },
+            { type: 'text', value: '+' },
+            { type: 'dots', value: dots(b), count: b },
+            { type: 'text', value: '=' },
+            { type: 'dots', value: dots(b), count: b },
+            { type: 'text', value: '+' },
+            { type: 'dots', value: dots(wrongSecondA), count: wrongSecondA },
+          ];
+          hint = `Count the dots on each side carefully.`;
+          break;
+        case 'representational':
+          question = `Is ${a} + ${b} the same as ${b} + ${wrongSecondA}?`;
+          questionParts = [
+            { type: 'equation', value: `${a} + ${b}` },
+            { type: 'text', value: 'same as' },
+            { type: 'equation', value: `${b} + ${wrongSecondA}` },
+          ];
+          hint = `Add both sides and compare.`;
+          break;
+        case 'abstract':
+          question = `True or False: ${a} + ${b} = ${b} + ${wrongSecondA}`;
+          questionParts = [
+            { type: 'equation', value: `${a} + ${b} = ${b} + ${wrongSecondA}` },
+          ];
+          hint = `Check: does ${a} + ${b} equal ${b} + ${wrongSecondA}?`;
+          break;
+      }
+
+      return {
+        id: generateId(),
+        skillId: 'commutative-property',
+        type: 'true_false',
+        scaffolding,
+        question,
+        questionParts,
+        correctAnswer: 'false',
+        choices: ['true', 'false'],
+        hint,
+        explanation: `False! ${a} + ${b} = ${answer}, but ${b} + ${wrongSecondA} = ${wrongSum}. The numbers being added must be the same for the sums to be equal.`,
+      };
+    }
+  },
+};
+
+// ============================================
+// Counting On Strategy
+// ============================================
+const countingOnStrategy: ProblemGenerator = {
+  skillId: 'counting-on-strategy',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    // counting on: start with the bigger number and count up the smaller
+    const bigger = randomInt(5, 9);
+    const smaller = randomInt(1, 3);
+    const answer = bigger + smaller;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `Start with ${bigger} (hold it in your head!). Now count on ${smaller} more: ${dots(smaller)}. What number do you reach?`;
+        questionParts = [
+          { type: 'text', value: `Start with ${bigger}.` },
+          { type: 'text', value: `Count on ${smaller} more:` },
+          { type: 'dots', value: dots(smaller), count: smaller },
+        ];
+        hint = `Say "${bigger}" in your head, then count: ${Array.from({ length: smaller }, (_, i) => bigger + 1 + i).join(', ')}.`;
+        break;
+      case 'representational':
+        question = `Start at ${bigger} on the number line. Count on ${smaller}. Where do you land?`;
+        questionParts = [
+          { type: 'number_line', value: '0-15', count: 15 },
+          { type: 'text', value: `Start at ${bigger}. Count on ${smaller}.` },
+        ];
+        hint = `Put your finger on ${bigger} and jump ${smaller} times.`;
+        break;
+      case 'abstract':
+        question = `Use counting on: ${bigger} + ${smaller} = ?`;
+        questionParts = [
+          { type: 'equation', value: `${bigger} + ${smaller} = ?` },
+        ];
+        hint = `Start at ${bigger} and count up ${smaller}.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'counting-on-strategy',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 15),
+      hint,
+      explanation: `${bigger} + ${smaller} = ${answer}. Start at ${bigger} and count on: ${Array.from({ length: smaller }, (_, i) => bigger + 1 + i).join(', ')}. You land on ${answer}!`,
+    };
+  },
+};
+
+// ============================================
+// Making Ten Strategy
+// ============================================
+const makingTenStrategy: ProblemGenerator = {
+  skillId: 'making-ten-strategy',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    // Pick two numbers that sum to more than 10 but less than 20
+    // where one number can be decomposed to make 10 with the other
+    const a = randomInt(6, 9);
+    const b = randomInt(10 - a + 1, 9); // ensures a + b > 10
+    const answer = a + b;
+    const needToMakeTen = 10 - a; // how much of b goes to make 10
+    const leftover = b - needToMakeTen;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `${dots(a)} + ${dots(b)} = ? Make a group of 10 first!`;
+        questionParts = [
+          { type: 'dots', value: dots(a), count: a },
+          { type: 'text', value: '+' },
+          { type: 'dots', value: dots(b), count: b },
+          { type: 'text', value: 'Make a ten!' },
+        ];
+        hint = `Move ${needToMakeTen} dots from the second group to the first to make 10. Then you have 10 + ${leftover}.`;
+        break;
+      case 'representational':
+        question = `Make a 10 to solve: ${a} + ${b} = ? Break ${b} into ${needToMakeTen} and ${leftover}.`;
+        questionParts = [
+          { type: 'equation', value: `${a} + ${b}` },
+          { type: 'text', value: `= ${a} + ${needToMakeTen} + ${leftover}` },
+          { type: 'text', value: `= 10 + ${leftover}` },
+          { type: 'text', value: '= ?' },
+        ];
+        hint = `${a} + ${needToMakeTen} = 10. Then 10 + ${leftover} = ?`;
+        break;
+      case 'abstract':
+        question = `Use make-a-ten: ${a} + ${b} = ?`;
+        questionParts = [
+          { type: 'equation', value: `${a} + ${b} = ?` },
+        ];
+        hint = `Think: ${a} needs ${needToMakeTen} to make 10. Break ${b} into ${needToMakeTen} and ${leftover}. 10 + ${leftover} = ?`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'making-ten-strategy',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 10, 20),
+      hint,
+      explanation: `${a} + ${b} = ${answer}. Make a ten: ${a} + ${needToMakeTen} = 10, and ${leftover} is left over. 10 + ${leftover} = ${answer}.`,
+    };
+  },
+};
+
+export const additionGenerators: ProblemGenerator[] = [
+  additionWithin5,
+  additionWithin10,
+  additionFluency10,
+  additionWithin20,
+  addThreeNumbers,
+  commutativeProperty,
+  countingOnStrategy,
+  makingTenStrategy,
+];
