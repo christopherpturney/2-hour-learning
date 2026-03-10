@@ -209,6 +209,138 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
     );
   }
 
+  /**
+   * Render question text with Unicode chars replaced by proper visual elements.
+   * Handles: ━ (length bars), ▢ (unit blocks), ████ (bar chart), ● (dots),
+   * ✕ (crossed dots), ||||̸ (tally groups of 5), | (single tallies)
+   */
+  function renderFormattedQuestion(text: string, textClass: string) {
+    // Split text into lines first (questions often have \n)
+    const lines = text.split('\n');
+    return (
+      <div className={textClass}>
+        {lines.map((line, li) => (
+          <div key={li} className={li > 0 ? 'mt-1' : ''}>
+            {renderLineSegments(line)}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  function renderLineSegments(line: string): React.ReactNode[] {
+    const nodes: React.ReactNode[] = [];
+    // Match Unicode visual patterns and split around them
+    // ||||̸ = tally group of 5 (|||| + combining solidus U+0338)
+    // ━+ = horizontal line segments
+    // ▢+ = unit block squares
+    // █+ = bar chart blocks
+    // ●+ = dot sequences
+    // ✕+ = crossed-out dots
+    const pattern = /(━+|▢+|█+|●+|✕+|\|{4}\u0338|\|+)/g;
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = pattern.exec(line)) !== null) {
+      // Text before the match
+      if (match.index > lastIndex) {
+        nodes.push(<span key={`t${lastIndex}`}>{line.slice(lastIndex, match.index)}</span>);
+      }
+
+      const matched = match[0];
+      const key = `v${match.index}`;
+
+      if (matched.startsWith('━')) {
+        // Length bar
+        const width = Math.min(matched.length * 12, 200);
+        nodes.push(
+          <span key={key} className="inline-block align-middle mx-0.5"
+            style={{ width: `${width}px`, height: '3px', backgroundColor: '#64748b', borderRadius: '1px' }} />
+        );
+      } else if (matched.startsWith('▢')) {
+        // Unit blocks — render as small inline squares
+        const count = matched.length;
+        nodes.push(
+          <span key={key} className="inline-flex gap-0.5 align-middle mx-0.5">
+            {Array.from({ length: count }, (_, i) => (
+              <span key={i} className="inline-block border-2 border-slate-400 rounded-sm"
+                style={{ width: '14px', height: '14px' }} />
+            ))}
+          </span>
+        );
+      } else if (matched.startsWith('█')) {
+        // Bar chart blocks
+        const count = matched.length;
+        nodes.push(
+          <span key={key} className="inline-flex gap-px align-middle mx-0.5">
+            {Array.from({ length: count }, (_, i) => (
+              <span key={i} className="inline-block bg-indigo-400 rounded-sm"
+                style={{ width: '12px', height: '14px' }} />
+            ))}
+          </span>
+        );
+      } else if (matched.startsWith('●')) {
+        // Dots
+        const count = matched.length;
+        nodes.push(
+          <span key={key} className="inline-flex gap-0.5 align-middle mx-0.5">
+            {Array.from({ length: count }, (_, i) => (
+              <span key={i} className="inline-block bg-blue-400 rounded-full"
+                style={{ width: '10px', height: '10px' }} />
+            ))}
+          </span>
+        );
+      } else if (matched.startsWith('✕')) {
+        // Crossed-out dots
+        const count = matched.length;
+        nodes.push(
+          <span key={key} className="inline-flex gap-0.5 align-middle mx-0.5">
+            {Array.from({ length: count }, (_, i) => (
+              <span key={i} className="inline-flex items-center justify-center text-red-400 font-bold"
+                style={{ width: '10px', height: '10px', fontSize: '10px', lineHeight: 1 }}>✕</span>
+            ))}
+          </span>
+        );
+      } else if (matched.includes('\u0338')) {
+        // Tally group of 5 (||||̸) — render as 4 vertical lines with a diagonal slash
+        nodes.push(
+          <svg key={key} width="20" height="16" viewBox="0 0 20 16" className="inline-block align-middle mx-0.5">
+            {[2, 6, 10, 14].map((x, i) => (
+              <line key={i} x1={x} y1={1} x2={x} y2={15} stroke="#334155" strokeWidth="1.5" strokeLinecap="round" />
+            ))}
+            <line x1={1} y1={13} x2={17} y2={3} stroke="#334155" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        );
+      } else if (matched.startsWith('|')) {
+        // Single tally marks
+        const count = matched.length;
+        nodes.push(
+          <svg key={key} width={count * 5 + 2} height="16" viewBox={`0 0 ${count * 5 + 2} 16`}
+            className="inline-block align-middle mx-0.5">
+            {Array.from({ length: count }, (_, i) => (
+              <line key={i} x1={i * 5 + 2} y1={1} x2={i * 5 + 2} y2={15}
+                stroke="#334155" strokeWidth="1.5" strokeLinecap="round" />
+            ))}
+          </svg>
+        );
+      }
+
+      lastIndex = match.index + matched.length;
+    }
+
+    // Remaining text after last match
+    if (lastIndex < line.length) {
+      nodes.push(<span key={`t${lastIndex}`}>{line.slice(lastIndex)}</span>);
+    }
+
+    // If no matches found, return plain text
+    if (nodes.length === 0) {
+      return [<span key="plain">{line}</span>];
+    }
+
+    return nodes;
+  }
+
   // ---- Render print view ----
   if (showPrintPreview && worksheet) {
     return (
@@ -254,9 +386,7 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
                   {idx + 1}.
                 </span>
                 <div className="flex-1">
-                  <p className="text-base text-gray-800 leading-relaxed">
-                    {problem.question}
-                  </p>
+                  {renderFormattedQuestion(problem.question, 'text-base text-gray-800 leading-relaxed')}
                   {renderVisuals(problem, 120)}
                   {problem.choices && problem.choices.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-4">
@@ -570,7 +700,7 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
                     {idx + 1}.
                   </span>
                   <div className="flex-1">
-                    <p className="text-sm text-gray-800">{problem.question}</p>
+                    {renderFormattedQuestion(problem.question, 'text-sm text-gray-800')}
                     {renderVisuals(problem, 100)}
                     {problem.choices && (
                       <div className="mt-1.5 flex flex-wrap gap-3 text-xs text-gray-600">
