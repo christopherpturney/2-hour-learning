@@ -162,3 +162,75 @@ The original `/skills` page displayed all skills in a flat grid grouped by domai
 - A left-arrow icon (`ArrowLeft` at 8px) signals "comes from" direction.
 - Hover title shows the full prerequisite name and cluster for detail without cluttering the card.
 - `crossDomainPrereqsMap` is computed once via `useMemo`, checking each skill's prerequisites for domain mismatches.
+
+---
+
+## Teaching System (Teach → Model → Guided Practice → Independent Practice)
+
+### Problem
+The app originally had only assessment and practice problems — no actual teaching. A student who didn't know a concept would just get problems wrong repeatedly with no instruction.
+
+### Solution: 4-Phase Session Flow (session.ts, SessionManager.tsx)
+
+**What:** Sessions now follow: Warmup → Teach → Guided Practice → Independent Practice → Celebration.
+
+**Why:**
+- This mirrors the "I do, we do, you do" pedagogical model (gradual release of responsibility), which is the standard instructional approach in elementary math education.
+- **Warmup** reviews previously mastered skills with spaced repetition. Skipped for new students (no mastered skills yet).
+- **Teach** presents structured lesson content: concept explanation → worked examples → "your turn" prompt. This is the "I do" phase.
+- **Guided Practice** provides scaffolded problems with immediate feedback and explanations on both correct and incorrect answers. This is the "we do" phase.
+- **Independent Practice** removes scaffolding — the student practices on their own. This is the "you do" phase.
+- Phase transitions are automatic based on problem counts (WARMUP=6, GUIDED_PER_SKILL=4, INDEPENDENT=8).
+
+### Lesson Content (lessons.ts)
+
+**What:** Structured lesson data for ~30 skills, each with concept/example/try_it steps.
+
+**Why:**
+- Lesson content is data-driven (not hardcoded in components) so it can be extended or edited without touching UI code.
+- Each lesson follows a consistent 3-part structure: concept (explain the idea), example (show worked problems), try_it (transition prompt to practice).
+- Visual aids (dots, equations, clock images) are encoded as `QuestionPart[]` arrays, reusing the same rendering system as problems.
+
+### LessonDisplay Component (LessonDisplay.tsx)
+
+**What:** Renders lesson steps with color-coded headers (indigo=Learn, emerald=Example, amber=Your Turn), progress dots, and visual aids.
+
+**Why:**
+- Color coding helps young students understand where they are in the lesson flow without reading labels.
+- Progress dots at top + step counter (e.g., "2/4") give clear advancement feedback.
+- The last step always shows "Let's Practice!" instead of "Next" to signal the transition to active problem-solving.
+
+---
+
+## Assessment: No Feedback (AssessmentFlow.tsx)
+
+**What:** The initial assessment skips the feedback screen entirely — answering a question immediately loads the next one.
+
+**Why:**
+- The assessment is a diagnostic tool to determine what the student already knows. Showing correct/incorrect feedback would turn it into a teaching moment, which defeats the purpose of measuring baseline knowledge.
+- Without feedback, the assessment moves faster — important since it covers 53 skills × 3 questions each.
+- Teaching happens after the assessment, in the session flow, where feedback is appropriate and helpful.
+
+---
+
+## Hints Hidden Behind Button (ProblemDisplay.tsx)
+
+**What:** Hints are no longer shown by default. Students must click "Need a hint?" to reveal them.
+
+**Why:**
+- Always-visible hints bypass the student's own thinking. The pedagogical goal is for students to attempt the problem first, then seek help if stuck.
+- The hint button resets on each new problem via `useEffect` on `problem.id`, so students get a fresh chance to try independently each time.
+- The button uses subdued styling (gray text) so it doesn't compete visually with the problem or answer choices.
+
+---
+
+## Bug Fixes
+
+### Mastery Below 50% (mastery.ts)
+- Students with <50% accuracy after 3+ attempts were still classified as 'developing'. Fixed to return 'not_started', which correctly signals the ZPD engine that the student needs instruction, not more practice.
+
+### ZPD Generator Filter (zpd.ts)
+- Warmup and practice skill selectors now check `generatorSkillIds.has(skill.id)` before selecting a skill. Without this, selecting a skill without a generator would crash the session.
+
+### Encouragement Flicker (Feedback.tsx)
+- `randomEncouragement()` was called inline in JSX, causing it to re-randomize on every render. Fixed by computing the encouragement once when the answer is recorded and passing it as a prop.
