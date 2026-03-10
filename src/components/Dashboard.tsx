@@ -1,4 +1,5 @@
 import type { Student, SkillScore, Session } from '../types';
+import { ClipboardList, BookOpen } from 'lucide-react';
 
 interface DashboardProps {
   student: Student;
@@ -33,7 +34,7 @@ export default function Dashboard({
     <div className="space-y-5">
       {/* Greeting */}
       <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-        <h2 className="text-2xl font-bold text-slate-800">Hi, {student.name}! 👋</h2>
+        <h2 className="text-2xl font-bold text-slate-800">Hi, {student.name}!</h2>
         <p className="text-slate-500 mt-1">Ready to learn some math today?</p>
       </div>
 
@@ -43,7 +44,7 @@ export default function Dashboard({
           onClick={onStartAssessment}
           className="w-full bg-gradient-to-br from-amber-400 to-orange-500 text-white p-6 rounded-2xl text-center shadow-sm active:scale-[0.98] transition-transform"
         >
-          <div className="text-4xl mb-2">📋</div>
+          <ClipboardList className="w-10 h-10 mx-auto mb-2 opacity-90" />
           <span className="text-xl font-bold block">Start Assessment</span>
           <p className="text-amber-100 mt-1 text-sm">Find out what you already know</p>
         </button>
@@ -52,7 +53,7 @@ export default function Dashboard({
           onClick={onStartSession}
           className="w-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-6 rounded-2xl text-center shadow-sm active:scale-[0.98] transition-transform"
         >
-          <div className="text-4xl mb-2">📚</div>
+          <BookOpen className="w-10 h-10 mx-auto mb-2 opacity-90" />
           <span className="text-xl font-bold block">Start Today's Session</span>
           <p className="text-emerald-100 mt-1 text-sm">20 minutes of math practice</p>
         </button>
@@ -107,10 +108,13 @@ export default function Dashboard({
                   className="flex items-center justify-between py-2.5 border-b border-slate-50 last:border-0"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                       session.sessionType === 'assessment' ? 'bg-amber-50' : 'bg-emerald-50'
                     }`}>
-                      {session.sessionType === 'assessment' ? '📋' : '📚'}
+                      {session.sessionType === 'assessment'
+                        ? <ClipboardList className="w-5 h-5 text-amber-600" />
+                        : <BookOpen className="w-5 h-5 text-emerald-600" />
+                      }
                     </div>
                     <div>
                       <p className="font-semibold text-slate-700 text-sm">

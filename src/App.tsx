@@ -12,6 +12,7 @@ import SessionManager from './components/session/SessionManager';
 import SkillMap from './components/skillMap/SkillMap';
 import WorksheetGenerator from './components/worksheets/WorksheetGenerator';
 import ParentDashboard from './components/parent/ParentDashboard';
+import { Loader2 } from 'lucide-react';
 
 // Check if Supabase is configured
 const hasSupabase = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -171,10 +172,10 @@ function AppContent() {
   // Loading
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-100 to-purple-100 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-5xl mb-4 animate-bounce">🧮</div>
-          <p className="text-xl text-indigo-600 font-bold">Loading Math Mastery...</p>
+          <Loader2 className="w-10 h-10 text-indigo-600 mx-auto mb-4 animate-spin" />
+          <p className="text-lg text-indigo-600 font-bold">Loading Math Mastery...</p>
         </div>
       </div>
     );

@@ -11,6 +11,7 @@ import {
 } from '../../engine/session';
 import ProblemDisplay from './ProblemDisplay';
 import Feedback from './Feedback';
+import { PartyPopper, Star, Check, ArrowLeft } from 'lucide-react';
 
 interface SessionManagerProps {
   student: Student;
@@ -126,6 +127,17 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   }
 
+  function renderStars(accuracy: number) {
+    const count = accuracy >= 90 ? 3 : accuracy >= 70 ? 2 : 1;
+    return (
+      <div className="flex items-center justify-center gap-1">
+        {Array.from({ length: count }, (_, i) => (
+          <Star key={i} className="w-8 h-8 text-amber-400 fill-amber-400" />
+        ))}
+      </div>
+    );
+  }
+
   const session = sessionRef.current;
   const progress = getSessionProgress(session);
   const phaseColors: Record<string, string> = {
@@ -142,7 +154,7 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
     return (
       <div className="space-y-5">
         <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-8 text-white text-center shadow-sm">
-          <div className="text-5xl mb-3">🎉</div>
+          <PartyPopper className="w-12 h-12 mx-auto mb-3 opacity-90" />
           <h2 className="text-2xl font-bold">Great Job!</h2>
           <p className="text-emerald-100 mt-1">
             Amazing work today, {student.name}!
@@ -169,14 +181,13 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
           <p className="text-2xl font-bold text-indigo-600">{formatTime(summary.duration)}</p>
         </div>
 
-        <div className="text-center text-4xl">
-          {summary.accuracy >= 90 ? '⭐⭐⭐' : summary.accuracy >= 70 ? '⭐⭐' : '⭐'}
-        </div>
+        {renderStars(summary.accuracy)}
 
         <button
           onClick={handleComplete}
-          className="w-full bg-indigo-600 text-white py-5 rounded-2xl text-xl font-bold active:bg-indigo-700 transition-colors shadow-sm min-h-[56px]"
+          className="w-full bg-indigo-600 text-white py-5 rounded-2xl text-xl font-bold active:bg-indigo-700 transition-colors shadow-sm min-h-[56px] inline-flex items-center justify-center gap-2"
         >
+          <ArrowLeft className="w-5 h-5" />
           Back to Dashboard
         </button>
       </div>
@@ -216,7 +227,7 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
           return (
             <div key={phase} className="flex items-center gap-2">
               <div
-                className={`px-3 py-1.5 rounded-full text-xs font-bold min-h-[32px] flex items-center ${
+                className={`px-3 py-1.5 rounded-full text-xs font-bold min-h-[32px] flex items-center gap-1 ${
                   isCurrent
                     ? 'bg-indigo-600 text-white'
                     : isPast
@@ -224,7 +235,8 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
                       : 'bg-slate-100 text-slate-400'
                 }`}
               >
-                {isPast ? '✓ ' : ''}{phase === 'warmup' ? 'Warm Up' : phase === 'learning' ? 'New Learning' : 'Practice'}
+                {isPast && <Check className="w-3 h-3" />}
+                {phase === 'warmup' ? 'Warm Up' : phase === 'learning' ? 'New Learning' : 'Practice'}
               </div>
               {phase !== 'practice' && (
                 <div className={`w-6 h-0.5 ${isPast ? 'bg-emerald-300' : 'bg-slate-200'}`} />

@@ -9,6 +9,7 @@ import {
 } from '../../engine/assessment';
 import ProblemDisplay from '../session/ProblemDisplay';
 import Feedback from '../session/Feedback';
+import { PartyPopper, Trophy, TrendingUp, ClipboardList, ArrowRight } from 'lucide-react';
 
 interface AssessmentFlowProps {
   student: Student;
@@ -163,46 +164,52 @@ export default function AssessmentFlow({ student, scores, onComplete }: Assessme
     const totalTested = summary.filter((s) => s.score > 0 || (s.label !== 'Not Started')).length;
 
     return (
-      <div className="space-y-6">
-        <div className="bg-gradient-to-r from-green-400 to-emerald-500 rounded-3xl p-8 text-white text-center shadow-lg">
-          <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-3xl font-bold">Assessment Complete!</h2>
-          <p className="text-green-100 mt-2 text-lg">
+      <div className="space-y-5">
+        <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-8 text-white text-center shadow-sm">
+          <PartyPopper className="w-12 h-12 mx-auto mb-3 opacity-90" />
+          <h2 className="text-2xl font-bold">Assessment Complete!</h2>
+          <p className="text-emerald-100 mt-2">
             Great job, {student.name}! We know just where to start.
           </p>
         </div>
 
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-white rounded-2xl p-4 text-center shadow border border-gray-100">
+          <div className="bg-white rounded-2xl p-4 text-center shadow-sm border border-slate-200">
             <p className="text-2xl font-bold text-indigo-600">{totalTested}</p>
-            <p className="text-sm text-gray-500 font-medium">Skills Tested</p>
+            <p className="text-xs text-slate-500 font-medium">Skills Tested</p>
           </div>
-          <div className="bg-white rounded-2xl p-4 text-center shadow border border-gray-100">
-            <p className="text-2xl font-bold text-green-600">{proficientCount}</p>
-            <p className="text-sm text-gray-500 font-medium">Proficient</p>
+          <div className="bg-white rounded-2xl p-4 text-center shadow-sm border border-slate-200">
+            <p className="text-2xl font-bold text-emerald-600">{proficientCount}</p>
+            <p className="text-xs text-slate-500 font-medium">Proficient</p>
           </div>
-          <div className="bg-white rounded-2xl p-4 text-center shadow border border-gray-100">
-            <p className="text-2xl font-bold text-yellow-600">{developingCount}</p>
-            <p className="text-sm text-gray-500 font-medium">Developing</p>
+          <div className="bg-white rounded-2xl p-4 text-center shadow-sm border border-slate-200">
+            <p className="text-2xl font-bold text-amber-600">{developingCount}</p>
+            <p className="text-xs text-slate-500 font-medium">Developing</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-5 shadow border border-gray-100">
-          <h3 className="text-lg font-bold text-gray-700 mb-3">Your Skills</h3>
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+          <h3 className="font-bold text-slate-700 mb-3">Your Skills</h3>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {summary.map((item) => (
-              <div key={item.skillId} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                <span className="text-sm text-gray-700 font-medium truncate mr-3">{item.skillId.replace(/-/g, ' ')}</span>
+              <div key={item.skillId} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                <span className="text-sm text-slate-700 font-medium truncate mr-3">{item.skillId.replace(/-/g, ' ')}</span>
                 <span
-                  className={`text-xs font-bold px-3 py-1 rounded-full shrink-0 ${
+                  className={`inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full shrink-0 ${
                     item.label === 'Proficient'
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-emerald-100 text-emerald-700'
                       : item.label === 'Developing'
-                        ? 'bg-yellow-100 text-yellow-700'
-                        : 'bg-gray-100 text-gray-500'
+                        ? 'bg-amber-100 text-amber-700'
+                        : 'bg-slate-100 text-slate-500'
                   }`}
                 >
-                  {item.label === 'Proficient' ? '🏆' : item.label === 'Developing' ? '📈' : '📋'} {item.label}
+                  {item.label === 'Proficient'
+                    ? <Trophy className="w-3 h-3" />
+                    : item.label === 'Developing'
+                      ? <TrendingUp className="w-3 h-3" />
+                      : <ClipboardList className="w-3 h-3" />
+                  }
+                  {item.label}
                 </span>
               </div>
             ))}
@@ -211,9 +218,10 @@ export default function AssessmentFlow({ student, scores, onComplete }: Assessme
 
         <button
           onClick={handleComplete}
-          className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-5 rounded-2xl text-xl font-bold hover:from-blue-600 hover:to-indigo-600 transition-all shadow-lg"
+          className="w-full bg-indigo-600 text-white py-5 rounded-2xl text-xl font-bold active:bg-indigo-700 transition-colors shadow-sm flex items-center justify-center gap-2 min-h-[56px]"
         >
-          Continue to Dashboard 🚀
+          Continue to Dashboard
+          <ArrowRight className="w-5 h-5" />
         </button>
       </div>
     );
@@ -222,22 +230,22 @@ export default function AssessmentFlow({ student, scores, onComplete }: Assessme
   return (
     <div className="space-y-6">
       {/* Progress bar */}
-      <div className="bg-white rounded-2xl p-4 shadow border border-gray-100">
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-bold text-gray-600">Assessment Progress</span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm font-bold text-slate-600">Assessment Progress</span>
+          <span className="text-sm text-slate-500">
             {progress.current} / {progress.total} skills
           </span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+        <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
           <div
-            className="bg-gradient-to-r from-blue-500 to-indigo-500 h-4 rounded-full transition-all duration-500"
+            className="bg-gradient-to-r from-indigo-500 to-violet-500 h-3 rounded-full transition-all duration-500"
             style={{ width: `${progress.percent}%` }}
           />
         </div>
         <div className="flex justify-between items-center mt-1">
-          <p className="text-xs text-gray-400 capitalize">{currentSkillName}</p>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-slate-400 capitalize">{currentSkillName}</p>
+          <p className="text-xs text-slate-400">
             Question {state.currentQuestionIndex + 1} of {state.questionsPerSkill}
           </p>
         </div>

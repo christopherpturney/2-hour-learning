@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { Student } from '../types';
+import { Users } from 'lucide-react';
 
 interface StudentSelectorProps {
   students: Student[];
@@ -24,7 +25,7 @@ export default function StudentSelector({ students, activeStudent, onSelect, onA
   return (
     <div className="space-y-5">
       <div className="text-center py-4">
-        <div className="text-5xl mb-3">👦👧</div>
+        <Users className="w-12 h-12 text-indigo-500 mx-auto mb-3" />
         <h2 className="text-2xl font-bold text-slate-800">Who's learning today?</h2>
         <p className="text-slate-500 mt-1">Select a student or add a new one</p>
       </div>

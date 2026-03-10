@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { signIn, signUp } from '../services/auth';
+import { Calculator, Mail } from 'lucide-react';
 
 interface LoginPageProps {
   onDemoLogin?: () => void;
@@ -38,7 +39,7 @@ export default function LoginPage({ onDemoLogin }: LoginPageProps) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 max-w-md w-full text-center">
-          <div className="text-5xl mb-4">📬</div>
+          <Mail className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-emerald-600 mb-2">Check Your Email!</h2>
           <p className="text-slate-600 text-lg">
             We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account!
@@ -59,7 +60,7 @@ export default function LoginPage({ onDemoLogin }: LoginPageProps) {
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🧮</div>
+          <Calculator className="w-12 h-12 text-indigo-600 mx-auto mb-3" />
           <h1 className="text-3xl font-bold text-slate-800">Math Mastery</h1>
           <p className="text-slate-500 mt-2 text-lg">
             {mode === 'signin'

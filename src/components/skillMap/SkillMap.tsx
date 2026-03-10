@@ -1,5 +1,6 @@
 import type { SkillScore, MasteryLevel, Domain } from '../../types';
 import { skills, domainNames, skillMap as skillLookup } from '../../data/skills';
+import { Plus, Hash, Ruler, Triangle, Star } from 'lucide-react';
 
 interface SkillMapProps {
   scores: Map<string, SkillScore>;
@@ -39,11 +40,14 @@ const domainColors: Record<Domain, { header: string; accent: string }> = {
   G: { header: 'bg-orange-500', accent: 'border-l-orange-500' },
 };
 
-const domainEmojis: Record<Domain, string> = {
-  OA: '+',
-  NBT: '#',
-  MD: '\u{1F4CF}',
-  G: '\u{25B3}',
+const DomainIcon = ({ domain }: { domain: Domain }) => {
+  const cls = "w-6 h-6 text-white";
+  switch (domain) {
+    case 'OA': return <Plus className={cls} />;
+    case 'NBT': return <Hash className={cls} />;
+    case 'MD': return <Ruler className={cls} />;
+    case 'G': return <Triangle className={cls} />;
+  }
 };
 
 function getMastery(skillId: string, scores: Map<string, SkillScore>): MasteryLevel {
@@ -155,7 +159,7 @@ export default function SkillMap({ scores }: SkillMapProps) {
                   className={`${domainColors[domain].header} px-5 py-4 flex items-center justify-between`}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{domainEmojis[domain]}</span>
+                    <DomainIcon domain={domain} />
                     <div>
                       <h2 className="text-lg font-bold text-white">
                         {domainNames[domain]}
@@ -201,9 +205,7 @@ export default function SkillMap({ scores }: SkillMapProps) {
                             {colors.label}
                           </span>
                           {mastery === 'mastered' && (
-                            <span className="text-lg" aria-label="star">
-                              &#11088;
-                            </span>
+                            <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
                           )}
                         </div>
 
