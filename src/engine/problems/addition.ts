@@ -1,52 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-
-function randomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-let problemCounter = 0;
-function generateId(): string {
-  return `prob-${Date.now()}-${++problemCounter}-${randomInt(1000, 9999)}`;
-}
-
-function dots(n: number): string {
-  return '●'.repeat(n);
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const result = [...arr];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = randomInt(0, i);
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
-
-function generateWrongAnswers(correct: number, count: number, min: number, max: number): number[] {
-  const wrong = new Set<number>();
-  // Add common mistake answers first
-  const candidates = [correct + 1, correct - 1, correct + 2, correct - 2, correct + 10, correct - 10];
-  for (const c of candidates) {
-    if (c !== correct && c >= min && c <= max) {
-      wrong.add(c);
-    }
-  }
-  // Fill with random if needed
-  let attempts = 0;
-  while (wrong.size < count && attempts < 50) {
-    const w = randomInt(min, max);
-    if (w !== correct) {
-      wrong.add(w);
-    }
-    attempts++;
-  }
-  return shuffle([...wrong].slice(0, count));
-}
-
-function makeChoices(correct: number, min: number, max: number): string[] {
-  const wrongAnswers = generateWrongAnswers(correct, 3, min, max);
-  return shuffle([correct.toString(), ...wrongAnswers.map(String)]);
-}
+import { randomInt, generateId, dots, shuffle, makeChoices } from './utils';
 
 // ============================================
 // Addition Within 5
@@ -54,7 +7,7 @@ function makeChoices(correct: number, min: number, max: number): string[] {
 const additionWithin5: ProblemGenerator = {
   skillId: 'addition-within-5',
   generate(scaffolding: ScaffoldingLevel): Problem {
-    const a = randomInt(0, 5);
+    const a = randomInt(1, 5);
     const b = randomInt(0, 5 - a);
     const answer = a + b;
 
