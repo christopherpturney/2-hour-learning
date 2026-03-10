@@ -8,7 +8,6 @@ import {
   getAssessmentSummary,
 } from '../../engine/assessment';
 import ProblemDisplay from '../session/ProblemDisplay';
-import Feedback from '../session/Feedback';
 import { PartyPopper, Trophy, TrendingUp, ClipboardList, ArrowRight } from 'lucide-react';
 
 interface AssessmentFlowProps {
@@ -17,7 +16,7 @@ interface AssessmentFlowProps {
   onComplete: (scores: Map<string, SkillScore>) => void;
 }
 
-type ViewState = 'problem' | 'feedback' | 'complete';
+type ViewState = 'problem' | 'complete';
 
 export default function AssessmentFlow({ student, scores, onComplete }: AssessmentFlowProps) {
   // Use refs for mutable state to avoid stale closures
@@ -30,9 +29,6 @@ export default function AssessmentFlow({ student, scores, onComplete }: Assessme
 
   const [currentProblem, setCurrentProblem] = useState<Problem | null>(null);
   const [viewState, setViewState] = useState<ViewState>('problem');
-  const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
-  const [lastExplanation, setLastExplanation] = useState('');
-  const [lastCorrectAnswer, setLastCorrectAnswer] = useState('');
 
   // Skip skills that don't have problem generators
   function skipToNextValidSkill(): boolean {
@@ -120,9 +116,6 @@ export default function AssessmentFlow({ student, scores, onComplete }: Assessme
     if (!currentProblem) return;
 
     const correct = answer.toLowerCase().trim() === currentProblem.correctAnswer.toLowerCase().trim();
-    setLastAnswerCorrect(correct);
-    setLastExplanation(currentProblem.explanation);
-    setLastCorrectAnswer(currentProblem.correctAnswer);
 
     // Directly mutate refs — no stale closure issues
     const result = recordAssessmentAnswer(
@@ -134,11 +127,8 @@ export default function AssessmentFlow({ student, scores, onComplete }: Assessme
 
     stateRef.current = result.state;
     scoresRef.current = result.scores;
-    setViewState('feedback');
-    forceRender();
-  }
 
-  function handleNext() {
+    // Skip feedback — assessments don't reveal right/wrong
     if (stateRef.current.complete) {
       setViewState('complete');
       forceRender();
@@ -256,15 +246,6 @@ export default function AssessmentFlow({ student, scores, onComplete }: Assessme
         <ProblemDisplay
           problem={currentProblem}
           onAnswer={handleAnswer}
-        />
-      )}
-
-      {viewState === 'feedback' && (
-        <Feedback
-          correct={lastAnswerCorrect}
-          explanation={lastExplanation}
-          correctAnswer={lastCorrectAnswer}
-          onNext={handleNext}
         />
       )}
     </div>

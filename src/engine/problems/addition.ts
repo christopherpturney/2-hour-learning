@@ -200,6 +200,7 @@ const additionFluency10: ProblemGenerator = {
         questionParts = [
           { type: 'equation', value: `${a} + ${b} = ?` },
         ];
+        hint = `Think: what is ${a} plus ${b}?`;
         break;
     }
 
@@ -311,7 +312,7 @@ const addThreeNumbers: ProblemGenerator = {
           { type: 'number_line', value: '0-20', count: 20 },
           { type: 'equation', value: `${a} + ${b} + ${c} = ?` },
         ];
-        hint = `First add ${a} + ${b} = ${a + b}, then add ${c} more.`;
+        hint = `Try adding two numbers first, then add the third.`;
         break;
       case 'abstract':
         question = `${a} + ${b} + ${c} = ?`;
@@ -474,7 +475,7 @@ const countingOnStrategy: ProblemGenerator = {
           { type: 'text', value: `Count on ${smaller} more:` },
           { type: 'dots', value: dots(smaller), count: smaller },
         ];
-        hint = `Say "${bigger}" in your head, then count: ${Array.from({ length: smaller }, (_, i) => bigger + 1 + i).join(', ')}.`;
+        hint = `Say "${bigger}" in your head, then count on ${smaller} more. Use the dots to help!`;
         break;
       case 'representational':
         question = `Start at ${bigger} on the number line. Count on ${smaller}. Where do you land?`;
@@ -552,7 +553,7 @@ const makingTenStrategy: ProblemGenerator = {
         questionParts = [
           { type: 'equation', value: `${a} + ${b} = ?` },
         ];
-        hint = `Think: ${a} needs ${needToMakeTen} to make 10. Break ${b} into ${needToMakeTen} and ${leftover}. 10 + ${leftover} = ?`;
+        hint = `Can you break apart one number to make a ten?`;
         break;
     }
 
@@ -571,6 +572,84 @@ const makingTenStrategy: ProblemGenerator = {
   },
 };
 
+// ============================================
+// Fluency: Add & Subtract Within 20 (2.OA.B.2)
+// ============================================
+const fluencyAddSub20: ProblemGenerator = {
+  skillId: 'fluency-add-sub-20',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const isAddition = Math.random() > 0.5;
+    let a: number, b: number, answer: number, equation: string;
+
+    if (isAddition) {
+      a = randomInt(1, 19);
+      b = randomInt(1, 20 - a);
+      answer = a + b;
+      equation = `${a} + ${b} = ?`;
+    } else {
+      a = randomInt(2, 20);
+      b = randomInt(1, a);
+      answer = a - b;
+      equation = `${a} - ${b} = ?`;
+    }
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete': {
+        const groupA = a <= 10 ? dots(a) : `${dots(10)} ${dots(a - 10)}`;
+        question = isAddition
+          ? `${groupA} + ${dots(b)} = ?`
+          : `${groupA} take away ${dots(b)} = ?`;
+        questionParts = [
+          { type: 'dots', value: groupA, count: a },
+          { type: 'text', value: isAddition ? '+' : 'take away' },
+          { type: 'dots', value: dots(b), count: b },
+        ];
+        hint = isAddition
+          ? `Count all the dots together.`
+          : `Start with ${a} dots and take away ${b}. Count what is left.`;
+        break;
+      }
+      case 'representational':
+        question = `${equation} Use the number line.`;
+        questionParts = [
+          { type: 'number_line', value: '0-20', count: 20 },
+          { type: 'equation', value: equation },
+        ];
+        hint = isAddition
+          ? `Start at ${a} and count forward ${b}.`
+          : `Start at ${a} and count back ${b}.`;
+        break;
+      case 'abstract':
+        question = equation;
+        questionParts = [
+          { type: 'equation', value: equation },
+        ];
+        hint = isAddition
+          ? `Think: what is ${a} plus ${b}?`
+          : `Think: what is ${a} minus ${b}?`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'fluency-add-sub-20',
+      type: 'number_input',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      hint,
+      explanation: isAddition
+        ? `${a} + ${b} = ${answer}.`
+        : `${a} - ${b} = ${answer}.`,
+    };
+  },
+};
+
 export const additionGenerators: ProblemGenerator[] = [
   additionWithin5,
   additionWithin10,
@@ -580,4 +659,5 @@ export const additionGenerators: ProblemGenerator[] = [
   commutativeProperty,
   countingOnStrategy,
   makingTenStrategy,
+  fluencyAddSub20,
 ];

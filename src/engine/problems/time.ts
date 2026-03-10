@@ -149,7 +149,82 @@ const tellTimeHalfHour: ProblemGenerator = {
   },
 };
 
+// ============================================
+// Tell Time to Five Minutes (2.MD.C.7)
+// ============================================
+const tellTimeFiveMinutes: ProblemGenerator = {
+  skillId: 'tell-time-five-minutes',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const hour = randomInt(1, 12);
+    // Minutes in 5-minute increments, excluding :00 and :30 (those are covered by other skills)
+    const fiveMinOptions = [5, 10, 15, 20, 25, 35, 40, 45, 50, 55];
+    const minute = fiveMinOptions[randomInt(0, fiveMinOptions.length - 1)];
+    const minuteStr = minute < 10 ? `0${minute}` : `${minute}`;
+    const correctTime = `${hour}:${minuteStr}`;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    // Which number the minute hand points to (minute / 5)
+    const minuteNumber = minute / 5;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `Look at the clock: ${clockFace(hour, minute)}. The short hand is near ${hour}. The long hand points to ${minuteNumber}. What time is it?`;
+        questionParts = [
+          { type: 'image', value: `clock-${hour}-${minuteStr}` },
+          { type: 'text', value: `Short hand: near ${hour}` },
+          { type: 'text', value: `Long hand: on ${minuteNumber}` },
+          { type: 'text', value: 'What time is it?' },
+        ];
+        hint = `The long hand on ${minuteNumber} means ${minute} minutes. Count by fives: 5, 10, 15... up to the ${minuteNumber}.`;
+        break;
+      case 'representational':
+        question = `The clock shows ${clockFace(hour, minute)}. The minute hand is on ${minuteNumber}. What time is it?`;
+        questionParts = [
+          { type: 'image', value: `clock-${hour}-${minuteStr}` },
+          { type: 'text', value: 'What time?' },
+        ];
+        hint = `Each number on the clock means 5 more minutes. Count by 5s from 12 to the minute hand.`;
+        break;
+      case 'abstract':
+        question = `What time does this clock show? ${clockFace(hour, minute)}`;
+        questionParts = [
+          { type: 'image', value: `clock-${hour}-${minuteStr}` },
+        ];
+        hint = `Read the hour hand first, then count the minutes by fives.`;
+        break;
+    }
+
+    // Generate wrong time choices
+    const wrongTimes: string[] = [];
+    const nextHour = hour === 12 ? 1 : hour + 1;
+    const prevHour = hour === 1 ? 12 : hour - 1;
+    const wrongMin1 = minute >= 55 ? minute - 10 : minute + 5;
+    const wrongMin2 = minute <= 5 ? minute + 10 : minute - 5;
+    wrongTimes.push(`${nextHour}:${minuteStr}`);
+    wrongTimes.push(`${hour}:${wrongMin1 < 10 ? '0' + wrongMin1 : wrongMin1}`);
+    wrongTimes.push(`${prevHour}:${wrongMin2 < 10 ? '0' + wrongMin2 : wrongMin2}`);
+    const choices = shuffle([correctTime, ...wrongTimes]);
+
+    return {
+      id: generateId(),
+      skillId: 'tell-time-five-minutes',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: correctTime,
+      choices,
+      hint,
+      explanation: `The time is ${correctTime}. The hour hand is near ${hour} and the minute hand points to ${minuteNumber}, which means ${minute} minutes past the hour.`,
+    };
+  },
+};
+
 export const timeGenerators: ProblemGenerator[] = [
   tellTimeHour,
   tellTimeHalfHour,
+  tellTimeFiveMinutes,
 ];

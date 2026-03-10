@@ -59,7 +59,7 @@ export interface AttemptRecord {
 
 export type SessionType = 'assessment' | 'daily';
 
-export type SessionPhase = 'warmup' | 'learning' | 'practice' | 'celebration';
+export type SessionPhase = 'warmup' | 'teach' | 'guided_practice' | 'independent_practice' | 'celebration';
 
 export interface Session {
   id?: string;
@@ -118,6 +118,23 @@ export interface ProblemGenerator {
 }
 
 // ============================================
+// Lesson / Teaching Types
+// ============================================
+
+export interface LessonStep {
+  type: 'concept' | 'example' | 'try_it';
+  title: string;
+  content: string;           // main explanation text
+  visual?: QuestionPart[];   // optional visual (dots, equations, images)
+  tip?: string;              // key takeaway or mnemonic
+}
+
+export interface Lesson {
+  skillId: string;
+  steps: LessonStep[];
+}
+
+// ============================================
 // Assessment Types
 // ============================================
 
@@ -136,9 +153,17 @@ export interface AssessmentState {
 
 export interface SessionPlan {
   warmupSkills: string[];     // mastered skills for review
-  learningSkills: string[];   // 1-2 ZPD skills
-  practiceSkills: string[];   // mix of learning + recent
+  learningSkills: string[];   // 1-2 ZPD skills to teach then practice
+  practiceSkills: string[];   // mix of learning + recent for independent practice
   totalProblems: number;
+}
+
+export interface TeachingProgress {
+  skillId: string;
+  lessonStepIndex: number;    // current step in the lesson
+  lessonComplete: boolean;    // all lesson steps viewed
+  guidedCorrect: number;      // correct in guided practice
+  guidedAttempted: number;    // total guided practice attempts
 }
 
 export interface ActiveSession {
@@ -151,4 +176,7 @@ export interface ActiveSession {
   currentProblem: Problem | null;
   skillResults: Record<string, { attempted: number; correct: number }>;
   consecutiveWrong: number;   // for corrective feedback
+  // Teaching state
+  teachingProgress: TeachingProgress[];  // one per learning skill
+  currentTeachingIndex: number;          // which learning skill we're teaching
 }

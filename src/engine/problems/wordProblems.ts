@@ -107,7 +107,7 @@ const wordProblemsAddTo: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
         ];
-        hint = `This is an addition problem. ${start} + ${added} = ?`;
+        hint = `Read the story carefully. What happens to the number of ${object}?`;
         break;
     }
 
@@ -175,7 +175,7 @@ const wordProblemsTakeFrom: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
         ];
-        hint = `This is a subtraction problem. ${start} - ${removed} = ?`;
+        hint = `Read the story carefully. What happens to the number of ${object}?`;
         break;
     }
 
@@ -207,7 +207,7 @@ const wordProblemsPutTogether: ProblemGenerator = {
     const answer = groupA + groupB;
 
     // Sometimes ask for total, sometimes ask for one part (unknown addend)
-    const askTotal = Math.random() > 0.3;
+    const askTotal = Math.random() > 0.5;
 
     let question: string;
     let questionParts: QuestionPart[] | undefined;
@@ -248,7 +248,7 @@ const wordProblemsPutTogether: ProblemGenerator = {
           questionParts = [
             { type: 'text', value: template },
           ];
-          hint = `${groupA} + ${groupB} = ?`;
+          hint = `How can you find the total number of ${object}?`;
           break;
       }
     } else {
@@ -280,7 +280,7 @@ const wordProblemsPutTogether: ProblemGenerator = {
           questionParts = [
             { type: 'text', value: template },
           ];
-          hint = `${answer} - ${groupA} = ? or ${groupA} + ? = ${answer}`;
+          hint = `You know the total and one part. How can you find the other part?`;
           break;
       }
     }
@@ -367,7 +367,7 @@ const wordProblemsCompare: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
         ];
-        hint = `Compare by subtracting: ${bigger} - ${smaller} = ?`;
+        hint = `Think about the difference between the two amounts.`;
         break;
     }
 
@@ -386,9 +386,513 @@ const wordProblemsCompare: ProblemGenerator = {
   },
 };
 
+// ============================================
+// Word Problems: Add To (Change Unknown)
+// ============================================
+const wordProblemsAddToChange: ProblemGenerator = {
+  skillId: 'word-problems-add-to-change',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const name = pickName();
+    const object = pickObject();
+    const start = randomInt(1, 10);
+    const total = randomInt(start + 1, start + 10);
+    const answer = total - start;
+
+    const templates = [
+      `${name} has ${start} ${object}. ${name} gets some more ${object}. Now ${name} has ${total} ${object}. How many ${object} did ${name} get?`,
+      `There are ${start} ${object} on a table. ${name} puts some more on the table. Now there are ${total} ${object}. How many did ${name} put on the table?`,
+      `${name} had ${start} ${object} in a bag. After getting some more, ${name} has ${total}. How many more ${object} did ${name} get?`,
+    ];
+    const template = templates[randomInt(0, templates.length - 1)];
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `${template}\n\nStarted with: ${dots(start)}\nEnded with: ${dots(total)}`;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'text', value: 'Started with:' },
+          { type: 'dots', value: dots(start), count: start },
+          { type: 'text', value: 'Ended with:' },
+          { type: 'dots', value: dots(total), count: total },
+        ];
+        hint = `You started with ${start}. You ended with ${total}. Count up from ${start} to ${total}.`;
+        break;
+      case 'representational':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'equation', value: `${start} + ? = ${total}` },
+        ];
+        hint = `${start} + ? = ${total}. What number goes in the blank?`;
+        break;
+      case 'abstract':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+        ];
+        hint = `Think about what changed between the beginning and end of the story.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'word-problems-add-to-change',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 20),
+      hint,
+      explanation: `${name} started with ${start} and ended with ${total}. ${total} - ${start} = ${answer}. ${name} got ${answer} more ${object}.`,
+    };
+  },
+};
+
+// ============================================
+// Word Problems: Add To (Start Unknown)
+// ============================================
+const wordProblemsAddToStart: ProblemGenerator = {
+  skillId: 'word-problems-add-to-start',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const name = pickName();
+    const object = pickObject();
+    const added = randomInt(1, 10);
+    const total = randomInt(added + 1, added + 10);
+    const answer = total - added;
+
+    const templates = [
+      `${name} had some ${object}. ${name} got ${added} more. Now ${name} has ${total}. How many did ${name} have at first?`,
+      `Some ${object} were on a shelf. ${name} put ${added} more on the shelf. Now there are ${total} ${object}. How many were on the shelf at first?`,
+      `There were some ${object} in a box. ${name} added ${added} more. Now there are ${total}. How many were in the box at first?`,
+    ];
+    const template = templates[randomInt(0, templates.length - 1)];
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `${template}\n\nAdded: ${dots(added)}\nTotal: ${dots(total)}`;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'text', value: 'Added:' },
+          { type: 'dots', value: dots(added), count: added },
+          { type: 'text', value: 'Total:' },
+          { type: 'dots', value: dots(total), count: total },
+        ];
+        hint = `The total is ${total}. If ${added} were added, how many were there before?`;
+        break;
+      case 'representational':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'equation', value: `? + ${added} = ${total}` },
+        ];
+        hint = `? + ${added} = ${total}. What number goes in the blank?`;
+        break;
+      case 'abstract':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+        ];
+        hint = `You know the end and what was added. Think about how many there were before.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'word-problems-add-to-start',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 20),
+      hint,
+      explanation: `${name} ended with ${total} and ${added} were added. ${total} - ${added} = ${answer}. ${name} had ${answer} ${object} at first.`,
+    };
+  },
+};
+
+// ============================================
+// Word Problems: Take From (Change Unknown)
+// ============================================
+const wordProblemsTakeFromChange: ProblemGenerator = {
+  skillId: 'word-problems-take-from-change',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const name = pickName();
+    const object = pickObject();
+    const start = randomInt(5, 15);
+    const remainder = randomInt(1, start - 1);
+    const answer = start - remainder;
+
+    const templates = [
+      `${name} had ${start} ${object}. ${name} gave some away. Now ${name} has ${remainder} ${object}. How many did ${name} give away?`,
+      `There were ${start} ${object} on a shelf. Some fell off. Now there are ${remainder}. How many fell off?`,
+      `${name} had ${start} ${object}. After losing some, ${name} has ${remainder} left. How many did ${name} lose?`,
+    ];
+    const template = templates[randomInt(0, templates.length - 1)];
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `${template}\n\nStarted with: ${dots(start)}\nNow: ${dots(remainder)}`;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'text', value: 'Started with:' },
+          { type: 'dots', value: dots(start), count: start },
+          { type: 'text', value: 'Now:' },
+          { type: 'dots', value: dots(remainder), count: remainder },
+        ];
+        hint = `Start with ${start}. Now there are ${remainder}. How many are gone?`;
+        break;
+      case 'representational':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'equation', value: `${start} - ? = ${remainder}` },
+        ];
+        hint = `${start} - ? = ${remainder}. What number goes in the blank?`;
+        break;
+      case 'abstract':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+        ];
+        hint = `Think about how many are missing between the start and what is left.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'word-problems-take-from-change',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 20),
+      hint,
+      explanation: `${name} started with ${start} and now has ${remainder}. ${start} - ${remainder} = ${answer}. ${name} gave away ${answer} ${object}.`,
+    };
+  },
+};
+
+// ============================================
+// Word Problems: Take From (Start Unknown)
+// ============================================
+const wordProblemsTakeFromStart: ProblemGenerator = {
+  skillId: 'word-problems-take-from-start',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const name = pickName();
+    const object = pickObject();
+    const removed = randomInt(1, 10);
+    const remainder = randomInt(1, 10);
+    const answer = removed + remainder;
+
+    const templates = [
+      `${name} had some ${object}. ${name} gave away ${removed}. Now ${name} has ${remainder} left. How many did ${name} have at first?`,
+      `Some ${object} were in a box. ${name} took out ${removed}. Now there are ${remainder} left. How many were in the box at first?`,
+      `${name} had some ${object}. After ${removed} broke, ${name} has ${remainder} left. How many did ${name} start with?`,
+    ];
+    const template = templates[randomInt(0, templates.length - 1)];
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `${template}\n\nLeft: ${dots(remainder)} Gone: ${dots(removed)}`;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'text', value: 'Left:' },
+          { type: 'dots', value: dots(remainder), count: remainder },
+          { type: 'text', value: 'Gone:' },
+          { type: 'dots', value: dots(removed), count: removed },
+        ];
+        hint = `Put back together what is left (${remainder}) and what was taken away (${removed}).`;
+        break;
+      case 'representational':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'equation', value: `? - ${removed} = ${remainder}` },
+        ];
+        hint = `? - ${removed} = ${remainder}. What number goes in the blank?`;
+        break;
+      case 'abstract':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+        ];
+        hint = `You know what was taken away and what is left. Think about how many there were before.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'word-problems-take-from-start',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 20),
+      hint,
+      explanation: `${removed} were taken away and ${remainder} are left. ${removed} + ${remainder} = ${answer}. ${name} had ${answer} ${object} at first.`,
+    };
+  },
+};
+
+// ============================================
+// Word Problems: Compare (Bigger Unknown)
+// ============================================
+const wordProblemsCompareBigger: ProblemGenerator = {
+  skillId: 'word-problems-compare-bigger',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const name1 = pickName();
+    const name2 = pickName(name1);
+    const object = pickObject();
+    const smaller = randomInt(1, 10);
+    const difference = randomInt(1, 8);
+    const answer = smaller + difference;
+
+    const templates = [
+      `${name2} has ${smaller} ${object}. ${name1} has ${difference} more ${object} than ${name2}. How many ${object} does ${name1} have?`,
+      `${name2} found ${smaller} ${object}. ${name1} found ${difference} more than ${name2}. How many did ${name1} find?`,
+      `${name1} has ${difference} more ${object} than ${name2}. ${name2} has ${smaller} ${object}. How many ${object} does ${name1} have?`,
+    ];
+    const template = templates[randomInt(0, templates.length - 1)];
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `${template}\n\n${name2}: ${dots(smaller)}\n${name1}: ${dots(smaller)} + ${dots(difference)}`;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'text', value: `${name2}:` },
+          { type: 'dots', value: dots(smaller), count: smaller },
+          { type: 'text', value: `${name1}: same as ${name2}, plus ${difference} more` },
+          { type: 'dots', value: dots(smaller) + ' + ' + dots(difference), count: answer },
+        ];
+        hint = `${name1} has all that ${name2} has, plus ${difference} more.`;
+        break;
+      case 'representational':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'equation', value: `${smaller} + ${difference} = ?` },
+        ];
+        hint = `${name2} has ${smaller}. ${name1} has ${difference} more. ${smaller} + ${difference} = ?`;
+        break;
+      case 'abstract':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+        ];
+        hint = `One person has more than the other. Think about how to find the bigger amount.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'word-problems-compare-bigger',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 20),
+      hint,
+      explanation: `${name2} has ${smaller} and ${name1} has ${difference} more. ${smaller} + ${difference} = ${answer}. ${name1} has ${answer} ${object}.`,
+    };
+  },
+};
+
+// ============================================
+// Word Problems: Compare (Smaller Unknown)
+// ============================================
+const wordProblemsCompareSmaller: ProblemGenerator = {
+  skillId: 'word-problems-compare-smaller',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const name1 = pickName();
+    const name2 = pickName(name1);
+    const object = pickObject();
+    const bigger = randomInt(5, 15);
+    const difference = randomInt(1, bigger - 1);
+    const answer = bigger - difference;
+
+    const templates = [
+      `${name1} has ${bigger} ${object}. ${name1} has ${difference} more than ${name2}. How many ${object} does ${name2} have?`,
+      `${name1} collected ${bigger} ${object}. ${name2} collected ${difference} fewer. How many did ${name2} collect?`,
+      `${name2} has ${difference} fewer ${object} than ${name1}. ${name1} has ${bigger} ${object}. How many does ${name2} have?`,
+    ];
+    const template = templates[randomInt(0, templates.length - 1)];
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete': {
+        question = `${template}\n\n${name1}: ${dots(bigger)}\n${name2}: ?`;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'text', value: `${name1}:` },
+          { type: 'dots', value: dots(bigger), count: bigger },
+          { type: 'text', value: `${name2} has ${difference} fewer` },
+        ];
+        hint = `${name1} has ${bigger}. ${name2} has ${difference} fewer. Take away ${difference} from ${bigger}.`;
+        break;
+      }
+      case 'representational':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'equation', value: `${bigger} - ${difference} = ?` },
+        ];
+        hint = `${name1} has ${bigger}. ${name2} has ${difference} fewer. ${bigger} - ${difference} = ?`;
+        break;
+      case 'abstract':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+        ];
+        hint = `One person has fewer than the other. Think about how to find the smaller amount.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'word-problems-compare-smaller',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 15),
+      hint,
+      explanation: `${name1} has ${bigger} and ${name2} has ${difference} fewer. ${bigger} - ${difference} = ${answer}. ${name2} has ${answer} ${object}.`,
+    };
+  },
+};
+
+// ============================================
+// Word Problems Within 100 (2.OA.A.1)
+// ============================================
+const wordProblemsWithin100: ProblemGenerator = {
+  skillId: 'word-problems-within-100',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const name = pickName();
+    const object = pickObject();
+    const isTwoStep = Math.random() > 0.5;
+
+    let template: string;
+    let answer: number;
+
+    if (isTwoStep) {
+      // Two-step: add then subtract, or add then add
+      const a = randomInt(10, 40);
+      const b = randomInt(5, 30);
+      const c = randomInt(5, 20);
+      const addThenSubtract = Math.random() > 0.5;
+      if (addThenSubtract) {
+        answer = a + b - c;
+        template = `${name} has ${a} ${object}. ${name} gets ${b} more. Then ${name} gives away ${c}. How many ${object} does ${name} have now?`;
+      } else {
+        answer = a + b + c;
+        template = `${name} has ${a} ${object}. ${name} finds ${b} more. Then ${name} gets ${c} more as a gift. How many ${object} does ${name} have now?`;
+      }
+    } else {
+      // One-step with larger numbers
+      const isAddition = Math.random() > 0.5;
+      if (isAddition) {
+        const a = randomInt(20, 60);
+        const b = randomInt(10, 100 - a);
+        answer = a + b;
+        template = `${name} has ${a} ${object}. ${name} gets ${b} more. How many ${object} does ${name} have now?`;
+      } else {
+        const a = randomInt(30, 90);
+        const b = randomInt(10, a);
+        answer = a - b;
+        template = `${name} has ${a} ${object}. ${name} gives away ${b}. How many ${object} does ${name} have left?`;
+      }
+    }
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'text', value: 'Use tens and ones to help.' },
+        ];
+        hint = isTwoStep
+          ? `This is a two-step problem. Solve one part first, then use that answer for the next part.`
+          : `Break the numbers into tens and ones to help you add or subtract.`;
+        break;
+      case 'representational':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+          { type: 'text', value: 'Write a number sentence to solve.' },
+        ];
+        hint = isTwoStep
+          ? `Write two number sentences, one for each step.`
+          : `Write a number sentence for this story. What operation do you need?`;
+        break;
+      case 'abstract':
+        question = template;
+        questionParts = [
+          { type: 'text', value: template },
+        ];
+        hint = isTwoStep
+          ? `Read carefully. There are two things happening in this story.`
+          : `What is happening in this story? Is the number getting bigger or smaller?`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'word-problems-within-100',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, Math.max(0, answer - 10), Math.min(100, answer + 10)),
+      hint,
+      explanation: `The answer is ${answer}. ${isTwoStep ? 'This was a two-step problem. Solve each step one at a time.' : ''}`,
+    };
+  },
+};
+
 export const wordProblemGenerators: ProblemGenerator[] = [
   wordProblemsAddTo,
+  wordProblemsAddToChange,
+  wordProblemsAddToStart,
   wordProblemsTakeFrom,
+  wordProblemsTakeFromChange,
+  wordProblemsTakeFromStart,
   wordProblemsPutTogether,
   wordProblemsCompare,
+  wordProblemsCompareBigger,
+  wordProblemsCompareSmaller,
+  wordProblemsWithin100,
 ];

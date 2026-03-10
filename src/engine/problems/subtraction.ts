@@ -200,6 +200,7 @@ const subtractionFluency10: ProblemGenerator = {
         questionParts = [
           { type: 'equation', value: `${a} - ${b} = ?` },
         ];
+        hint = `Think: what is ${a} minus ${b}?`;
         break;
     }
 
@@ -256,7 +257,7 @@ const subtractionWithin20: ProblemGenerator = {
         questionParts = [
           { type: 'equation', value: `${a} - ${b} = ?` },
         ];
-        hint = `Can you use a related addition fact? ${answer} + ${b} = ${a}.`;
+        hint = `Can you use a related addition fact? ? + ${b} = ${a}.`;
         break;
     }
 

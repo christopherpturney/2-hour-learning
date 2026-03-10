@@ -1,6 +1,7 @@
 import type { Student, SkillScore, Session, MasteryLevel, Domain } from '../../types';
 import { skills, domainNames } from '../../data/skills';
 import { selectLearningSkills } from '../../engine/zpd';
+import CcssTooltip from '../CcssTooltip';
 
 interface ParentDashboardProps {
   student: Student;
@@ -294,8 +295,8 @@ export default function ParentDashboard({ student, scores, sessions }: ParentDas
                           {meta.label}
                         </span>
                       </div>
-                      <p className="text-[10px] text-gray-400 mt-1.5 font-mono">
-                        {domainNames[skill.domain]} -- {skill.standardCode}
+                      <p className="text-[10px] text-gray-400 mt-1.5">
+                        {domainNames[skill.domain]} -- <CcssTooltip code={skill.standardCode} className="text-gray-400" />
                       </p>
                     </div>
                   );

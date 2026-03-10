@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import type { Problem } from '../../types';
 import ClockFace, { parseClockValue } from '../ClockFace';
@@ -12,6 +12,12 @@ interface ProblemDisplayProps {
 
 export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemDisplayProps) {
   const [inputValue, setInputValue] = useState('');
+  const [showHint, setShowHint] = useState(false);
+
+  // Reset hint visibility when problem changes
+  useEffect(() => {
+    setShowHint(false);
+  }, [problem.id]);
 
   function handleInputSubmit(e: FormEvent) {
     e.preventDefault();
@@ -136,9 +142,19 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
         {renderQuestionParts()}
       </div>
 
-      {/* Hint */}
+      {/* Hint — hidden until requested */}
       {problem.hint && (
-        <p className="text-center text-sm text-slate-400 italic">{problem.hint}</p>
+        showHint ? (
+          <p className="text-center text-sm text-indigo-500 italic bg-indigo-50 rounded-xl px-3 py-2">{problem.hint}</p>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowHint(true)}
+            className="mx-auto block text-sm text-slate-400 font-medium active:text-indigo-500 transition-colors"
+          >
+            Need a hint?
+          </button>
+        )
       )}
 
       {/* Answer input area */}

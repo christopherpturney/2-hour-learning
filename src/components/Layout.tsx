@@ -50,7 +50,7 @@ export default function Layout({ children, studentName, onSignOut }: LayoutProps
       </header>
 
       {/* Content — add bottom padding when nav is visible */}
-      <main className={`flex-1 max-w-3xl mx-auto w-full px-4 py-5 ${hideNav ? '' : 'pb-24'}`}>
+      <main className={`flex-1 ${location.pathname === '/skills' ? 'max-w-full' : 'max-w-3xl'} mx-auto w-full px-4 py-5 ${hideNav ? '' : 'pb-24'}`}>
         {children}
       </main>
 

@@ -723,6 +723,151 @@ const subtractMultiplesOfTen: ProblemGenerator = {
   },
 };
 
+// ============================================
+// Understand Hundreds (2.NBT.A.1)
+// ============================================
+const understandHundreds: ProblemGenerator = {
+  skillId: 'understand-hundreds',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const hundreds = randomInt(1, 9);
+    const tens = randomInt(0, 9);
+    const ones = randomInt(0, 9);
+    const number = hundreds * 100 + tens * 10 + ones;
+
+    // Ask about hundreds, tens, or ones
+    const askType = randomInt(0, 2); // 0=hundreds, 1=tens, 2=ones
+    const answer = askType === 0 ? hundreds : askType === 1 ? tens : ones;
+    const placeWord = askType === 0 ? 'hundreds' : askType === 1 ? 'tens' : 'ones';
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `The number ${number} has ${hundreds} hundreds, ${tens} tens, and ${ones} ones. How many ${placeWord}?`;
+        questionParts = [
+          { type: 'text', value: `${number}` },
+          { type: 'text', value: `${'■'.repeat(hundreds)} hundreds` },
+          { type: 'text', value: `${'▮'.repeat(tens)} tens` },
+          { type: 'text', value: `${'●'.repeat(ones)} ones` },
+          { type: 'text', value: `How many ${placeWord}?` },
+        ];
+        hint = `Count the ${placeWord} blocks.`;
+        break;
+      case 'representational':
+        question = `In the number ${number}, how many ${placeWord} are there?`;
+        questionParts = [
+          { type: 'text', value: `${number} = ___ hundreds + ___ tens + ___ ones` },
+          { type: 'text', value: `How many ${placeWord}?` },
+        ];
+        hint = askType === 0
+          ? `The hundreds digit is the first digit.`
+          : askType === 1
+          ? `The tens digit is the middle digit.`
+          : `The ones digit is the last digit.`;
+        break;
+      case 'abstract':
+        question = `How many ${placeWord} in ${number}?`;
+        questionParts = [
+          { type: 'text', value: `How many ${placeWord} in ${number}?` },
+        ];
+        hint = `Think about each place: hundreds, tens, ones.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'understand-hundreds',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      choices: makeChoices(answer, 0, 9),
+      hint,
+      explanation: `${number} = ${hundreds} hundreds + ${tens} tens + ${ones} ones. That is ${hundreds * 100} + ${tens * 10} + ${ones} = ${number}.`,
+    };
+  },
+};
+
+// ============================================
+// Add & Subtract Within 100 (2.NBT.B.5)
+// ============================================
+const addSubtractWithin100: ProblemGenerator = {
+  skillId: 'add-subtract-within-100',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const isAddition = Math.random() > 0.5;
+    let a: number, b: number, answer: number, equation: string;
+
+    if (isAddition) {
+      a = randomInt(10, 89);
+      b = randomInt(10, 100 - a);
+      answer = a + b;
+      equation = `${a} + ${b} = ?`;
+    } else {
+      a = randomInt(20, 99);
+      b = randomInt(10, a);
+      answer = a - b;
+      equation = `${a} - ${b} = ?`;
+    }
+
+    const tensA = Math.floor(a / 10);
+    const onesA = a % 10;
+    const tensB = Math.floor(b / 10);
+    const onesB = b % 10;
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `${equation} Use tens and ones blocks.`;
+        questionParts = [
+          { type: 'text', value: `${a} = ${tensA} tens, ${onesA} ones` },
+          { type: 'text', value: isAddition ? '+' : '-' },
+          { type: 'text', value: `${b} = ${tensB} tens, ${onesB} ones` },
+        ];
+        hint = isAddition
+          ? `Add the tens: ${tensA} + ${tensB}. Add the ones: ${onesA} + ${onesB}. Regroup if needed.`
+          : `Subtract the tens: ${tensA} - ${tensB}. Subtract the ones: ${onesA} - ${onesB}. Regroup if needed.`;
+        break;
+      case 'representational':
+        question = equation;
+        questionParts = [
+          { type: 'equation', value: equation },
+          { type: 'text', value: `Break apart by place value.` },
+        ];
+        hint = isAddition
+          ? `Add tens first, then add ones. Combine the results.`
+          : `Subtract tens first, then subtract ones. Combine the results.`;
+        break;
+      case 'abstract':
+        question = equation;
+        questionParts = [
+          { type: 'equation', value: equation },
+        ];
+        hint = `Use place value to help you solve this.`;
+        break;
+    }
+
+    return {
+      id: generateId(),
+      skillId: 'add-subtract-within-100',
+      type: 'number_input',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: answer.toString(),
+      hint,
+      explanation: isAddition
+        ? `${a} + ${b} = ${answer}. Add the tens: ${tensA * 10} + ${tensB * 10} = ${(tensA + tensB) * 10}. Add the ones: ${onesA} + ${onesB} = ${onesA + onesB}.`
+        : `${a} - ${b} = ${answer}.`,
+    };
+  },
+};
+
 export const placeValueGenerators: ProblemGenerator[] = [
   countTo120,
   readWriteNumerals120,
@@ -734,4 +879,6 @@ export const placeValueGenerators: ProblemGenerator[] = [
   addTwoDigitPlusTens,
   mentalTenMoreLess,
   subtractMultiplesOfTen,
+  understandHundreds,
+  addSubtractWithin100,
 ];

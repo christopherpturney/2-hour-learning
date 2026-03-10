@@ -1,6 +1,9 @@
 import type { Skill, SkillScore, MasteryLevel } from '../types';
 import { skills, skillMap } from '../data/skills';
 import { needsReview, createEmptyScore } from './mastery';
+import { getRegisteredSkillIds } from './problems/index';
+
+const generatorSkillIds = new Set(getRegisteredSkillIds());
 
 function getScore(skillId: string, scores: Map<string, SkillScore>): SkillScore {
   return scores.get(skillId) ?? createEmptyScore('', skillId);
@@ -16,6 +19,10 @@ function allPrerequisitesMastered(skill: Skill, scores: Map<string, SkillScore>)
 function isReady(skill: Skill, scores: Map<string, SkillScore>): boolean {
   const score = getScore(skill.id, scores);
   if (score.mastery === 'mastered') {
+    return false;
+  }
+  // Skills without problem generators (e.g. 2nd grade) cannot be practiced yet
+  if (!generatorSkillIds.has(skill.id)) {
     return false;
   }
   if (skill.prerequisites.length === 0) {
@@ -50,6 +57,7 @@ export function selectLearningSkills(scores: Map<string, SkillScore>): Skill[] {
 
 export function selectWarmupSkills(scores: Map<string, SkillScore>, count: number): Skill[] {
   const reviewSkills = skills.filter(s => {
+    if (!generatorSkillIds.has(s.id)) return false;
     const score = getScore(s.id, scores);
     return needsReview(score);
   });
@@ -76,6 +84,7 @@ export function selectPracticeSkills(
   const developingSkills = skills
     .filter(s => {
       if (learningIds.has(s.id)) return false;
+      if (!generatorSkillIds.has(s.id)) return false;
       const score = getScore(s.id, scores);
       return score.mastery === 'developing' || score.mastery === 'proficient';
     })

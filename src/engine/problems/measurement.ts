@@ -153,15 +153,59 @@ const measureNonstandardUnits: ProblemGenerator = {
         ];
         hint = `How many ${unit} did you line up?`;
         break;
-      case 'abstract':
-        question = `A ${object.name} was measured with ${unit}. The ${unit} are shown below. How many ${unit} long is the ${object.name}?`;
-        questionParts = [
-          { type: 'text', value: `${object.name} measured in ${unit}:` },
-          { type: 'text', value: '▢'.repeat(length) },
-          { type: 'text', value: `How many ${unit}?` },
-        ];
-        hint = `Count the ${unit} one by one.`;
-        break;
+      case 'abstract': {
+        const otherObjects = MEDIUM_OBJECTS.filter(o => o.name !== object.name);
+        const object2 = otherObjects[randomInt(0, otherObjects.length - 1)];
+        const length2 = randomInt(3, 10);
+        const longer = length >= length2 ? object.name : object2.name;
+        const longerLength = Math.max(length, length2);
+        const shorter = length < length2 ? object.name : object2.name;
+        const shorterLength = Math.min(length, length2);
+        const diff = longerLength - shorterLength;
+        if (diff === 0) {
+          question = `A ${object.name} is ${length} ${unit} long. A ${object2.name} is also ${length2} ${unit} long. How many ${unit} long is the ${object.name}?`;
+          questionParts = [
+            { type: 'text', value: `${object.name}: ${length} ${unit}` },
+            { type: 'text', value: `${object2.name}: ${length2} ${unit}` },
+            { type: 'text', value: `How long is the ${object.name}?` },
+          ];
+        } else {
+          question = `A ${object.name} is ${length} ${unit} long. A ${object2.name} is ${length2} ${unit} long. How much longer is the ${longer} than the ${shorter}?`;
+          questionParts = [
+            { type: 'text', value: `${object.name}: ${length} ${unit}` },
+            { type: 'text', value: `${object2.name}: ${length2} ${unit}` },
+            { type: 'text', value: `How much longer is the ${longer}?` },
+          ];
+        }
+        hint = `Compare the two measurements. What is the difference?`;
+        // Override answer for abstract: it's the difference (or same length)
+        const abstractAnswer = diff === 0 ? length : diff;
+        // Ensure wrong answers are distinct from correct answer
+        const wrongs = new Set<number>();
+        for (const candidate of [abstractAnswer - 1, abstractAnswer + 1, abstractAnswer + 2, abstractAnswer - 2, abstractAnswer + 3]) {
+          if (candidate > 0 && candidate !== abstractAnswer) wrongs.add(candidate);
+          if (wrongs.size >= 3) break;
+        }
+        const abstractChoices = shuffle([
+          abstractAnswer.toString(),
+          ...[...wrongs].slice(0, 3).map(String),
+        ]);
+
+        return {
+          id: generateId(),
+          skillId: 'measure-nonstandard-units',
+          type: 'multiple_choice',
+          scaffolding,
+          question,
+          questionParts,
+          correctAnswer: abstractAnswer.toString(),
+          choices: abstractChoices,
+          hint,
+          explanation: diff === 0
+            ? `Both the ${object.name} and ${object2.name} are ${length} ${unit} long.`
+            : `The ${longer} is ${longerLength} ${unit} and the ${shorter} is ${shorterLength} ${unit}. ${longerLength} - ${shorterLength} = ${diff} ${unit} longer.`,
+        };
+      }
     }
 
     const wrong1 = Math.max(1, length - 1);

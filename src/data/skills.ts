@@ -101,6 +101,62 @@ export const skills: Skill[] = [
     curriculumOrder: 10,
   },
 
+  // Word problems: Change Unknown and Start Unknown (CCSS Table 1)
+  {
+    id: 'word-problems-add-to-change',
+    name: 'Word Problems: Add To (Change Unknown)',
+    description: 'Solve "add to" word problems where the change is unknown (3 + ? = 8)',
+    domain: 'OA',
+    standardCode: '1.OA.A.1',
+    prerequisites: ['word-problems-add-to'],
+    curriculumOrder: 11,
+  },
+  {
+    id: 'word-problems-add-to-start',
+    name: 'Word Problems: Add To (Start Unknown)',
+    description: 'Solve "add to" word problems where the start is unknown (? + 3 = 7)',
+    domain: 'OA',
+    standardCode: '1.OA.A.1',
+    prerequisites: ['word-problems-add-to-change'],
+    curriculumOrder: 12,
+  },
+  {
+    id: 'word-problems-take-from-change',
+    name: 'Word Problems: Take From (Change Unknown)',
+    description: 'Solve "take from" word problems where the change is unknown (9 - ? = 4)',
+    domain: 'OA',
+    standardCode: '1.OA.A.1',
+    prerequisites: ['word-problems-take-from'],
+    curriculumOrder: 13,
+  },
+  {
+    id: 'word-problems-take-from-start',
+    name: 'Word Problems: Take From (Start Unknown)',
+    description: 'Solve "take from" word problems where the start is unknown (? - 3 = 5)',
+    domain: 'OA',
+    standardCode: '1.OA.A.1',
+    prerequisites: ['word-problems-take-from-change'],
+    curriculumOrder: 14,
+  },
+  {
+    id: 'word-problems-compare-bigger',
+    name: 'Word Problems: Compare (Bigger Unknown)',
+    description: 'Solve comparison word problems where the bigger quantity is unknown',
+    domain: 'OA',
+    standardCode: '1.OA.A.1',
+    prerequisites: ['word-problems-compare'],
+    curriculumOrder: 15,
+  },
+  {
+    id: 'word-problems-compare-smaller',
+    name: 'Word Problems: Compare (Smaller Unknown)',
+    description: 'Solve comparison word problems where the smaller quantity is unknown',
+    domain: 'OA',
+    standardCode: '1.OA.A.1',
+    prerequisites: ['word-problems-compare-bigger'],
+    curriculumOrder: 16,
+  },
+
   // Properties and strategies
   {
     id: 'commutative-property',
@@ -109,7 +165,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.B.3',
     prerequisites: ['addition-within-10'],
-    curriculumOrder: 11,
+    curriculumOrder: 17,
   },
   {
     id: 'subtraction-as-unknown-addend',
@@ -118,7 +174,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.B.4',
     prerequisites: ['subtraction-within-10'],
-    curriculumOrder: 12,
+    curriculumOrder: 18,
   },
   {
     id: 'counting-on-strategy',
@@ -127,7 +183,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.C.5',
     prerequisites: ['addition-within-10'],
-    curriculumOrder: 13,
+    curriculumOrder: 19,
   },
   {
     id: 'making-ten-strategy',
@@ -136,7 +192,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.C.6',
     prerequisites: ['addition-fluency-10', 'subtraction-fluency-10'],
-    curriculumOrder: 14,
+    curriculumOrder: 20,
   },
 
   // Addition and subtraction to 20
@@ -147,7 +203,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.C.6',
     prerequisites: ['making-ten-strategy'],
-    curriculumOrder: 15,
+    curriculumOrder: 21,
   },
   {
     id: 'subtraction-within-20',
@@ -156,7 +212,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.C.6',
     prerequisites: ['making-ten-strategy'],
-    curriculumOrder: 16,
+    curriculumOrder: 22,
   },
   {
     id: 'add-three-numbers',
@@ -165,7 +221,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.A.2',
     prerequisites: ['addition-within-20'],
-    curriculumOrder: 17,
+    curriculumOrder: 23,
   },
 
   // Equations
@@ -176,7 +232,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.D.7',
     prerequisites: ['addition-within-10', 'subtraction-within-10'],
-    curriculumOrder: 18,
+    curriculumOrder: 24,
   },
   {
     id: 'missing-number-equations',
@@ -185,7 +241,7 @@ export const skills: Skill[] = [
     domain: 'OA',
     standardCode: '1.OA.D.8',
     prerequisites: ['equal-sign-meaning'],
-    curriculumOrder: 19,
+    curriculumOrder: 25,
   },
 
   // ================================================================
@@ -198,7 +254,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.A.1',
     prerequisites: [],
-    curriculumOrder: 20,
+    curriculumOrder: 26,
   },
   {
     id: 'read-write-numerals-120',
@@ -207,7 +263,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.A.1',
     prerequisites: ['count-to-120'],
-    curriculumOrder: 21,
+    curriculumOrder: 27,
   },
   {
     id: 'understand-tens-ones',
@@ -216,7 +272,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.B.2',
     prerequisites: ['count-to-120'],
-    curriculumOrder: 22,
+    curriculumOrder: 28,
   },
   {
     id: 'teen-numbers-composition',
@@ -225,7 +281,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.B.2',
     prerequisites: ['understand-tens-ones'],
-    curriculumOrder: 23,
+    curriculumOrder: 29,
   },
   {
     id: 'decade-numbers',
@@ -234,7 +290,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.B.2',
     prerequisites: ['understand-tens-ones'],
-    curriculumOrder: 24,
+    curriculumOrder: 30,
   },
   {
     id: 'compare-two-digit',
@@ -243,7 +299,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.B.3',
     prerequisites: ['understand-tens-ones'],
-    curriculumOrder: 25,
+    curriculumOrder: 31,
   },
   {
     id: 'add-two-digit-plus-one',
@@ -252,7 +308,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.C.4',
     prerequisites: ['addition-within-20', 'understand-tens-ones'],
-    curriculumOrder: 26,
+    curriculumOrder: 32,
   },
   {
     id: 'add-two-digit-plus-tens',
@@ -261,7 +317,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.C.4',
     prerequisites: ['decade-numbers', 'addition-within-20'],
-    curriculumOrder: 27,
+    curriculumOrder: 33,
   },
   {
     id: 'mental-ten-more-less',
@@ -270,7 +326,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.C.5',
     prerequisites: ['understand-tens-ones'],
-    curriculumOrder: 28,
+    curriculumOrder: 34,
   },
   {
     id: 'subtract-multiples-of-ten',
@@ -279,7 +335,7 @@ export const skills: Skill[] = [
     domain: 'NBT',
     standardCode: '1.NBT.C.6',
     prerequisites: ['decade-numbers', 'subtraction-within-20'],
-    curriculumOrder: 29,
+    curriculumOrder: 35,
   },
 
   // ================================================================
@@ -292,7 +348,7 @@ export const skills: Skill[] = [
     domain: 'MD',
     standardCode: '1.MD.A.1',
     prerequisites: [],
-    curriculumOrder: 30,
+    curriculumOrder: 36,
   },
   {
     id: 'measure-nonstandard-units',
@@ -301,7 +357,7 @@ export const skills: Skill[] = [
     domain: 'MD',
     standardCode: '1.MD.A.2',
     prerequisites: ['order-objects-by-length', 'count-to-120'],
-    curriculumOrder: 31,
+    curriculumOrder: 37,
   },
   {
     id: 'tell-time-hour',
@@ -310,7 +366,7 @@ export const skills: Skill[] = [
     domain: 'MD',
     standardCode: '1.MD.B.3',
     prerequisites: [],
-    curriculumOrder: 32,
+    curriculumOrder: 38,
   },
   {
     id: 'tell-time-half-hour',
@@ -319,7 +375,7 @@ export const skills: Skill[] = [
     domain: 'MD',
     standardCode: '1.MD.B.3',
     prerequisites: ['tell-time-hour'],
-    curriculumOrder: 33,
+    curriculumOrder: 39,
   },
   {
     id: 'organize-data-categories',
@@ -328,7 +384,7 @@ export const skills: Skill[] = [
     domain: 'MD',
     standardCode: '1.MD.C.4',
     prerequisites: ['count-to-120'],
-    curriculumOrder: 34,
+    curriculumOrder: 40,
   },
   {
     id: 'interpret-data',
@@ -337,7 +393,7 @@ export const skills: Skill[] = [
     domain: 'MD',
     standardCode: '1.MD.C.4',
     prerequisites: ['organize-data-categories', 'addition-within-10', 'subtraction-within-10'],
-    curriculumOrder: 35,
+    curriculumOrder: 41,
   },
 
   // ================================================================
@@ -350,7 +406,7 @@ export const skills: Skill[] = [
     domain: 'G',
     standardCode: '1.G.A.1',
     prerequisites: [],
-    curriculumOrder: 36,
+    curriculumOrder: 42,
   },
   {
     id: 'identify-3d-shapes',
@@ -359,7 +415,7 @@ export const skills: Skill[] = [
     domain: 'G',
     standardCode: '1.G.A.1',
     prerequisites: ['identify-2d-shapes'],
-    curriculumOrder: 37,
+    curriculumOrder: 43,
   },
   {
     id: 'compose-shapes',
@@ -368,7 +424,7 @@ export const skills: Skill[] = [
     domain: 'G',
     standardCode: '1.G.A.2',
     prerequisites: ['identify-2d-shapes'],
-    curriculumOrder: 38,
+    curriculumOrder: 44,
   },
   {
     id: 'partition-halves',
@@ -377,7 +433,7 @@ export const skills: Skill[] = [
     domain: 'G',
     standardCode: '1.G.A.3',
     prerequisites: [],
-    curriculumOrder: 39,
+    curriculumOrder: 45,
   },
   {
     id: 'partition-fourths',
@@ -386,7 +442,7 @@ export const skills: Skill[] = [
     domain: 'G',
     standardCode: '1.G.A.3',
     prerequisites: ['partition-halves'],
-    curriculumOrder: 40,
+    curriculumOrder: 46,
   },
   {
     id: 'describe-shares-wholes',
@@ -395,7 +451,73 @@ export const skills: Skill[] = [
     domain: 'G',
     standardCode: '1.G.A.3',
     prerequisites: ['partition-halves', 'partition-fourths'],
-    curriculumOrder: 41,
+    curriculumOrder: 47,
+  },
+
+  // ================================================================
+  // 2ND GRADE EXTENSIONS
+  // ================================================================
+
+  // OA
+  {
+    id: 'fluency-add-sub-20',
+    name: 'Fluency: Add & Subtract Within 20',
+    description: 'Fluently add and subtract within 20 using mental strategies',
+    domain: 'OA',
+    standardCode: '2.OA.B.2',
+    prerequisites: ['addition-within-20', 'subtraction-within-20'],
+    curriculumOrder: 48,
+  },
+  {
+    id: 'word-problems-within-100',
+    name: 'Word Problems Within 100',
+    description: 'Use addition and subtraction within 100 to solve one- and two-step word problems',
+    domain: 'OA',
+    standardCode: '2.OA.A.1',
+    prerequisites: ['word-problems-add-to-start', 'word-problems-take-from-start', 'add-two-digit-plus-one'],
+    curriculumOrder: 49,
+  },
+
+  // NBT
+  {
+    id: 'understand-hundreds',
+    name: 'Understand Hundreds',
+    description: 'Understand that three-digit numbers represent hundreds, tens, and ones',
+    domain: 'NBT',
+    standardCode: '2.NBT.A.1',
+    prerequisites: ['understand-tens-ones'],
+    curriculumOrder: 50,
+  },
+  {
+    id: 'add-subtract-within-100',
+    name: 'Add & Subtract Within 100',
+    description: 'Fluently add and subtract within 100 using strategies based on place value',
+    domain: 'NBT',
+    standardCode: '2.NBT.B.5',
+    prerequisites: ['add-two-digit-plus-one', 'add-two-digit-plus-tens', 'subtract-multiples-of-ten'],
+    curriculumOrder: 51,
+  },
+
+  // MD
+  {
+    id: 'tell-time-five-minutes',
+    name: 'Tell Time: Five Minutes',
+    description: 'Tell and write time to the nearest five minutes using analog and digital clocks',
+    domain: 'MD',
+    standardCode: '2.MD.C.7',
+    prerequisites: ['tell-time-half-hour'],
+    curriculumOrder: 52,
+  },
+
+  // G
+  {
+    id: 'draw-shapes-attributes',
+    name: 'Draw Shapes by Attributes',
+    description: 'Recognize and draw shapes having specified attributes like angles and equal faces',
+    domain: 'G',
+    standardCode: '2.G.A.1',
+    prerequisites: ['identify-2d-shapes', 'identify-3d-shapes'],
+    curriculumOrder: 53,
   },
 ];
 

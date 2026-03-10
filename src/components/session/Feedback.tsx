@@ -4,25 +4,11 @@ interface FeedbackProps {
   correct: boolean;
   explanation: string;
   correctAnswer: string;
+  encouragement: string;
   onNext: () => void;
 }
 
-const ENCOURAGEMENTS = [
-  'Amazing!',
-  'You rock!',
-  'Fantastic!',
-  'Super star!',
-  'Way to go!',
-  'Brilliant!',
-  'Awesome!',
-  'Keep it up!',
-];
-
-function randomEncouragement(): string {
-  return ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
-}
-
-export default function Feedback({ correct, explanation, correctAnswer, onNext }: FeedbackProps) {
+export default function Feedback({ correct, explanation, correctAnswer, encouragement, onNext }: FeedbackProps) {
   return (
     <div
       className={`rounded-2xl p-6 text-center space-y-4 border-2 ${
@@ -41,19 +27,19 @@ export default function Feedback({ correct, explanation, correctAnswer, onNext }
           correct ? 'text-emerald-600' : 'text-red-500'
         }`}
       >
-        {correct ? randomEncouragement() : 'Not quite!'}
+        {correct ? encouragement : 'Not quite!'}
       </h3>
 
       {!correct && (
-        <div className="space-y-2">
-          <p className="text-lg text-slate-700">
-            The correct answer is{' '}
-            <span className="font-bold text-indigo-600 text-xl">{correctAnswer}</span>
-          </p>
-          {explanation && (
-            <p className="text-slate-500 text-sm">{explanation}</p>
-          )}
-        </div>
+        <p className="text-lg text-slate-700">
+          The correct answer is{' '}
+          <span className="font-bold text-indigo-600 text-xl">{correctAnswer}</span>
+        </p>
+      )}
+
+      {/* Always show explanation — reinforces learning whether right or wrong */}
+      {explanation && (
+        <p className="text-slate-500 text-sm">{explanation}</p>
       )}
 
       {correct && (

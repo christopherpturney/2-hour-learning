@@ -42,7 +42,8 @@ export function calculateMastery(score: SkillScore): MasteryLevel {
     return 'developing';
   }
 
-  return 'developing';
+  // Below 50% with 3+ attempts — still not_started (struggling)
+  return 'not_started';
 }
 
 export function recordAttempt(score: SkillScore, correct: boolean): SkillScore {

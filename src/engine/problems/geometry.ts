@@ -88,7 +88,7 @@ const identify2DShapes: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: question },
         ];
-        hint = `Count the sides: ${shape.sides}. Count the corners: ${shape.corners}.`;
+        hint = `Think about the shapes you know. How many sides and corners does each one have?`;
         break;
     }
 
@@ -494,6 +494,81 @@ const describeSharesWholes: ProblemGenerator = {
   },
 };
 
+// ============================================
+// Draw Shapes by Attributes (2.G.A.1)
+// ============================================
+
+interface ShapeAttribute {
+  shapeName: string;
+  attribute: string;
+  question: string;
+}
+
+const SHAPE_ATTRIBUTES: ShapeAttribute[] = [
+  { shapeName: 'triangle', attribute: '3 sides and 3 angles', question: 'Which shape has exactly 3 sides and 3 angles?' },
+  { shapeName: 'square', attribute: '4 equal sides and 4 right angles', question: 'Which shape has 4 equal sides and 4 right angles?' },
+  { shapeName: 'rectangle', attribute: '4 sides, 4 right angles, opposite sides equal', question: 'Which shape has 4 right angles and opposite sides that are equal?' },
+  { shapeName: 'hexagon', attribute: '6 sides and 6 angles', question: 'Which shape has exactly 6 sides and 6 angles?' },
+  { shapeName: 'trapezoid', attribute: '4 sides with exactly one pair of parallel sides', question: 'Which shape has 4 sides with exactly one pair of parallel sides?' },
+  { shapeName: 'cube', attribute: '6 square faces, all the same size', question: 'Which 3D shape has 6 faces that are all squares?' },
+  { shapeName: 'cone', attribute: 'a flat circular base and a point on top', question: 'Which 3D shape has a circular base and comes to a point?' },
+  { shapeName: 'cylinder', attribute: '2 flat circular faces and a curved surface', question: 'Which 3D shape has 2 circular faces and a curved surface?' },
+];
+
+const drawShapesAttributes: ProblemGenerator = {
+  skillId: 'draw-shapes-attributes',
+  generate(scaffolding: ScaffoldingLevel): Problem {
+    const item = SHAPE_ATTRIBUTES[randomInt(0, SHAPE_ATTRIBUTES.length - 1)];
+
+    let question: string;
+    let questionParts: QuestionPart[] | undefined;
+    let hint: string | undefined;
+
+    switch (scaffolding) {
+      case 'concrete':
+        question = `Look at these shapes. ${item.question}`;
+        questionParts = [
+          { type: 'text', value: item.question },
+          { type: 'text', value: `Attributes: ${item.attribute}` },
+        ];
+        hint = `Look carefully at each shape. Which one matches all the attributes listed?`;
+        break;
+      case 'representational':
+        question = `A shape has these attributes: ${item.attribute}. What shape is it?`;
+        questionParts = [
+          { type: 'text', value: `Attributes: ${item.attribute}` },
+          { type: 'text', value: 'What shape matches?' },
+        ];
+        hint = `Think about each shape you know and check if it matches all the attributes.`;
+        break;
+      case 'abstract':
+        question = item.question;
+        questionParts = [
+          { type: 'text', value: item.question },
+        ];
+        hint = `Think about the defining attributes of each shape.`;
+        break;
+    }
+
+    const allNames = SHAPE_ATTRIBUTES.map(s => s.shapeName);
+    const wrongChoices = shuffle(allNames.filter(n => n !== item.shapeName)).slice(0, 3);
+    const choices = shuffle([item.shapeName, ...wrongChoices]);
+
+    return {
+      id: generateId(),
+      skillId: 'draw-shapes-attributes',
+      type: 'multiple_choice',
+      scaffolding,
+      question,
+      questionParts,
+      correctAnswer: item.shapeName,
+      choices,
+      hint,
+      explanation: `A ${item.shapeName} has ${item.attribute}. Recognizing shapes by their attributes helps us understand their properties.`,
+    };
+  },
+};
+
 export const geometryGenerators: ProblemGenerator[] = [
   identify2DShapes,
   identify3DShapes,
@@ -501,4 +576,5 @@ export const geometryGenerators: ProblemGenerator[] = [
   partitionHalves,
   partitionFourths,
   describeSharesWholes,
+  drawShapesAttributes,
 ];
