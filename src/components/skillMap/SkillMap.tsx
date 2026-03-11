@@ -53,10 +53,10 @@ const masteryDots: Record<MasteryLevel, { dot: string; text: string; label: stri
 };
 
 const domainBadgeColors: Record<Domain, string> = {
-  OA: 'bg-slate-700',
-  NBT: 'bg-slate-700',
-  MD: 'bg-slate-700',
-  G: 'bg-slate-700',
+  OA: 'bg-purple-600',
+  NBT: 'bg-indigo-600',
+  MD: 'bg-teal-600',
+  G: 'bg-orange-500',
 };
 
 const DomainIcon = ({ domain, className }: { domain: Domain; className?: string }) => {
