@@ -340,6 +340,7 @@ function AppContent() {
               student={activeStudent}
               scores={scores}
               onComplete={handleAssessmentComplete}
+              onExit={() => navigate('/')}
             />
           }
         />
@@ -350,6 +351,7 @@ function AppContent() {
               student={activeStudent}
               scores={scores}
               onComplete={handleSessionComplete}
+              onExit={() => navigate('/')}
             />
           }
         />

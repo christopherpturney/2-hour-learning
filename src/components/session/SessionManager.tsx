@@ -15,23 +15,67 @@ import { skillMap } from '../../data/skills';
 import ProblemDisplay from './ProblemDisplay';
 import LessonDisplay from './LessonDisplay';
 import Feedback from './Feedback';
-import { PartyPopper, Star, Check, ArrowLeft } from 'lucide-react';
+import { PartyPopper, Star, Check, ArrowLeft, X } from 'lucide-react';
+
+const SESSION_STORAGE_KEY = (studentId: string) => `active_session_${studentId}`;
+
+interface SavedSessionState {
+  session: ActiveSession;
+  scores: Record<string, SkillScore>;
+}
+
+function saveSessionState(studentId: string, session: ActiveSession, scores: Map<string, SkillScore>) {
+  const obj: Record<string, SkillScore> = {};
+  for (const [k, v] of scores) obj[k] = v;
+  const data: SavedSessionState = { session, scores: obj };
+  localStorage.setItem(SESSION_STORAGE_KEY(studentId), JSON.stringify(data));
+}
+
+function loadSessionState(studentId: string): SavedSessionState | null {
+  try {
+    const raw = localStorage.getItem(SESSION_STORAGE_KEY(studentId));
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch { return null; }
+}
+
+export function clearSavedSession(studentId: string) {
+  localStorage.removeItem(SESSION_STORAGE_KEY(studentId));
+}
+
+export function hasSavedSession(studentId: string): boolean {
+  return localStorage.getItem(SESSION_STORAGE_KEY(studentId)) !== null;
+}
 
 interface SessionManagerProps {
   student: Student;
   scores: Map<string, SkillScore>;
   onComplete: (scores: Map<string, SkillScore>, sessionData: Session) => void;
+  onExit: () => void;
 }
 
 type ViewState = 'problem' | 'feedback' | 'lesson' | 'complete';
 
-export default function SessionManager({ student, scores, onComplete }: SessionManagerProps) {
+export default function SessionManager({ student, scores, onComplete, onExit }: SessionManagerProps) {
   const sessionRef = useRef<ActiveSession>(null!);
   const scoresRef = useRef<Map<string, SkillScore>>(new Map(scores));
 
   if (sessionRef.current === null) {
-    const plan = createSessionPlan(scores);
-    sessionRef.current = startSession(plan);
+    // Try to restore a saved session
+    const saved = loadSessionState(student.id);
+    if (saved) {
+      sessionRef.current = saved.session;
+      const restoredScores = new Map<string, SkillScore>();
+      for (const [k, v] of Object.entries(saved.scores)) restoredScores.set(k, v);
+      // Merge with current scores (saved scores take priority for skills that were in-progress)
+      for (const [k, v] of scores) {
+        if (!restoredScores.has(k)) restoredScores.set(k, v);
+      }
+      scoresRef.current = restoredScores;
+    } else {
+      const plan = createSessionPlan(scores);
+      sessionRef.current = startSession(plan);
+    }
   }
 
   const [, setRenderCount] = useState(0);
@@ -44,7 +88,10 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
   const [lastExplanation, setLastExplanation] = useState('');
   const [lastCorrectAnswer, setLastCorrectAnswer] = useState('');
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(() => {
+    // If restoring, calculate elapsed from saved startTime
+    return Math.floor((Date.now() - sessionRef.current.startTime) / 1000);
+  });
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const encouragementRef = useRef('');
 
@@ -131,7 +178,13 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
     loadNextProblem();
   }
 
+  function handleExit() {
+    saveSessionState(student.id, sessionRef.current, scoresRef.current);
+    onExit();
+  }
+
   function handleComplete() {
+    clearSavedSession(student.id);
     const session = sessionRef.current;
     const summary = getSessionSummary(session);
     const sessionData: Session = {
@@ -244,6 +297,13 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
         <>
           <div className={`bg-gradient-to-r ${phaseColors[progress.phase] || phaseColors.teach} rounded-2xl p-4 text-white shadow-sm`}>
             <div className="flex items-center justify-between mb-2">
+              <button
+                onClick={handleExit}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 active:bg-white/30 transition-colors"
+                aria-label="Exit session"
+              >
+                <X className="w-4 h-4" />
+              </button>
               <span className="text-lg font-bold">{progress.phaseLabel}</span>
               <span className="text-xl font-bold font-mono">
                 {formatTime(elapsedSeconds)}

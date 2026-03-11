@@ -1,5 +1,7 @@
 import type { Student, SkillScore, Session } from '../types';
-import { ClipboardList, BookOpen } from 'lucide-react';
+import { hasSavedSession } from './session/SessionManager';
+import { hasSavedAssessment } from './assessment/AssessmentFlow';
+import { ClipboardList, BookOpen, PlayCircle } from 'lucide-react';
 
 interface DashboardProps {
   student: Student;
@@ -17,6 +19,8 @@ export default function Dashboard({
   onStartAssessment,
   onStartSession,
 }: DashboardProps) {
+  const hasResumableSession = hasSavedSession(student.id);
+  const hasResumableAssessment = hasSavedAssessment(student.id);
   const allScores = Array.from(scores.values());
   const mastered = allScores.filter((s) => s.mastery === 'mastered').length;
   const proficient = allScores.filter((s) => s.mastery === 'proficient').length;
@@ -44,18 +48,38 @@ export default function Dashboard({
           onClick={onStartAssessment}
           className="w-full bg-gradient-to-br from-amber-400 to-orange-500 text-white p-6 rounded-2xl text-center shadow-sm active:scale-[0.98] transition-transform"
         >
-          <ClipboardList className="w-10 h-10 mx-auto mb-2 opacity-90" />
-          <span className="text-xl font-bold block">Start Assessment</span>
-          <p className="text-amber-100 mt-1 text-sm">Find out what you already know</p>
+          {hasResumableAssessment ? (
+            <>
+              <PlayCircle className="w-10 h-10 mx-auto mb-2 opacity-90" />
+              <span className="text-xl font-bold block">Resume Assessment</span>
+              <p className="text-amber-100 mt-1 text-sm">Pick up where you left off</p>
+            </>
+          ) : (
+            <>
+              <ClipboardList className="w-10 h-10 mx-auto mb-2 opacity-90" />
+              <span className="text-xl font-bold block">Start Assessment</span>
+              <p className="text-amber-100 mt-1 text-sm">Find out what you already know</p>
+            </>
+          )}
         </button>
       ) : (
         <button
           onClick={onStartSession}
           className="w-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-6 rounded-2xl text-center shadow-sm active:scale-[0.98] transition-transform"
         >
-          <BookOpen className="w-10 h-10 mx-auto mb-2 opacity-90" />
-          <span className="text-xl font-bold block">Start Today's Session</span>
-          <p className="text-emerald-100 mt-1 text-sm">20 minutes of math practice</p>
+          {hasResumableSession ? (
+            <>
+              <PlayCircle className="w-10 h-10 mx-auto mb-2 opacity-90" />
+              <span className="text-xl font-bold block">Resume Session</span>
+              <p className="text-emerald-100 mt-1 text-sm">Pick up where you left off</p>
+            </>
+          ) : (
+            <>
+              <BookOpen className="w-10 h-10 mx-auto mb-2 opacity-90" />
+              <span className="text-xl font-bold block">Start Today's Session</span>
+              <p className="text-emerald-100 mt-1 text-sm">20 minutes of math practice</p>
+            </>
+          )}
         </button>
       )}
 
