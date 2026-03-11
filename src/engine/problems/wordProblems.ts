@@ -14,6 +14,11 @@ function pickObject(): string {
   return OBJECTS[randomInt(0, OBJECTS.length - 1)];
 }
 
+/** Encode object name for image value strings (spaces → underscores) */
+function objKey(name: string): string {
+  return name.replace(/\s+/g, '_');
+}
+
 // ============================================
 // Word Problems: Add To
 // ============================================
@@ -40,10 +45,10 @@ const wordProblemsAddTo: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${template}\n\nUse counters to help: ${start} + ${added}`;
+        question = `${template}\n\nUse the pictures to help: ${start} + ${added}`;
         questionParts = [
           { type: 'text', value: template },
-          { type: 'image', value: `counters-${start}-${added}` },
+          { type: 'image', value: `objects-${objKey(object)}-${start}-${added}` },
         ];
         hint = `Count the first group (${start}), then count on the second group (${added}).`;
         break;
@@ -107,10 +112,10 @@ const wordProblemsTakeFrom: ProblemGenerator = {
         question = `${template}\n\nCross out ${removed}:`;
         questionParts = [
           { type: 'text', value: template },
-          { type: 'image', value: `counters-${start}-cross-${removed}` },
+          { type: 'image', value: `objects-${objKey(object)}-${start}-cross-${removed}` },
           { type: 'text', value: `Cross out ${removed}.` },
         ];
-        hint = `Start with ${start} counters. Cross out ${removed}. Count what is left.`;
+        hint = `Start with ${start} ${object}. Cross out ${removed}. Count what is left.`;
         break;
       }
       case 'representational':
@@ -180,9 +185,9 @@ const wordProblemsPutTogether: ProblemGenerator = {
           question = `${template}\n\n${groupA} and ${groupB}`;
           questionParts = [
             { type: 'text', value: template },
-            { type: 'image', value: `counters-${groupA}` },
+            { type: 'image', value: `objects-${objKey(object)}-${groupA}` },
             { type: 'text', value: 'and' },
-            { type: 'image', value: `counters-${groupB}` },
+            { type: 'image', value: `objects-${objKey(object)}-${groupB}` },
           ];
           hint = `Put both groups together and count them all.`;
           break;
@@ -213,7 +218,7 @@ const wordProblemsPutTogether: ProblemGenerator = {
           questionParts = [
             { type: 'text', value: template },
             { type: 'text', value: `Total: ${answer}` },
-            { type: 'image', value: `counters-${answer}` },
+            { type: 'image', value: `objects-${objKey(object)}-${answer}` },
             { type: 'text', value: `On table: ${groupA}` },
           ];
           hint = `Start with ${answer} total. Take away the ${groupA} on the table. What is left?`;
@@ -299,11 +304,11 @@ const wordProblemsCompare: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: `${name1}:` },
-          { type: 'image', value: `counters-${bigger}` },
+          { type: 'image', value: `objects-${objKey(object)}-${bigger}` },
           { type: 'text', value: `${name2}:` },
-          { type: 'image', value: `counters-${smaller}` },
+          { type: 'image', value: `objects-${objKey(object)}-${smaller}` },
         ];
-        hint = `Line up the counters and see how many extra ${name1} has.`;
+        hint = `Line up the ${object} and see how many extra ${name1} has.`;
         break;
       case 'representational':
         question = template;
@@ -366,9 +371,9 @@ const wordProblemsAddToChange: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: 'Started with:' },
-          { type: 'image', value: `counters-${start}` },
+          { type: 'image', value: `objects-${objKey(object)}-${start}` },
           { type: 'text', value: 'Ended with:' },
-          { type: 'image', value: `counters-${total}` },
+          { type: 'image', value: `objects-${objKey(object)}-${total}` },
         ];
         hint = `You started with ${start}. You ended with ${total}. Count up from ${start} to ${total}.`;
         break;
@@ -433,9 +438,9 @@ const wordProblemsAddToStart: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: 'Added:' },
-          { type: 'image', value: `counters-${added}` },
+          { type: 'image', value: `objects-${objKey(object)}-${added}` },
           { type: 'text', value: 'Total:' },
-          { type: 'image', value: `counters-${total}` },
+          { type: 'image', value: `objects-${objKey(object)}-${total}` },
         ];
         hint = `The total is ${total}. If ${added} were added, how many were there before?`;
         break;
@@ -500,9 +505,9 @@ const wordProblemsTakeFromChange: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: 'Started with:' },
-          { type: 'image', value: `counters-${start}` },
+          { type: 'image', value: `objects-${objKey(object)}-${start}` },
           { type: 'text', value: 'Now:' },
-          { type: 'image', value: `counters-${remainder}` },
+          { type: 'image', value: `objects-${objKey(object)}-${remainder}` },
         ];
         hint = `Start with ${start}. Now there are ${remainder}. How many are gone?`;
         break;
@@ -567,9 +572,9 @@ const wordProblemsTakeFromStart: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: 'Left:' },
-          { type: 'image', value: `counters-${remainder}` },
+          { type: 'image', value: `objects-${objKey(object)}-${remainder}` },
           { type: 'text', value: 'Gone:' },
-          { type: 'image', value: `counters-${removed}` },
+          { type: 'image', value: `objects-${objKey(object)}-${removed}` },
         ];
         hint = `Put back together what is left (${remainder}) and what was taken away (${removed}).`;
         break;
@@ -635,9 +640,9 @@ const wordProblemsCompareBigger: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: `${name2}:` },
-          { type: 'image', value: `counters-${smaller}` },
+          { type: 'image', value: `objects-${objKey(object)}-${smaller}` },
           { type: 'text', value: `${name1}: same as ${name2}, plus ${difference} more` },
-          { type: 'image', value: `counters-${smaller}-${difference}` },
+          { type: 'image', value: `objects-${objKey(object)}-${smaller}-${difference}` },
         ];
         hint = `${name1} has all that ${name2} has, plus ${difference} more.`;
         break;
@@ -703,7 +708,7 @@ const wordProblemsCompareSmaller: ProblemGenerator = {
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: `${name1}:` },
-          { type: 'image', value: `counters-${bigger}` },
+          { type: 'image', value: `objects-${objKey(object)}-${bigger}` },
           { type: 'text', value: `${name2} has ${difference} fewer` },
         ];
         hint = `${name1} has ${bigger}. ${name2} has ${difference} fewer. Take away ${difference} from ${bigger}.`;
