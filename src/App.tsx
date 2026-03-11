@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import type { Student, Session, SkillScore } from './types';
+import type { Student, Session, SkillScore, AttemptRecord } from './types';
 import { skills } from './data/skills';
-import { createEmptyScore } from './engine/mastery';
+import { createEmptyScore, calculateMastery, getNextReviewDate } from './engine/mastery';
 import Layout from './components/Layout';
 import LoginPage from './components/LoginPage';
 import StudentSelector from './components/StudentSelector';
@@ -46,6 +46,102 @@ function saveScoresMap(studentId: string, scores: Map<string, SkillScore>) {
     if (v.totalAttempts > 0) obj[k] = v;
   }
   saveLocal(`scores_${studentId}`, obj);
+}
+
+// Generate realistic scores for a mid-first-grade student
+function createSampleScores(studentId: string): Map<string, SkillScore> {
+  const scores = new Map<string, SkillScore>();
+  const now = Date.now();
+  const day = 24 * 60 * 60 * 1000;
+
+  // Skills this student has mastered (K prereqs + early 1st grade)
+  const masteredSkills = [
+    'addition-within-5', 'subtraction-within-5',
+    'addition-within-10', 'subtraction-within-10',
+    'addition-fluency-10', 'subtraction-fluency-10',
+    'count-to-120', 'order-objects-by-length',
+    'tell-time-hour', 'identify-2d-shapes', 'partition-halves',
+  ];
+
+  // Skills the student is proficient in (working on solidifying)
+  const proficientSkills = [
+    'word-problems-add-to', 'word-problems-take-from',
+    'commutative-property', 'understand-tens-ones',
+  ];
+
+  // Skills the student is developing (just started)
+  const developingSkills = [
+    'counting-on-strategy', 'subtraction-as-unknown-addend',
+  ];
+
+  function makeAttempts(correct: number, total: number, daysAgo: number): AttemptRecord[] {
+    const attempts: AttemptRecord[] = [];
+    for (let i = 0; i < total; i++) {
+      attempts.push({
+        correct: i < correct,
+        timestamp: new Date(now - daysAgo * day + i * 60000).toISOString(),
+      });
+    }
+    // Shuffle so correct/incorrect aren't perfectly ordered
+    for (let i = attempts.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [attempts[i], attempts[j]] = [attempts[j], attempts[i]];
+    }
+    return attempts;
+  }
+
+  for (const skill of skills) {
+    if (masteredSkills.includes(skill.id)) {
+      const daysAgo = 10 + Math.floor(Math.random() * 20);
+      const recent = makeAttempts(9, 10, daysAgo);
+      const score: SkillScore = {
+        studentId, skillId: skill.id,
+        mastery: 'mastered',
+        totalAttempts: 15 + Math.floor(Math.random() * 10),
+        totalCorrect: 13 + Math.floor(Math.random() * 8),
+        recentAttempts: recent,
+        lastAttempted: new Date(now - daysAgo * day).toISOString(),
+        firstMasteredAt: new Date(now - (daysAgo + 5) * day).toISOString(),
+        nextReviewAt: null,
+      };
+      score.nextReviewAt = getNextReviewDate(score);
+      scores.set(skill.id, score);
+    } else if (proficientSkills.includes(skill.id)) {
+      const daysAgo = 2 + Math.floor(Math.random() * 5);
+      const recent = makeAttempts(8, 10, daysAgo);
+      const score: SkillScore = {
+        studentId, skillId: skill.id,
+        mastery: 'proficient',
+        totalAttempts: 10 + Math.floor(Math.random() * 5),
+        totalCorrect: 8 + Math.floor(Math.random() * 4),
+        recentAttempts: recent,
+        lastAttempted: new Date(now - daysAgo * day).toISOString(),
+        firstMasteredAt: null,
+        nextReviewAt: null,
+      };
+      score.mastery = calculateMastery(score);
+      scores.set(skill.id, score);
+    } else if (developingSkills.includes(skill.id)) {
+      const daysAgo = 1 + Math.floor(Math.random() * 3);
+      const recent = makeAttempts(4, 7, daysAgo);
+      const score: SkillScore = {
+        studentId, skillId: skill.id,
+        mastery: 'developing',
+        totalAttempts: 7,
+        totalCorrect: 4,
+        recentAttempts: recent,
+        lastAttempted: new Date(now - daysAgo * day).toISOString(),
+        firstMasteredAt: null,
+        nextReviewAt: null,
+      };
+      score.mastery = calculateMastery(score);
+      scores.set(skill.id, score);
+    } else {
+      scores.set(skill.id, createEmptyScore(studentId, skill.id));
+    }
+  }
+
+  return scores;
 }
 
 function AppContent() {
@@ -114,6 +210,24 @@ function AppContent() {
     setActiveStudent(student);
     saveLocal('demo_students', updated);
     setScores(loadScoresMap(student.id));
+  }, [students]);
+
+  const handleAddSampleStudent = useCallback(() => {
+    const student: Student = {
+      id: crypto.randomUUID(),
+      parentId: 'demo',
+      name: 'Sam',
+      gradeLevel: 1,
+      assessmentComplete: true,
+      createdAt: new Date().toISOString(),
+    };
+    const sampleScores = createSampleScores(student.id);
+    const updated = [...students, student];
+    setStudents(updated);
+    setActiveStudent(student);
+    saveLocal('demo_students', updated);
+    setScores(sampleScores);
+    saveScoresMap(student.id, sampleScores);
   }, [students]);
 
   const saveScores = useCallback(async (newScores: Map<string, SkillScore>) => {
@@ -196,6 +310,7 @@ function AppContent() {
           activeStudent={activeStudent}
           onSelect={(student) => setActiveStudent(student)}
           onAdd={handleAddStudent}
+          onAddSample={handleAddSampleStudent}
         />
       </Layout>
     );
