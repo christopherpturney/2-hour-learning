@@ -225,12 +225,17 @@ export default function SessionManager({ student, scores, onComplete, onExit }: 
     return getLesson(tp.skillId);
   }, [viewState]);
 
-  const currentSkillName = useMemo(() => {
+  const currentSkillId = useMemo(() => {
     const session = sessionRef.current;
     const tp = session.teachingProgress[session.currentTeachingIndex];
-    if (!tp) return '';
-    return skillMap.get(tp.skillId)?.name ?? tp.skillId;
+    return tp?.skillId ?? '';
   }, [viewState]);
+
+  const currentSkillName = useMemo(() => {
+    if (!currentSkillId) return '';
+    const skill = skillMap.get(currentSkillId);
+    return skill?.displayName ?? skill?.name ?? currentSkillId;
+  }, [currentSkillId]);
 
   const session = sessionRef.current;
   const progress = getSessionProgress(session);
@@ -369,6 +374,7 @@ export default function SessionManager({ student, scores, onComplete, onExit }: 
       {viewState === 'lesson' && currentLesson && (
         <LessonDisplay
           steps={currentLesson.steps}
+          skillId={currentSkillId}
           skillName={currentSkillName}
           onComplete={handleLessonComplete}
         />
