@@ -13,6 +13,7 @@ import SkillMap from './components/skillMap/SkillMap';
 import WorksheetGenerator from './components/worksheets/WorksheetGenerator';
 import ProblemPreview from './components/problems/ProblemPreview';
 import ParentDashboard from './components/parent/ParentDashboard';
+import HowItWorks from './components/HowItWorks';
 import { Loader2 } from 'lucide-react';
 
 // Check if Supabase is configured
@@ -373,6 +374,10 @@ function AppContent() {
               sessions={recentSessions}
             />
           }
+        />
+        <Route
+          path="/how-it-works"
+          element={<HowItWorks />}
         />
       </Routes>
     </Layout>
