@@ -47,6 +47,7 @@ export const skills: Skill[] = [
   {
     id: 'addition-fluency-10',
     name: 'Addition Fluency (to 10)',
+    displayName: 'Fast Addition to 10',
     description: 'Quickly and accurately add within 10',
     domain: 'OA',
     standardCode: '1.OA.C.6',
@@ -56,6 +57,7 @@ export const skills: Skill[] = [
   {
     id: 'subtraction-fluency-10',
     name: 'Subtraction Fluency (to 10)',
+    displayName: 'Fast Subtraction to 10',
     description: 'Quickly and accurately subtract within 10',
     domain: 'OA',
     standardCode: '1.OA.C.6',
@@ -105,6 +107,7 @@ export const skills: Skill[] = [
   {
     id: 'word-problems-add-to-change',
     name: 'Word Problems: Add To (Change Unknown)',
+    displayName: 'Stories: How Many Were Added?',
     description: 'Solve "add to" word problems where the change is unknown (3 + ? = 8)',
     domain: 'OA',
     standardCode: '1.OA.A.1',
@@ -114,6 +117,7 @@ export const skills: Skill[] = [
   {
     id: 'word-problems-add-to-start',
     name: 'Word Problems: Add To (Start Unknown)',
+    displayName: 'Stories: How Many at First?',
     description: 'Solve "add to" word problems where the start is unknown (? + 3 = 7)',
     domain: 'OA',
     standardCode: '1.OA.A.1',
@@ -123,6 +127,7 @@ export const skills: Skill[] = [
   {
     id: 'word-problems-take-from-change',
     name: 'Word Problems: Take From (Change Unknown)',
+    displayName: 'Stories: How Many Were Taken?',
     description: 'Solve "take from" word problems where the change is unknown (9 - ? = 4)',
     domain: 'OA',
     standardCode: '1.OA.A.1',
@@ -132,6 +137,7 @@ export const skills: Skill[] = [
   {
     id: 'word-problems-take-from-start',
     name: 'Word Problems: Take From (Start Unknown)',
+    displayName: 'Stories: Find the Start',
     description: 'Solve "take from" word problems where the start is unknown (? - 3 = 5)',
     domain: 'OA',
     standardCode: '1.OA.A.1',
@@ -141,6 +147,7 @@ export const skills: Skill[] = [
   {
     id: 'word-problems-compare-bigger',
     name: 'Word Problems: Compare (Bigger Unknown)',
+    displayName: 'Stories: Find the Bigger Number',
     description: 'Solve comparison word problems where the bigger quantity is unknown',
     domain: 'OA',
     standardCode: '1.OA.A.1',
@@ -150,6 +157,7 @@ export const skills: Skill[] = [
   {
     id: 'word-problems-compare-smaller',
     name: 'Word Problems: Compare (Smaller Unknown)',
+    displayName: 'Stories: Find the Smaller Number',
     description: 'Solve comparison word problems where the smaller quantity is unknown',
     domain: 'OA',
     standardCode: '1.OA.A.1',
@@ -161,6 +169,7 @@ export const skills: Skill[] = [
   {
     id: 'commutative-property',
     name: 'Commutative Property',
+    displayName: 'Order Does Not Matter',
     description: 'Understand that a + b = b + a',
     domain: 'OA',
     standardCode: '1.OA.B.3',
@@ -170,6 +179,7 @@ export const skills: Skill[] = [
   {
     id: 'subtraction-as-unknown-addend',
     name: 'Subtraction as Unknown Addend',
+    displayName: 'Think Addition to Subtract',
     description: 'Understand subtraction as finding a missing addend (10 - 8 = ? means 8 + ? = 10)',
     domain: 'OA',
     standardCode: '1.OA.B.4',
@@ -188,6 +198,7 @@ export const skills: Skill[] = [
   {
     id: 'making-ten-strategy',
     name: 'Making Ten',
+    displayName: 'Make a 10',
     description: 'Use making ten as a strategy (e.g., 8 + 6 = 8 + 2 + 4 = 10 + 4)',
     domain: 'OA',
     standardCode: '1.OA.C.6',
@@ -228,6 +239,7 @@ export const skills: Skill[] = [
   {
     id: 'equal-sign-meaning',
     name: 'Equal Sign Meaning',
+    displayName: 'What Does = Mean?',
     description: 'Understand = means "the same as" and determine if equations are true or false',
     domain: 'OA',
     standardCode: '1.OA.D.7',
@@ -237,6 +249,7 @@ export const skills: Skill[] = [
   {
     id: 'missing-number-equations',
     name: 'Missing Number Equations',
+    displayName: 'Find the Missing Number',
     description: 'Find the unknown in equations like 8 + ? = 11',
     domain: 'OA',
     standardCode: '1.OA.D.8',
@@ -259,6 +272,7 @@ export const skills: Skill[] = [
   {
     id: 'read-write-numerals-120',
     name: 'Read & Write Numerals to 120',
+    displayName: 'Number Names',
     description: 'Read and write numerals up to 120',
     domain: 'NBT',
     standardCode: '1.NBT.A.1',
@@ -277,6 +291,7 @@ export const skills: Skill[] = [
   {
     id: 'teen-numbers-composition',
     name: 'Teen Numbers Composition',
+    displayName: 'Teen Numbers',
     description: 'Understand teen numbers as one ten and some ones (e.g., 14 = 10 + 4)',
     domain: 'NBT',
     standardCode: '1.NBT.B.2',
@@ -322,6 +337,7 @@ export const skills: Skill[] = [
   {
     id: 'mental-ten-more-less',
     name: 'Mental: 10 More / 10 Less',
+    displayName: '10 More and 10 Less',
     description: 'Mentally find 10 more or 10 less than a two-digit number',
     domain: 'NBT',
     standardCode: '1.NBT.C.5',
@@ -353,6 +369,7 @@ export const skills: Skill[] = [
   {
     id: 'measure-nonstandard-units',
     name: 'Measure with Units',
+    displayName: 'Measuring Things',
     description: 'Measure length using same-size non-standard units (e.g., paper clips)',
     domain: 'MD',
     standardCode: '1.MD.A.2',
@@ -380,6 +397,7 @@ export const skills: Skill[] = [
   {
     id: 'organize-data-categories',
     name: 'Organize Data',
+    displayName: 'Sorting into Groups',
     description: 'Organize and represent data with up to three categories',
     domain: 'MD',
     standardCode: '1.MD.C.4',
@@ -389,6 +407,7 @@ export const skills: Skill[] = [
   {
     id: 'interpret-data',
     name: 'Interpret Data',
+    displayName: 'Questions About Data',
     description: 'Answer questions about data: totals, comparisons, how many more/fewer',
     domain: 'MD',
     standardCode: '1.MD.C.4',
@@ -402,6 +421,7 @@ export const skills: Skill[] = [
   {
     id: 'identify-2d-shapes',
     name: 'Identify 2D Shapes',
+    displayName: 'Flat Shapes',
     description: 'Identify shapes by defining attributes (sides, corners)',
     domain: 'G',
     standardCode: '1.G.A.1',
@@ -411,6 +431,7 @@ export const skills: Skill[] = [
   {
     id: 'identify-3d-shapes',
     name: 'Identify 3D Shapes',
+    displayName: 'Solid Shapes',
     description: 'Identify 3D shapes: cubes, rectangular prisms, cones, cylinders',
     domain: 'G',
     standardCode: '1.G.A.1',
@@ -420,6 +441,7 @@ export const skills: Skill[] = [
   {
     id: 'compose-shapes',
     name: 'Compose Shapes',
+    displayName: 'Building Shapes',
     description: 'Put shapes together to make new shapes',
     domain: 'G',
     standardCode: '1.G.A.2',
@@ -429,6 +451,7 @@ export const skills: Skill[] = [
   {
     id: 'partition-halves',
     name: 'Partition into Halves',
+    displayName: 'Halves',
     description: 'Split circles and rectangles into two equal parts (halves)',
     domain: 'G',
     standardCode: '1.G.A.3',
@@ -438,6 +461,7 @@ export const skills: Skill[] = [
   {
     id: 'partition-fourths',
     name: 'Partition into Fourths',
+    displayName: 'Fourths',
     description: 'Split circles and rectangles into four equal parts (fourths/quarters)',
     domain: 'G',
     standardCode: '1.G.A.3',
@@ -447,6 +471,7 @@ export const skills: Skill[] = [
   {
     id: 'describe-shares-wholes',
     name: 'Describe Shares & Wholes',
+    displayName: 'Shares and Wholes',
     description: 'Describe shares using words like "half of" and "quarter of"; understand the whole',
     domain: 'G',
     standardCode: '1.G.A.3',
@@ -462,6 +487,7 @@ export const skills: Skill[] = [
   {
     id: 'fluency-add-sub-20',
     name: 'Fluency: Add & Subtract Within 20',
+    displayName: 'Fast Facts to 20',
     description: 'Fluently add and subtract within 20 using mental strategies',
     domain: 'OA',
     standardCode: '2.OA.B.2',
@@ -471,6 +497,7 @@ export const skills: Skill[] = [
   {
     id: 'word-problems-within-100',
     name: 'Word Problems Within 100',
+    displayName: 'Stories with Big Numbers',
     description: 'Use addition and subtraction within 100 to solve one- and two-step word problems',
     domain: 'OA',
     standardCode: '2.OA.A.1',
@@ -491,6 +518,7 @@ export const skills: Skill[] = [
   {
     id: 'add-subtract-within-100',
     name: 'Add & Subtract Within 100',
+    displayName: 'Add and Subtract Big Numbers',
     description: 'Fluently add and subtract within 100 using strategies based on place value',
     domain: 'NBT',
     standardCode: '2.NBT.B.5',
@@ -513,6 +541,7 @@ export const skills: Skill[] = [
   {
     id: 'draw-shapes-attributes',
     name: 'Draw Shapes by Attributes',
+    displayName: 'Draw Shapes',
     description: 'Recognize and draw shapes having specified attributes like angles and equal faces',
     domain: 'G',
     standardCode: '2.G.A.1',

@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import type { LessonStep } from '../../types';
 import AnalogClock, { parseClockValue } from '../AnalogClock';
-import { BookOpen, Lightbulb, Play, ArrowRight, ChevronRight } from 'lucide-react';
+import { BookOpen, Lightbulb, Play, ArrowRight, ChevronRight, Volume2 } from 'lucide-react';
 
 interface LessonDisplayProps {
   steps: LessonStep[];
+  skillId: string;
   skillName: string;
   onComplete: () => void;
 }
@@ -19,10 +20,42 @@ function renderDots(count: number) {
   return <div className="flex flex-wrap justify-center gap-1.5 my-1">{dots}</div>;
 }
 
-export default function LessonDisplay({ steps, skillName, onComplete }: LessonDisplayProps) {
+export default function LessonDisplay({ steps, skillId, skillName, onComplete }: LessonDisplayProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const step = steps[currentStep];
   const isLast = currentStep === steps.length - 1;
+
+  const audioSrc = `/audio/lessons/${skillId}-${currentStep}.mp3`;
+
+  // Auto-play audio when step changes
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.src = audioSrc;
+    audio.load();
+
+    const playPromise = audio.play();
+    if (playPromise) {
+      playPromise
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false)); // Autoplay blocked — user hasn't interacted yet
+    }
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, [audioSrc]);
+
+  const handleReplay = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play().then(() => setIsPlaying(true)).catch(() => {});
+  }, []);
 
   const stepIcon = useMemo(() => {
     switch (step.type) {
@@ -58,6 +91,13 @@ export default function LessonDisplay({ steps, skillName, onComplete }: LessonDi
 
   return (
     <div className="space-y-5">
+      {/* Hidden audio element */}
+      <audio
+        ref={audioRef}
+        onEnded={() => setIsPlaying(false)}
+        onError={() => setIsPlaying(false)}
+      />
+
       {/* Skill name + progress dots */}
       <div className="text-center">
         <h2 className="text-lg font-bold text-slate-700">{skillName}</h2>
@@ -88,7 +128,22 @@ export default function LessonDisplay({ steps, skillName, onComplete }: LessonDi
 
         {/* Step content */}
         <div className="p-5 space-y-4">
-          <h3 className="text-xl font-bold text-slate-800">{step.title}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl font-bold text-slate-800">{step.title}</h3>
+            {/* Replay audio button */}
+            <button
+              onClick={handleReplay}
+              className={`shrink-0 p-1.5 rounded-full transition-colors ${
+                isPlaying
+                  ? 'bg-indigo-100 text-indigo-600 animate-pulse'
+                  : 'bg-slate-100 text-slate-500 hover:bg-indigo-50 hover:text-indigo-500'
+              }`}
+              aria-label="Listen again"
+              title="Listen again"
+            >
+              <Volume2 className="w-5 h-5" />
+            </button>
+          </div>
           <p className="text-slate-600 text-base leading-relaxed">{step.content}</p>
 
           {/* Visual */}

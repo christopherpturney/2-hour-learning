@@ -15,6 +15,7 @@ export type ScaffoldingLevel = 'concrete' | 'representational' | 'abstract';
 export interface Skill {
   id: string;
   name: string;
+  displayName?: string;       // kid-friendly name shown in lessons (defaults to name)
   description: string;
   domain: Domain;
   standardCode: string;       // e.g. '1.OA.C.6'

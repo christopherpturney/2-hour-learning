@@ -179,7 +179,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Fast Addition Tricks!',
-        content: 'You can use strategies to add fast. Doubles: 3+3=6, 4+4=8, 5+5=10. Near doubles: 3+4 is just one more than 3+3. And pairs that make 10: 6+4, 7+3, 8+2.',
+        content: 'You can use tricks to add fast! Doubles are easy: 3 plus 3 is 6. And some numbers make 10 together, like 6 plus 4.',
         visual: [
           { type: 'equation', value: '5 + 5 = 10' },
           { type: 'equation', value: '6 + 4 = 10' },
@@ -189,7 +189,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Doubles Help!',
-        content: 'What is 3 + 4? Think: I know 3 + 3 = 6. Since 4 is one more than 3, the answer is one more: 7. So 3 + 4 = 7.',
+        content: 'What is 3 plus 4? I know 3 plus 3 is 6. And 4 is one more than 3. So the answer is one more: 7!',
         visual: [
           { type: 'equation', value: '3 + 3 = 6' },
           { type: 'equation', value: '3 + 4 = 6 + 1 = 7' },
@@ -198,7 +198,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Make a 10!',
-        content: 'What is 7 + 3? These are partners that make 10! If you know your ten-pairs, you can answer right away: 10.',
+        content: 'What is 7 plus 3? They are best friends that make 10! When you know your 10 pairs, you can answer super fast.',
         visual: [
           { type: 'dots', value: '●●●●●●●', count: 7 },
           { type: 'text', value: '+' },
@@ -219,7 +219,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Fast Subtraction Tricks!',
-        content: 'Think addition to subtract fast! If you know 4 + 6 = 10, then you also know 10 − 6 = 4. Every subtraction fact has a matching addition fact.',
+        content: 'Use adding to subtract fast! If you know 4 plus 6 is 10, you also know 10 minus 6 is 4!',
         visual: [
           { type: 'equation', value: '4 + 6 = 10' },
           { type: 'equation', value: '10 − 6 = 4' },
@@ -229,7 +229,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Think Addition!',
-        content: 'What is 9 − 4? Think: 4 + ? = 9. I know 4 + 5 = 9, so 9 − 4 = 5.',
+        content: 'What is 9 minus 4? Ask: 4 plus what is 9? I know 4 plus 5 is 9. So 9 minus 4 is 5!',
         visual: [
           { type: 'equation', value: '4 + ? = 9' },
           { type: 'equation', value: '4 + 5 = 9, so 9 − 4 = 5' },
@@ -238,7 +238,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Subtract From 10',
-        content: 'What is 10 − 7? Think: 7 + ? = 10. I know 7 + 3 = 10, so 10 − 7 = 3.',
+        content: 'What is 10 minus 7? Ask: 7 plus what is 10? I know 7 plus 3 is 10. So 10 minus 7 is 3!',
         visual: [
           { type: 'equation', value: '7 + ? = 10' },
           { type: 'equation', value: '7 + 3 = 10, so 10 − 7 = 3' },
@@ -257,9 +257,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Story Problems: Adding',
-        content: 'In "add to" stories, you start with some, then get more. You need to find the total. Think: Start + More = Total.',
+        content: 'In these stories, you start with some and get more. Add them to find how many in all!',
         visual: [
-          { type: 'text', value: 'Start + More = Total' },
+          { type: 'text', value: 'How many had + how many more = how many now' },
           { type: 'equation', value: '3 + 4 = ?' },
         ],
         tip: 'Look for words like "more", "in all", "total", or "altogether".',
@@ -267,7 +267,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Apples',
-        content: 'Sam has 3 apples. He picks 4 more. How many now? Start: 3. More: 4. Total: 3 + 4 = 7 apples.',
+        content: 'Sam has 3 apples. He picks 4 more. How many now? 3 plus 4 is 7 apples!',
         visual: [
           { type: 'dots', value: '●●●', count: 3 },
           { type: 'text', value: '+' },
@@ -278,7 +278,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Birds',
-        content: 'There are 5 birds in a tree. 3 more land. How many birds now? Start: 5. More: 3. Total: 5 + 3 = 8 birds.',
+        content: '5 birds sit in a tree. 3 more land. How many now? 5 plus 3 is 8 birds!',
         visual: [
           { type: 'dots', value: '●●●●●', count: 5 },
           { type: 'text', value: '+' },
@@ -299,9 +299,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Story Problems: Taking Away',
-        content: 'In "take from" stories, you start with some, then some go away. Find what is left. Think: Start − Gone = Left.',
+        content: 'In these stories, you start with some and some go away. Subtract to find what is left!',
         visual: [
-          { type: 'text', value: 'Start − Gone = Left' },
+          { type: 'text', value: 'How many had − how many left = how many gone' },
           { type: 'equation', value: '8 − 3 = ?' },
         ],
         tip: 'Look for words like "left", "remaining", "went away", or "ate".',
@@ -309,7 +309,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Birds',
-        content: 'There are 8 birds. 3 fly away. How many are left? Start: 8. Gone: 3. Left: 8 − 3 = 5 birds.',
+        content: '8 birds sit on a branch. 3 fly away. How many are left? 8 minus 3 is 5 birds!',
         visual: [
           { type: 'dots', value: '●●●●●●●●', count: 8 },
           { type: 'text', value: '− 3 →' },
@@ -319,7 +319,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Cookies',
-        content: 'There are 7 cookies. You eat 2. How many are left? Start: 7. Gone: 2. Left: 7 − 2 = 5 cookies.',
+        content: 'You have 7 cookies. You eat 2. How many are left? 7 minus 2 is 5 cookies!',
         visual: [
           { type: 'dots', value: '●●●●●●●', count: 7 },
           { type: 'text', value: '− 2 →' },
@@ -339,9 +339,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Story Problems: Put Together',
-        content: 'Sometimes you have two groups and need to find the total. Think: Part + Part = Whole.',
+        content: 'Sometimes you have two groups. Add them together to find how many in all!',
         visual: [
-          { type: 'text', value: 'Part + Part = Whole' },
+          { type: 'text', value: 'one group + other group = total' },
           { type: 'equation', value: '5 + 3 = ?' },
         ],
         tip: 'Draw a picture: two groups joining together.',
@@ -349,7 +349,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Balls',
-        content: 'There are 5 red balls and 3 blue balls. How many balls in all? Part: 5. Part: 3. Whole: 5 + 3 = 8 balls.',
+        content: 'There are 5 red balls and 3 blue balls. How many in all? 5 plus 3 is 8 balls!',
         visual: [
           { type: 'dots', value: '●●●●●', count: 5 },
           { type: 'text', value: '+' },
@@ -360,7 +360,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Pets',
-        content: 'There are 4 dogs and 6 cats. How many pets in all? Part: 4. Part: 6. Whole: 4 + 6 = 10 pets.',
+        content: 'There are 4 dogs and 6 cats. How many pets in all? 4 plus 6 is 10 pets!',
         visual: [
           { type: 'dots', value: '●●●●', count: 4 },
           { type: 'text', value: '+' },
@@ -381,19 +381,19 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Story Problems: Comparing',
-        content: 'Compare problems ask "how many more" or "how many fewer." Line up both groups and see the difference. Subtract to find it.',
+        content: 'Sometimes you need to find how many more one group has. Line them up and count the extra ones!',
         visual: [
           { type: 'dots', value: '●●●●●●●', count: 7 },
           { type: 'text', value: 'vs' },
           { type: 'dots', value: '●●●●', count: 4 },
-          { type: 'text', value: '→ difference = 3' },
+          { type: 'text', value: 'difference is 3' },
         ],
         tip: '"How many more" = subtract the smaller from the bigger.',
       },
       {
         type: 'example',
         title: 'Watch: Stickers',
-        content: 'Ana has 7 stickers. Ben has 4. How many more does Ana have? Line them up: 7 − 4 = 3 more.',
+        content: 'Ana has 7 stickers. Ben has 4. How many more does Ana have? 7 minus 4 is 3. Ana has 3 more!',
         visual: [
           { type: 'text', value: 'Ana: ●●●●●●● (7)' },
           { type: 'text', value: 'Ben: ●●●●       (4)' },
@@ -403,7 +403,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Books',
-        content: 'Mia read 9 books. Leo read 6. How many fewer did Leo read? 9 − 6 = 3 fewer.',
+        content: 'Mia read 9 books. Leo read 6. How many fewer did Leo read? 9 minus 6 is 3. Leo read 3 fewer!',
         visual: [
           { type: 'text', value: 'Mia: ●●●●●●●●● (9)' },
           { type: 'text', value: 'Leo: ●●●●●●          (6)' },
@@ -423,7 +423,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Order Doesn\'t Matter!',
-        content: 'When you add, you can swap the numbers and get the same answer. 3 + 5 = 5 + 3. This is called the commutative property.',
+        content: 'When you add, you can swap the numbers! You get the same answer. 3 plus 5 and 5 plus 3 both make 8!',
         visual: [
           { type: 'equation', value: '3 + 5 = 8' },
           { type: 'equation', value: '5 + 3 = 8' },
@@ -469,7 +469,7 @@ const lessons: Lesson[] = [
         content: 'Instead of counting all from 1, start from the bigger number and count up. It is much faster!',
         visual: [
           { type: 'dots', value: '●●●●●●●', count: 7 },
-          { type: 'text', value: 'start here → count on 3' },
+          { type: 'text', value: 'start here, count on 3' },
         ],
         tip: 'Always start from the bigger number.',
       },
@@ -510,7 +510,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 8 + 5',
-        content: '8 needs 2 more to make 10. Break 5 into 2 + 3. Now: 8 + 2 = 10, then 10 + 3 = 13.',
+        content: '8 needs 2 more to make 10. Take 2 from the 5. Now you have 8 plus 2 is 10. Then 10 plus 3 is 13!',
         visual: [
           { type: 'equation', value: '8 + 5' },
           { type: 'equation', value: '= 8 + 2 + 3' },
@@ -520,9 +520,10 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 9 + 6',
-        content: '9 needs 1 more to make 10. Break 6 into 1 + 5. Now: 9 + 1 = 10, then 10 + 5 = 15.',
+        content: '9 needs 1 more to make 10. Take 1 from the 6. Now you have 9 plus 1 is 10. Then 10 plus 5 is 15!',
         visual: [
-          { type: 'equation', value: '9 + 6 = 9 + 1 + 5 = 10 + 5 = 15' },
+          { type: 'equation', value: '9 + 1 = 10' },
+          { type: 'equation', value: '10 + 5 = 15' },
         ],
       },
       {
@@ -548,7 +549,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 7 + 8',
-        content: '7 needs 3 more to make 10. Break 8 into 3 + 5. Now: 7 + 3 = 10, then 10 + 5 = 15.',
+        content: '7 needs 3 more to make 10. Take 3 from the 8. Now you have 7 plus 3 is 10. Then 10 plus 5 is 15!',
         visual: [
           { type: 'equation', value: '7 + 8' },
           { type: 'equation', value: '= 7 + 3 + 5' },
@@ -558,7 +559,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 6 + 9',
-        content: '9 needs 1 more to make 10. Break 6 into 1 + 5. Now: 9 + 1 = 10, then 10 + 5 = 15.',
+        content: '9 needs 1 more to make 10. Take 1 from the 6. Now you have 9 plus 1 is 10. Then 10 plus 5 is 15!',
         visual: [
           { type: 'equation', value: '6 + 9' },
           { type: 'equation', value: '= 9 + 1 + 5' },
@@ -578,7 +579,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Subtracting Up to 20',
-        content: 'To subtract bigger numbers, count up from the smaller number to the bigger one. This is called "counting up to subtract."',
+        content: 'To subtract big numbers, count up from the small number to the big one. Count how many jumps!',
         visual: [
           { type: 'equation', value: '14 − 6 = ?' },
           { type: 'text', value: 'Think: 6 + ? = 14' },
@@ -588,19 +589,23 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 14 − 6',
-        content: 'Think: 6 + ? = 14. Count up: 6 → 10 is 4 more. 10 → 14 is 4 more. 4 + 4 = 8. So 14 − 6 = 8.',
+        content: 'Ask: 6 plus what is 14? Count from 6 to 10. That is 4 jumps. Then count from 10 to 14. That is 4 more. So 4 plus 4 is 8!',
         visual: [
-          { type: 'text', value: '6 → 10 (+4) → 14 (+4)' },
-          { type: 'equation', value: '4 + 4 = 8, so 14 − 6 = 8' },
+          { type: 'text', value: '6 to 10 is 4' },
+          { type: 'text', value: '10 to 14 is 4' },
+          { type: 'equation', value: '4 + 4 = 8' },
+          { type: 'equation', value: '14 − 6 = 8' },
         ],
       },
       {
         type: 'example',
         title: 'Watch: 15 − 7',
-        content: 'Think: 7 + ? = 15. Count up: 7 → 10 is 3 more. 10 → 15 is 5 more. 3 + 5 = 8. So 15 − 7 = 8.',
+        content: 'Ask: 7 plus what is 15? Count from 7 to 10. That is 3 jumps. Then count from 10 to 15. That is 5 more. So 3 plus 5 is 8!',
         visual: [
-          { type: 'text', value: '7 → 10 (+3) → 15 (+5)' },
-          { type: 'equation', value: '3 + 5 = 8, so 15 − 7 = 8' },
+          { type: 'text', value: '7 to 10 is 3' },
+          { type: 'text', value: '10 to 15 is 5' },
+          { type: 'equation', value: '3 + 5 = 8' },
+          { type: 'equation', value: '15 − 7 = 8' },
         ],
       },
       {
@@ -626,7 +631,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'True or False?',
-        content: '5 + 2 = 7. Left side: 5 + 2 = 7. Right side: 7. Same? Yes! This is TRUE.',
+        content: 'Is 5 plus 2 equal to 7? Yes! Both sides are 7. This is true!',
         visual: [
           { type: 'equation', value: '5 + 2 = 7 ✓' },
         ],
@@ -634,7 +639,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Another One',
-        content: '3 + 4 = 8. Left side: 3 + 4 = 7. Right side: 8. Same? No! This is FALSE.',
+        content: 'Is 3 plus 4 equal to 8? No way! 3 plus 4 is 7, not 8. This is false!',
         visual: [
           { type: 'equation', value: '3 + 4 ≠ 8 ✗' },
         ],
@@ -661,16 +666,16 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 3 + ? = 8',
-        content: 'Think: 3 plus what equals 8? Count up from 3: 4, 5, 6, 7, 8. That is 5 more. So ? = 5.',
+        content: 'Ask: 3 plus what is 8? Count up from 3. Say: 4, 5, 6, 7, 8. That is 5 jumps! The answer is 5.',
         visual: [
-          { type: 'text', value: '3 → 4 → 5 → 6 → 7 → 8 (5 jumps)' },
+          { type: 'text', value: 'Count: 4, 5, 6, 7, 8 (5 jumps)' },
           { type: 'equation', value: '3 + 5 = 8 ✓' },
         ],
       },
       {
         type: 'example',
         title: 'Watch: ? − 4 = 6',
-        content: 'Think: what minus 4 equals 6? Turn it into addition: 6 + 4 = 10. So ? = 10.',
+        content: 'What minus 4 is 6? Flip it! 6 plus 4 is 10. So the missing number is 10!',
         visual: [
           { type: 'equation', value: '6 + 4 = 10' },
           { type: 'equation', value: '10 − 4 = 6 ✓' },
@@ -739,7 +744,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Break Apart 52',
-        content: '52 has 5 in the tens place and 2 in the ones place. That means 5 tens (= 50) and 2 ones (= 2). 50 + 2 = 52.',
+        content: '52 has a 5 and a 2. The 5 means 5 tens, which is 50. The 2 means 2 ones. 50 plus 2 is 52!',
         visual: [
           { type: 'dots', value: '▮▮▮▮▮', count: 5 },
           { type: 'text', value: '5 tens' },
@@ -751,7 +756,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Break Apart 37',
-        content: '37 has 3 in the tens place and 7 in the ones place. 3 tens (= 30) and 7 ones (= 7). 30 + 7 = 37.',
+        content: '37 has a 3 and a 7. The 3 means 3 tens, which is 30. The 7 means 7 ones. 30 plus 7 is 37!',
         visual: [
           { type: 'dots', value: '▮▮▮', count: 3 },
           { type: 'text', value: '3 tens' },
@@ -973,8 +978,8 @@ const lessons: Lesson[] = [
         title: '10 More, 10 Less',
         content: 'Adding 10 makes the tens digit go up by 1. Subtracting 10 makes it go down by 1. The ones digit never changes.',
         visual: [
-          { type: 'text', value: '10 more than 34 → 44' },
-          { type: 'text', value: '10 less than 34 → 24' },
+          { type: 'text', value: '10 more than 34 is 44' },
+          { type: 'text', value: '10 less than 34 is 24' },
         ],
         tip: 'Only the tens digit changes!',
       },
@@ -983,7 +988,7 @@ const lessons: Lesson[] = [
         title: 'Watch: 10 More Than 67',
         content: '67 has 6 tens. Add one more ten: 7 tens. Ones stay 7. Answer: 77.',
         visual: [
-          { type: 'text', value: '67 → tens go up by 1 → 77' },
+          { type: 'text', value: '67: tens go up by 1 = 77' },
           { type: 'equation', value: '67 + 10 = 77' },
         ],
       },
@@ -992,7 +997,7 @@ const lessons: Lesson[] = [
         title: 'Watch: 10 Less Than 53',
         content: '53 has 5 tens. Take away one ten: 4 tens. Ones stay 3. Answer: 43.',
         visual: [
-          { type: 'text', value: '53 → tens go down by 1 → 43' },
+          { type: 'text', value: '53: tens go down by 1 = 43' },
           { type: 'equation', value: '53 − 10 = 43' },
         ],
       },
@@ -1076,7 +1081,7 @@ const lessons: Lesson[] = [
           { type: 'text', value: 'Red:   ██████████' },
           { type: 'text', value: 'Green: ███████' },
           { type: 'text', value: 'Blue:  ████' },
-          { type: 'text', value: 'Shortest → Longest: Blue, Green, Red' },
+          { type: 'text', value: 'Shortest to Longest: Blue, Green, Red' },
         ],
       },
       {
@@ -1285,7 +1290,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Flat Shapes',
-        content: 'Flat shapes have sides and corners. Count them to identify the shape! Triangle = 3 sides. Rectangle = 4 sides. Circle = 0 straight sides.',
+        content: 'Flat shapes have sides and corners. Count them to know the shape! A triangle has 3 sides. A rectangle has 4 sides. A circle has no straight sides.',
         visual: [
           { type: 'text', value: '△ Triangle: 3 sides, 3 corners' },
           { type: 'text', value: '□ Rectangle: 4 sides, 4 corners' },
@@ -1296,9 +1301,9 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 4 Equal Sides',
-        content: 'This shape has 4 equal sides and 4 square corners. It is a square! A square is a special rectangle where all sides are equal.',
+        content: 'This shape has 4 equal sides and 4 square corners. It is a square! A square is a special kind of rectangle.',
         visual: [
-          { type: 'text', value: '□ → 4 equal sides, 4 corners' },
+          { type: 'text', value: '□ has 4 equal sides, 4 corners' },
           { type: 'text', value: '= Square (a special rectangle)' },
         ],
       },
@@ -1307,7 +1312,7 @@ const lessons: Lesson[] = [
         title: 'Watch: 3 Sides',
         content: 'This shape has 3 straight sides and 3 corners. It is a triangle! Any shape with 3 sides is a triangle.',
         visual: [
-          { type: 'text', value: '△ → 3 sides, 3 corners' },
+          { type: 'text', value: '△ has 3 sides, 3 corners' },
           { type: 'text', value: '= Triangle' },
         ],
       },
@@ -1324,7 +1329,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Solid Shapes',
-        content: '3D shapes take up space — you can hold them. They have faces (flat sides), edges (where faces meet), and vertices (corners).',
+        content: 'Solid shapes take up space. You can hold them! They have flat faces, edges, and corners.',
         visual: [
           { type: 'text', value: '🧊 Cube: 6 flat faces, like a dice' },
           { type: 'text', value: '⚽ Sphere: round like a ball, no flat faces' },
@@ -1335,18 +1340,18 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: A Cube',
-        content: 'A cube has 6 flat square faces, 8 corners, and 12 edges. A dice or a box is shaped like a cube.',
+        content: 'A cube has 6 flat square faces and 8 corners. A dice or a box is shaped like a cube!',
         visual: [
-          { type: 'text', value: 'Cube → 6 faces, 8 corners, 12 edges' },
+          { type: 'text', value: 'Cube: 6 faces, 8 corners' },
           { type: 'text', value: 'All faces are squares' },
         ],
       },
       {
         type: 'example',
         title: 'Watch: A Cylinder',
-        content: 'A cylinder has 2 flat circle faces on top and bottom, and 1 curved surface around the side. A can is a cylinder.',
+        content: 'A cylinder has 2 flat circles on the top and bottom. The side is curved. A can is a cylinder!',
         visual: [
-          { type: 'text', value: 'Cylinder → 2 flat circles + 1 curved side' },
+          { type: 'text', value: 'Cylinder: 2 flat circles, 1 curved side' },
           { type: 'text', value: 'It can roll!' },
         ],
       },
@@ -1410,7 +1415,7 @@ const lessons: Lesson[] = [
         title: 'Watch: Half a Circle',
         content: 'Draw a line through the middle of a circle. Now you have 2 equal halves. Each half is the same size.',
         visual: [
-          { type: 'text', value: '( ◐ ) → 2 equal halves ✓' },
+          { type: 'text', value: '( ◐ ) 2 equal halves' },
           { type: 'text', value: 'Each piece = one half' },
         ],
       },
@@ -1419,7 +1424,7 @@ const lessons: Lesson[] = [
         title: 'Watch: Half a Rectangle',
         content: 'Cut a rectangle right down the middle. Both pieces are the same. That is 2 halves!',
         visual: [
-          { type: 'text', value: '[████|████] → 2 equal halves ✓' },
+          { type: 'text', value: '[████|████] 2 equal halves' },
           { type: 'text', value: 'Each piece = one half' },
         ],
       },
@@ -1457,7 +1462,7 @@ const lessons: Lesson[] = [
         title: 'Watch: Fourths of a Circle',
         content: 'Draw one line across the middle. Then draw another line top to bottom. Four equal slices — fourths!',
         visual: [
-          { type: 'text', value: '( ◔ ) → 4 equal parts' },
+          { type: 'text', value: '( ◔ ) 4 equal parts' },
           { type: 'text', value: 'Each piece = one fourth (quarter)' },
         ],
       },
@@ -1517,37 +1522,39 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Think Addition to Subtract!',
-        content: 'Subtraction can be thought of as "what do I add?" If you see 12 − 5 = ?, think: 5 + ? = 12.',
+        content: 'You can use adding to help you subtract! For 12 minus 5, ask: 5 plus what makes 12?',
         visual: [
           { type: 'equation', value: '12 − 5 = ?' },
-          { type: 'text', value: 'Think: 5 + ? = 12' },
+          { type: 'text', value: '5 + ? = 12' },
         ],
-        tip: 'Turn subtraction into an addition question!',
+        tip: 'Turn minus into a plus question!',
       },
       {
         type: 'example',
         title: 'Watch: 9 − 4',
-        content: 'Think: 4 + ? = 9. Count up from 4: 5, 6, 7, 8, 9. That is 5 jumps. So 9 − 4 = 5.',
+        content: 'Ask: 4 plus what makes 9? Count up from 4. Say: 5, 6, 7, 8, 9. That is 5 jumps!',
         visual: [
           { type: 'equation', value: '4 + ? = 9' },
-          { type: 'text', value: '4 → 5 → 6 → 7 → 8 → 9 (5 jumps)' },
+          { type: 'text', value: 'Count: 5, 6, 7, 8, 9' },
           { type: 'equation', value: '9 − 4 = 5' },
         ],
       },
       {
         type: 'example',
         title: 'Watch: 15 − 7',
-        content: 'Think: 7 + ? = 15. Count up: 7 → 10 is 3, then 10 → 15 is 5. Total: 3 + 5 = 8. So 15 − 7 = 8.',
+        content: 'Ask: 7 plus what makes 15? Count up from 7 to 10. That is 3. Then 10 to 15. That is 5. So 3 plus 5 is 8!',
         visual: [
           { type: 'equation', value: '7 + ? = 15' },
-          { type: 'text', value: '7 → 10 (+3) → 15 (+5) = 8' },
+          { type: 'text', value: '7 to 10 is 3' },
+          { type: 'text', value: '10 to 15 is 5' },
+          { type: 'equation', value: '3 + 5 = 8' },
           { type: 'equation', value: '15 − 7 = 8' },
         ],
       },
       {
         type: 'try_it',
         title: 'Your Turn!',
-        content: 'Turn it into addition: what plus the smaller number equals the bigger number?',
+        content: 'Turn it into adding! What plus the small number makes the big number?',
       },
     ],
   },
@@ -1559,8 +1566,8 @@ const lessons: Lesson[] = [
         title: 'Number Names',
         content: 'Numbers have names. The tens digit tells the decade (twenty, thirty, forty...). The ones digit tells the rest.',
         visual: [
-          { type: 'text', value: '42 → "forty-two"' },
-          { type: 'text', value: '85 → "eighty-five"' },
+          { type: 'text', value: '42 is forty-two' },
+          { type: 'text', value: '85 is eighty-five' },
         ],
         tip: 'Say the tens name first, then the ones name.',
       },
@@ -1597,9 +1604,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Find How Much Was Added',
-        content: 'Sometimes you know the start and end, but not how much was added. Think: Start + ? = End. So ? = End − Start.',
+        content: 'Sometimes you know how many you had and how many you have now. But how many were added? Subtract to find out!',
         visual: [
-          { type: 'text', value: 'Start + ? = End' },
+          { type: 'text', value: 'had some + got more = have now' },
           { type: 'equation', value: '5 + ? = 12' },
         ],
         tip: 'Subtract to find the missing change!',
@@ -1607,7 +1614,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Toys',
-        content: 'Sam had 5 toys. He got some more. Now he has 12. How many did he get? 12 − 5 = 7 toys.',
+        content: 'Sam had 5 toys. He got more. Now he has 12. How many did he get? 12 minus 5 is 7. He got 7 toys!',
         visual: [
           { type: 'equation', value: '5 + ? = 12' },
           { type: 'equation', value: '12 − 5 = 7' },
@@ -1617,7 +1624,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Birds',
-        content: 'There were 8 birds. More came. Now there are 14. How many came? 14 − 8 = 6 birds.',
+        content: '8 birds were in a tree. More came. Now there are 14. How many came? 14 minus 8 is 6 birds!',
         visual: [
           { type: 'equation', value: '8 + ? = 14' },
           { type: 'equation', value: '14 − 8 = 6' },
@@ -1637,9 +1644,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Find the Start',
-        content: 'Sometimes you know how much was added and the total, but not the start. Think: ? + Added = Total. So ? = Total − Added.',
+        content: 'Sometimes you know how many were added and the total. But how many did you start with? Subtract to find out!',
         visual: [
-          { type: 'text', value: '? + Added = Total' },
+          { type: 'text', value: '? + how many more = total' },
           { type: 'equation', value: '? + 4 = 11' },
         ],
         tip: 'Subtract to find the start!',
@@ -1647,7 +1654,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Playing',
-        content: 'Some kids were playing. 4 more came. Now there are 11. How many at first? 11 − 4 = 7 kids.',
+        content: 'Some kids were playing. 4 more came. Now there are 11. How many at first? 11 minus 4 is 7 kids!',
         visual: [
           { type: 'equation', value: '? + 4 = 11' },
           { type: 'equation', value: '11 − 4 = 7' },
@@ -1657,7 +1664,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Flowers',
-        content: 'There were some flowers. 6 more bloomed. Now there are 13. How many at first? 13 − 6 = 7 flowers.',
+        content: 'Some flowers were growing. 6 more bloomed. Now there are 13. How many at first? 13 minus 6 is 7 flowers!',
         visual: [
           { type: 'equation', value: '? + 6 = 13' },
           { type: 'equation', value: '13 − 6 = 7' },
@@ -1677,9 +1684,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Find How Much Was Taken',
-        content: 'You know the start and what is left. Find how much was taken away. Think: Start − ? = Left. So ? = Start − Left.',
+        content: 'You know how many you had and how many are left. How many were taken? Subtract what is left from what you started with!',
         visual: [
-          { type: 'text', value: 'Start − ? = Left' },
+          { type: 'text', value: 'had some − ? = what is left' },
           { type: 'equation', value: '15 − ? = 9' },
         ],
         tip: 'Subtract what is left from the start to find what was taken!',
@@ -1687,7 +1694,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Cookies',
-        content: 'There were 15 cookies. Some were eaten. Now there are 9. How many were eaten? 15 − 9 = 6 cookies.',
+        content: 'There were 15 cookies. Some were eaten. Now there are 9. How many were eaten? 15 minus 9 is 6 cookies!',
         visual: [
           { type: 'equation', value: '15 − ? = 9' },
           { type: 'equation', value: '15 − 9 = 6' },
@@ -1697,7 +1704,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Marbles',
-        content: 'You had 12 marbles. You lost some. Now you have 5. How many did you lose? 12 − 5 = 7 marbles.',
+        content: 'You had 12 marbles. You lost some. Now you have 5. How many did you lose? 12 minus 5 is 7 marbles!',
         visual: [
           { type: 'equation', value: '12 − ? = 5' },
           { type: 'equation', value: '12 − 5 = 7' },
@@ -1717,9 +1724,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Find the Start',
-        content: 'You know what was taken and what is left. Find the start. Think: ? − Taken = Left. So ? = Left + Taken.',
+        content: 'You know what was taken and what is left. How many at the start? Add them back together!',
         visual: [
-          { type: 'text', value: '? − Taken = Left' },
+          { type: 'text', value: '? − how many taken = what is left' },
           { type: 'equation', value: '? − 3 = 8' },
         ],
         tip: 'Add what is left and what was taken to find the start!',
@@ -1727,7 +1734,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Apples',
-        content: 'Some apples were on the table. 3 were eaten. Now there are 8. How many at first? 8 + 3 = 11 apples.',
+        content: 'Some apples were on the table. 3 were eaten. Now there are 8. How many at first? 8 plus 3 is 11 apples!',
         visual: [
           { type: 'equation', value: '? − 3 = 8' },
           { type: 'equation', value: '8 + 3 = 11' },
@@ -1737,7 +1744,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Books',
-        content: 'There were some books on the shelf. 5 were borrowed. Now there are 7. How many at first? 7 + 5 = 12 books.',
+        content: 'Some books were on the shelf. 5 were borrowed. Now there are 7. How many at first? 7 plus 5 is 12 books!',
         visual: [
           { type: 'equation', value: '? − 5 = 7' },
           { type: 'equation', value: '7 + 5 = 12' },
@@ -1757,9 +1764,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Find the Bigger Amount',
-        content: 'When someone has "more than" another, add the difference. Think: Smaller + Difference = Bigger.',
+        content: 'When someone has more than another, add to find the bigger amount!',
         visual: [
-          { type: 'text', value: 'Smaller + Difference = Bigger' },
+          { type: 'text', value: 'small number + how many more = big number' },
           { type: 'equation', value: '6 + 4 = ?' },
         ],
         tip: '"More than" means add!',
@@ -1767,7 +1774,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Marbles',
-        content: 'Ben has 6 marbles. Ana has 4 more than Ben. How many does Ana have? 6 + 4 = 10 marbles.',
+        content: 'Ben has 6 marbles. Ana has 4 more than Ben. How many does Ana have? 6 plus 4 is 10 marbles!',
         visual: [
           { type: 'text', value: 'Ben: ●●●●●● (6)' },
           { type: 'text', value: 'Ana: ●●●●●●●●●● (6 + 4 = 10)' },
@@ -1777,7 +1784,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Ribbons',
-        content: 'The blue ribbon is 8 inches. The red ribbon is 3 inches longer. How long is the red ribbon? 8 + 3 = 11 inches.',
+        content: 'The blue ribbon is 8 inches. The red one is 3 inches longer. How long is red? 8 plus 3 is 11 inches!',
         visual: [
           { type: 'text', value: 'Blue: ████████ (8)' },
           { type: 'text', value: 'Red:  ████████████ (8 + 3 = 11)' },
@@ -1797,9 +1804,9 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Find the Smaller Amount',
-        content: 'When someone has "more than" another, and you know the bigger amount, subtract to find the smaller one. Bigger − Difference = Smaller.',
+        content: 'When you know the bigger amount, subtract to find the smaller one!',
         visual: [
-          { type: 'text', value: 'Bigger − Difference = Smaller' },
+          { type: 'text', value: 'big number − how many more = small number' },
           { type: 'equation', value: '11 − 5 = ?' },
         ],
         tip: 'Subtract the difference from the bigger amount!',
@@ -1807,7 +1814,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Stickers',
-        content: 'Ana has 11 stickers. She has 5 more than Ben. How many does Ben have? 11 − 5 = 6 stickers.',
+        content: 'Ana has 11 stickers. She has 5 more than Ben. How many does Ben have? 11 minus 5 is 6 stickers!',
         visual: [
           { type: 'text', value: 'Ana: ●●●●●●●●●●● (11)' },
           { type: 'text', value: 'Ben: ●●●●●●            (11 − 5 = 6)' },
@@ -1817,7 +1824,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Plants',
-        content: 'The tall plant is 15 inches. It is 7 inches taller than the short one. How tall is the short plant? 15 − 7 = 8 inches.',
+        content: 'The tall plant is 15 inches. It is 7 inches taller than the short one. How tall is the short plant? 15 minus 7 is 8 inches!',
         visual: [
           { type: 'text', value: 'Tall:  ███████████████ (15)' },
           { type: 'text', value: 'Short: ████████              (15 − 7 = 8)' },
@@ -1837,7 +1844,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Shares and Wholes',
-        content: 'Equal shares make up a whole. Two halves = 1 whole. Four fourths = 1 whole. The more parts you make, the smaller each part gets.',
+        content: 'Equal parts make up a whole. Two halves make one whole. Four fourths make one whole. More parts means smaller pieces!',
         visual: [
           { type: 'text', value: '[ half | half ] = 1 whole' },
           { type: 'text', value: '[¼|¼|¼|¼] = 1 whole' },
@@ -1847,7 +1854,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Pizza Halves',
-        content: 'A pizza is cut into 2 equal pieces. Each piece is a half. Put both halves together and you have 1 whole pizza. 2 halves = 1 whole.',
+        content: 'A pizza is cut into 2 equal pieces. Each piece is a half. Put both halves together and you have one whole pizza!',
         visual: [
           { type: 'text', value: '( ◐ ) = half + half' },
           { type: 'equation', value: '2 halves = 1 whole' },
@@ -1856,7 +1863,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Sandwich Fourths',
-        content: 'A sandwich is cut into 4 equal parts. Each part is a fourth (quarter). Put all 4 together = 1 whole. A fourth is smaller than a half!',
+        content: 'A sandwich is cut into 4 equal parts. Each part is a fourth. Put all 4 together and you have one whole. A fourth is smaller than a half!',
         visual: [
           { type: 'text', value: '[¼|¼|¼|¼] = 1 whole' },
           { type: 'text', value: 'A fourth < a half (more parts = smaller)' },
@@ -1879,7 +1886,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Facts Within 20',
-        content: 'You should know addition and subtraction facts within 20 quickly. Use strategies: doubles, make a 10, or think-addition-for-subtraction.',
+        content: 'Now you can add and subtract up to 20 super fast! Use your tricks: doubles, make a 10, or think addition.',
         visual: [
           { type: 'equation', value: '8 + 7 = 15' },
           { type: 'equation', value: '16 − 9 = 7' },
@@ -1889,7 +1896,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 9 + 6',
-        content: 'Use make-a-ten: 9 + 1 = 10, then 10 + 5 = 15. So 9 + 6 = 15.',
+        content: 'Make a 10 first! 9 plus 1 is 10. Then 10 plus 5 is 15. So 9 plus 6 is 15!',
         visual: [
           { type: 'equation', value: '9 + 6' },
           { type: 'equation', value: '= 9 + 1 + 5' },
@@ -1899,11 +1906,13 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 17 − 8',
-        content: 'Think addition: 8 + ? = 17. Count up: 8 → 10 is 2, 10 → 17 is 7. Total: 2 + 7 = 9. So 17 − 8 = 9.',
+        content: 'Ask: 8 plus what is 17? Count from 8 to 10 — that is 2. Then 10 to 17 — that is 7. So 2 plus 7 is 9!',
         visual: [
           { type: 'equation', value: '8 + ? = 17' },
-          { type: 'text', value: '8 → 10 (+2) → 17 (+7)' },
-          { type: 'equation', value: '2 + 7 = 9, so 17 − 8 = 9' },
+          { type: 'text', value: '8 to 10 is 2' },
+          { type: 'text', value: '10 to 17 is 7' },
+          { type: 'equation', value: '2 + 7 = 9' },
+          { type: 'equation', value: '17 − 8 = 9' },
         ],
       },
       {
@@ -1919,7 +1928,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Word Problems with Big Numbers',
-        content: 'The same word problem types work with bigger numbers up to 100. Use place value: add tens and ones separately.',
+        content: 'You can solve stories with bigger numbers too! Break the numbers into tens and ones to make it easier.',
         visual: [
           { type: 'equation', value: '34 + 28 = ?' },
           { type: 'text', value: 'Break into tens and ones to solve.' },
@@ -1929,7 +1938,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Bus Problem',
-        content: '34 kids on a bus. 28 more get on. How many now? Tens: 30 + 20 = 50. Ones: 4 + 8 = 12. Total: 50 + 12 = 62 kids.',
+        content: '34 kids on a bus. 28 more get on. How many now? Add tens: 30 plus 20 is 50. Add ones: 4 plus 8 is 12. Then 50 plus 12 is 62!',
         visual: [
           { type: 'equation', value: '34 + 28' },
           { type: 'text', value: 'Tens: 30 + 20 = 50' },
@@ -1940,7 +1949,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Sticker Problem',
-        content: 'Had 75 stickers, gave away 38. How many left? 75 − 38: break it down. 70 − 30 = 40. 5 − 8... need to regroup: borrow 1 ten. 15 − 8 = 7. 30 + 7 = 37.',
+        content: 'You had 75 stickers and gave away 38. How many left? The ones: 5 minus 8 is tricky! Borrow a ten. 15 minus 8 is 7. The tens: 60 minus 30 is 30. So 30 plus 7 is 37!',
         visual: [
           { type: 'equation', value: '75 − 38' },
           { type: 'text', value: '15 − 8 = 7 (regroup 1 ten)' },
@@ -1981,7 +1990,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 400',
-        content: '400 = 4 hundreds. That is also 40 tens, or 400 ones.',
+        content: '400 is 4 hundreds. That is 4 big bundles of 100!',
         visual: [
           { type: 'text', value: '4 hundreds = 400' },
           { type: 'text', value: '40 tens = 400' },
@@ -2011,7 +2020,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 47 + 35',
-        content: 'Tens: 40 + 30 = 70. Ones: 7 + 5 = 12. Combine: 70 + 12 = 82.',
+        content: 'Add tens: 40 plus 30 is 70. Add ones: 7 plus 5 is 12. Now 70 plus 12 is 82!',
         visual: [
           { type: 'text', value: 'Tens: 40 + 30 = 70' },
           { type: 'text', value: 'Ones: 7 + 5 = 12' },
@@ -2021,7 +2030,7 @@ const lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 83 − 26',
-        content: 'Ones: 3 − 6... not enough! Regroup: borrow 1 ten. 13 − 6 = 7. Tens: 70 − 20 = 50. Answer: 57.',
+        content: 'Ones first: 3 minus 6? Not enough! Borrow a ten. Now 13 minus 6 is 7. Tens: 70 minus 20 is 50. So 50 plus 7 is 57!',
         visual: [
           { type: 'text', value: 'Ones: 13 − 6 = 7 (regroup 1 ten)' },
           { type: 'text', value: 'Tens: 70 − 20 = 50' },
@@ -2079,7 +2088,7 @@ const lessons: Lesson[] = [
       {
         type: 'concept',
         title: 'Shape Attributes',
-        content: 'Shapes have attributes: number of sides, number of corners, whether sides are equal, and whether corners are square. You can draw a shape from its description.',
+        content: 'Shapes have sides and corners. Count the sides and look at the corners to know what shape to draw!',
         visual: [
           { type: 'text', value: 'Triangle: 3 sides, 3 corners' },
           { type: 'text', value: 'Square: 4 equal sides, 4 square corners' },
@@ -2092,16 +2101,16 @@ const lessons: Lesson[] = [
         title: 'Watch: 3 Sides',
         content: '"Draw a shape with 3 sides." Any shape with 3 sides is a triangle. It can be tall, flat, or tilted — just needs 3 sides!',
         visual: [
-          { type: 'text', value: '3 sides → △ Triangle' },
+          { type: 'text', value: '3 sides = △ Triangle' },
           { type: 'text', value: 'Any triangle works!' },
         ],
       },
       {
         type: 'example',
         title: 'Watch: 4 Equal Sides, Square Corners',
-        content: '"Draw a shape with 4 equal sides and 4 square corners." That is a square! All sides the same length, all corners 90 degrees.',
+        content: 'Draw a shape with 4 equal sides and 4 square corners. That is a square! All sides are the same.',
         visual: [
-          { type: 'text', value: '4 equal sides + 4 square corners → □ Square' },
+          { type: 'text', value: '4 equal sides + 4 square corners = □ Square' },
           { type: 'text', value: 'A square is a special rectangle.' },
         ],
       },
