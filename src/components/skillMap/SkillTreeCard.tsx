@@ -10,18 +10,11 @@ const masteryColors: Record<MasteryLevel, { bg: string; border: string; text: st
   mastered: { bg: 'bg-green-50', border: 'border-green-400', text: 'text-green-700', label: 'Mastered', dot: 'bg-green-400' },
 };
 
-const domainAccents: Record<Domain, string> = {
-  OA: 'border-l-purple-500',
-  NBT: 'border-l-indigo-500',
-  MD: 'border-l-teal-500',
-  G: 'border-l-orange-500',
-};
-
 const domainTabColors: Record<Domain, string> = {
-  OA: 'bg-purple-100 text-purple-700',
-  NBT: 'bg-indigo-100 text-indigo-700',
-  MD: 'bg-teal-100 text-teal-700',
-  G: 'bg-orange-100 text-orange-700',
+  OA: 'bg-slate-100 text-slate-600',
+  NBT: 'bg-slate-100 text-slate-600',
+  MD: 'bg-slate-100 text-slate-600',
+  G: 'bg-slate-100 text-slate-600',
 };
 
 export interface CrossClusterPrereq {
@@ -74,8 +67,8 @@ export default function SkillTreeCard({
         setExpanded(v => !v);
       }}
       className={`
-        relative w-44 sm:w-48 border-2 border-l-4 rounded-xl p-2.5
-        ${colors.border} ${colors.bg} ${domainAccents[skill.domain]}
+        relative w-44 sm:w-48 border-2 rounded-xl p-2.5
+        ${colors.border} ${colors.bg}
         transition-all duration-200 hover:shadow-md cursor-pointer select-none
         ${isComingSoon && highlightState !== 'dimmed' ? 'opacity-70' : ''}
         ${highlightClasses[highlightState]}
