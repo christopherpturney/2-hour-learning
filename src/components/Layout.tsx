@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Map, FileText, Play, BarChart3, Calculator } from 'lucide-react';
+import { Home, Map, FileText, Play, BarChart3, Calculator, HelpCircle } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,6 +14,7 @@ const tabs = [
   { path: '/worksheets', Icon: FileText, label: 'Sheets' },
   { path: '/problems', Icon: Play, label: 'Problems' },
   { path: '/parent', Icon: BarChart3, label: 'Progress' },
+  { path: '/how-it-works', Icon: HelpCircle, label: 'How' },
 ];
 
 export default function Layout({ children, studentName, onSignOut }: LayoutProps) {
