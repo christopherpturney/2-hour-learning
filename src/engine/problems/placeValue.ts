@@ -1,5 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-import { randomInt, generateId, shuffle, makeChoices } from './utils';
+import { randomInt, generateId, shuffle, makeChoices, generateWrongAnswers } from './utils';
 
 function tensBlock(tens: number): string {
   return '▮'.repeat(tens);

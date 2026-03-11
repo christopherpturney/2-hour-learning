@@ -1,6 +1,11 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
 import { randomInt, generateId, shuffle } from './utils';
 
+function clockFace(hour: number, minute: number): string {
+  const mm = minute.toString().padStart(2, '0');
+  return `${hour}:${mm}`;
+}
+
 // ============================================
 // Tell Time to the Hour
 // ============================================

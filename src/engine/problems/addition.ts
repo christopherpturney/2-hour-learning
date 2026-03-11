@@ -1,5 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-import { randomInt, generateId, dots, shuffle, makeChoices } from './utils';
+import { randomInt, generateId, dots, makeChoices } from './utils';
 
 // ============================================
 // Addition Within 5
