@@ -15,7 +15,7 @@ import { skillMap } from '../../data/skills';
 import ProblemDisplay from './ProblemDisplay';
 import LessonDisplay from './LessonDisplay';
 import Feedback from './Feedback';
-import { PartyPopper, Star, Check, ArrowLeft } from 'lucide-react';
+import { PartyPopper, Star, Check, ArrowLeft, X } from 'lucide-react';
 
 interface SessionManagerProps {
   student: Student;
@@ -41,6 +41,7 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
     // Start with lesson if first phase is teach
     return sessionRef.current.phase === 'teach' ? 'lesson' : 'problem';
   });
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
   const [lastExplanation, setLastExplanation] = useState('');
   const [lastCorrectAnswer, setLastCorrectAnswer] = useState('');
@@ -243,7 +244,41 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
   }
 
   return (
-    <div className="space-y-5">
+    <div className="relative space-y-5">
+      {/* Exit confirmation overlay */}
+      {showExitConfirm && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-xl">
+            <h3 className="text-xl font-bold text-slate-800 text-center">Leave session?</h3>
+            <p className="text-slate-500 text-center text-sm">Your progress so far will be saved.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowExitConfirm(false)}
+                className="flex-1 py-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-base active:bg-slate-50"
+              >
+                Keep Going
+              </button>
+              <button
+                onClick={handleComplete}
+                className="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold text-base active:bg-red-600"
+              >
+                Leave
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Exit button — always visible except on completion screen */}
+      <button
+        onClick={() => setShowExitConfirm(true)}
+        className="absolute top-4 right-4 z-40 p-2 rounded-full bg-white/80 backdrop-blur border border-slate-200 text-slate-400 hover:text-slate-600 hover:bg-white active:bg-slate-100 shadow-sm"
+        aria-label="Exit session"
+        title="Exit session"
+      >
+        <X className="w-5 h-5" />
+      </button>
+
       {/* Timer + Phase indicator (hidden during lesson for cleaner view) */}
       {viewState !== 'lesson' && (
         <>
