@@ -41,23 +41,6 @@ const scaffoldingLabels: Record<ScaffoldingLevel, { name: string; description: s
 
 const domains: Domain[] = ['OA', 'NBT', 'MD', 'G'];
 
-/** Extract clock data from a problem's questionParts, if any */
-function getClockFromProblem(problem: Problem): { hour: number; minute: number } | null {
-  if (!problem.questionParts) return null;
-  for (const part of problem.questionParts) {
-    if (part.type === 'image') {
-      const clock = parseClockValue(part.value);
-      if (clock) return clock;
-    }
-  }
-  return null;
-}
-
-/** Strip the [H:MM] clock text placeholder from a question string */
-function stripClockText(question: string): string {
-  return question.replace(/\s*\[\d{1,2}:\d{2}\]\s*/g, ' ').trim();
-}
-
 export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) {
   const registeredIds = useRef(new Set(getRegisteredSkillIds()));
 

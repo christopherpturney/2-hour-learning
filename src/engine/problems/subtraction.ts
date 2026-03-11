@@ -1,5 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-import { randomInt, generateId, dots, crossedDots, shuffle, makeChoices } from './utils';
+import { randomInt, generateId, dots, crossedDots, makeChoices } from './utils';
 
 // ============================================
 // Subtraction Within 5

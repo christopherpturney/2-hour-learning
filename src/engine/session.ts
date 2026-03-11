@@ -52,7 +52,7 @@ export function startSession(plan: SessionPlan): ActiveSession {
 }
 
 export function getNextProblem(session: ActiveSession): Problem | null {
-  const { phase, plan, problemsCompleted } = session;
+  const { phase, plan } = session;
 
   let skillId: string | null = null;
   let scaffolding: 'concrete' | 'representational' | 'abstract' = 'abstract';
