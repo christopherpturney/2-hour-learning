@@ -15,17 +15,18 @@ import { skillMap } from '../../data/skills';
 import ProblemDisplay from './ProblemDisplay';
 import LessonDisplay from './LessonDisplay';
 import Feedback from './Feedback';
-import { PartyPopper, Star, Check, ArrowLeft } from 'lucide-react';
+import { PartyPopper, Star, Check, ArrowLeft, X } from 'lucide-react';
 
 interface SessionManagerProps {
   student: Student;
   scores: Map<string, SkillScore>;
   onComplete: (scores: Map<string, SkillScore>, sessionData: Session) => void;
+  onExit: () => void;
 }
 
 type ViewState = 'problem' | 'feedback' | 'lesson' | 'complete';
 
-export default function SessionManager({ student, scores, onComplete }: SessionManagerProps) {
+export default function SessionManager({ student, scores, onComplete, onExit }: SessionManagerProps) {
   const sessionRef = useRef<ActiveSession>(null!);
   const scoresRef = useRef<Map<string, SkillScore>>(new Map(scores));
 
@@ -244,6 +245,13 @@ export default function SessionManager({ student, scores, onComplete }: SessionM
         <>
           <div className={`bg-gradient-to-r ${phaseColors[progress.phase] || phaseColors.teach} rounded-2xl p-4 text-white shadow-sm`}>
             <div className="flex items-center justify-between mb-2">
+              <button
+                onClick={onExit}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 active:bg-white/30 transition-colors"
+                aria-label="Exit session"
+              >
+                <X className="w-4 h-4" />
+              </button>
               <span className="text-lg font-bold">{progress.phaseLabel}</span>
               <span className="text-xl font-bold font-mono">
                 {formatTime(elapsedSeconds)}

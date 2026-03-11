@@ -8,17 +8,18 @@ import {
   getAssessmentSummary,
 } from '../../engine/assessment';
 import ProblemDisplay from '../session/ProblemDisplay';
-import { PartyPopper, Trophy, TrendingUp, ClipboardList, ArrowRight } from 'lucide-react';
+import { PartyPopper, Trophy, TrendingUp, ClipboardList, ArrowRight, X } from 'lucide-react';
 
 interface AssessmentFlowProps {
   student: Student;
   scores: Map<string, SkillScore>;
   onComplete: (scores: Map<string, SkillScore>) => void;
+  onExit: () => void;
 }
 
 type ViewState = 'problem' | 'complete';
 
-export default function AssessmentFlow({ student, scores, onComplete }: AssessmentFlowProps) {
+export default function AssessmentFlow({ student, scores, onComplete, onExit }: AssessmentFlowProps) {
   // Use refs for mutable state to avoid stale closures
   const stateRef = useRef<AssessmentState>(createAssessment());
   const scoresRef = useRef<Map<string, SkillScore>>(new Map(scores));
@@ -222,6 +223,13 @@ export default function AssessmentFlow({ student, scores, onComplete }: Assessme
       {/* Progress bar */}
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
         <div className="flex items-center justify-between mb-2">
+          <button
+            onClick={onExit}
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 active:bg-slate-200 transition-colors"
+            aria-label="Exit assessment"
+          >
+            <X className="w-4 h-4 text-slate-500" />
+          </button>
           <span className="text-sm font-bold text-slate-600">Assessment Progress</span>
           <span className="text-sm text-slate-500">
             {progress.current} / {progress.total} skills
