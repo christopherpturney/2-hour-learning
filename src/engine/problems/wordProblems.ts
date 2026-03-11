@@ -1,5 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-import { randomInt, generateId, dots, makeChoices } from './utils';
+import { randomInt, generateId, makeChoices } from './utils';
 
 const NAMES = ['Emma', 'Liam', 'Noah', 'Olivia', 'Ava', 'Mia', 'Lucas', 'Sophia', 'Ethan', 'Isabella', 'Aiden', 'Zoe', 'Jack', 'Lily', 'Ben', 'Chloe'];
 
@@ -40,12 +40,10 @@ const wordProblemsAddTo: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${template}\n\nUse dots to help: ${dots(start)} + ${dots(added)}`;
+        question = `${template}\n\nUse counters to help: ${start} + ${added}`;
         questionParts = [
           { type: 'text', value: template },
-          { type: 'dots', value: dots(start), count: start },
-          { type: 'text', value: '+' },
-          { type: 'dots', value: dots(added), count: added },
+          { type: 'image', value: `counters-${start}-${added}` },
         ];
         hint = `Count the first group (${start}), then count on the second group (${added}).`;
         break;
@@ -106,15 +104,13 @@ const wordProblemsTakeFrom: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete': {
-        const remaining = start - removed;
-        const visual = '●'.repeat(remaining) + '✕'.repeat(removed);
-        question = `${template}\n\nCross out ${removed}: ${visual}`;
+        question = `${template}\n\nCross out ${removed}:`;
         questionParts = [
           { type: 'text', value: template },
-          { type: 'dots', value: dots(start), count: start },
+          { type: 'image', value: `counters-${start}-cross-${removed}` },
           { type: 'text', value: `Cross out ${removed}.` },
         ];
-        hint = `Start with ${start} dots. Cross out ${removed}. Count what is left.`;
+        hint = `Start with ${start} counters. Cross out ${removed}. Count what is left.`;
         break;
       }
       case 'representational':
@@ -181,12 +177,12 @@ const wordProblemsPutTogether: ProblemGenerator = {
 
       switch (scaffolding) {
         case 'concrete':
-          question = `${template}\n\n${dots(groupA)} and ${dots(groupB)}`;
+          question = `${template}\n\n${groupA} and ${groupB}`;
           questionParts = [
             { type: 'text', value: template },
-            { type: 'dots', value: dots(groupA), count: groupA },
+            { type: 'image', value: `counters-${groupA}` },
             { type: 'text', value: 'and' },
-            { type: 'dots', value: dots(groupB), count: groupB },
+            { type: 'image', value: `counters-${groupB}` },
           ];
           hint = `Put both groups together and count them all.`;
           break;
@@ -213,11 +209,11 @@ const wordProblemsPutTogether: ProblemGenerator = {
 
       switch (scaffolding) {
         case 'concrete':
-          question = `${template}\n\nTotal: ${dots(answer)}. On table: ${dots(groupA)}. In box: ?`;
+          question = `${template}\n\nTotal: ${answer}. On table: ${groupA}. In box: ?`;
           questionParts = [
             { type: 'text', value: template },
             { type: 'text', value: `Total: ${answer}` },
-            { type: 'dots', value: dots(answer), count: answer },
+            { type: 'image', value: `counters-${answer}` },
             { type: 'text', value: `On table: ${groupA}` },
           ];
           hint = `Start with ${answer} total. Take away the ${groupA} on the table. What is left?`;
@@ -299,15 +295,15 @@ const wordProblemsCompare: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${template}\n\n${name1}: ${dots(bigger)}\n${name2}: ${dots(smaller)}`;
+        question = `${template}\n\n${name1}: ${bigger}\n${name2}: ${smaller}`;
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: `${name1}:` },
-          { type: 'dots', value: dots(bigger), count: bigger },
+          { type: 'image', value: `counters-${bigger}` },
           { type: 'text', value: `${name2}:` },
-          { type: 'dots', value: dots(smaller), count: smaller },
+          { type: 'image', value: `counters-${smaller}` },
         ];
-        hint = `Line up the dots and see how many extra ${name1} has.`;
+        hint = `Line up the counters and see how many extra ${name1} has.`;
         break;
       case 'representational':
         question = template;
@@ -366,13 +362,13 @@ const wordProblemsAddToChange: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${template}\n\nStarted with: ${dots(start)}\nEnded with: ${dots(total)}`;
+        question = `${template}\n\nStarted with: ${start}\nEnded with: ${total}`;
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: 'Started with:' },
-          { type: 'dots', value: dots(start), count: start },
+          { type: 'image', value: `counters-${start}` },
           { type: 'text', value: 'Ended with:' },
-          { type: 'dots', value: dots(total), count: total },
+          { type: 'image', value: `counters-${total}` },
         ];
         hint = `You started with ${start}. You ended with ${total}. Count up from ${start} to ${total}.`;
         break;
@@ -433,13 +429,13 @@ const wordProblemsAddToStart: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${template}\n\nAdded: ${dots(added)}\nTotal: ${dots(total)}`;
+        question = `${template}\n\nAdded: ${added}\nTotal: ${total}`;
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: 'Added:' },
-          { type: 'dots', value: dots(added), count: added },
+          { type: 'image', value: `counters-${added}` },
           { type: 'text', value: 'Total:' },
-          { type: 'dots', value: dots(total), count: total },
+          { type: 'image', value: `counters-${total}` },
         ];
         hint = `The total is ${total}. If ${added} were added, how many were there before?`;
         break;
@@ -500,13 +496,13 @@ const wordProblemsTakeFromChange: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${template}\n\nStarted with: ${dots(start)}\nNow: ${dots(remainder)}`;
+        question = `${template}\n\nStarted with: ${start}\nNow: ${remainder}`;
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: 'Started with:' },
-          { type: 'dots', value: dots(start), count: start },
+          { type: 'image', value: `counters-${start}` },
           { type: 'text', value: 'Now:' },
-          { type: 'dots', value: dots(remainder), count: remainder },
+          { type: 'image', value: `counters-${remainder}` },
         ];
         hint = `Start with ${start}. Now there are ${remainder}. How many are gone?`;
         break;
@@ -567,13 +563,13 @@ const wordProblemsTakeFromStart: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${template}\n\nLeft: ${dots(remainder)} Gone: ${dots(removed)}`;
+        question = `${template}\n\nLeft: ${remainder} Gone: ${removed}`;
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: 'Left:' },
-          { type: 'dots', value: dots(remainder), count: remainder },
+          { type: 'image', value: `counters-${remainder}` },
           { type: 'text', value: 'Gone:' },
-          { type: 'dots', value: dots(removed), count: removed },
+          { type: 'image', value: `counters-${removed}` },
         ];
         hint = `Put back together what is left (${remainder}) and what was taken away (${removed}).`;
         break;
@@ -635,13 +631,13 @@ const wordProblemsCompareBigger: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${template}\n\n${name2}: ${dots(smaller)}\n${name1}: ${dots(smaller)} + ${dots(difference)}`;
+        question = `${template}\n\n${name2}: ${smaller}\n${name1}: ${smaller} + ${difference}`;
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: `${name2}:` },
-          { type: 'dots', value: dots(smaller), count: smaller },
+          { type: 'image', value: `counters-${smaller}` },
           { type: 'text', value: `${name1}: same as ${name2}, plus ${difference} more` },
-          { type: 'dots', value: dots(smaller) + ' + ' + dots(difference), count: answer },
+          { type: 'image', value: `counters-${smaller}-${difference}` },
         ];
         hint = `${name1} has all that ${name2} has, plus ${difference} more.`;
         break;
@@ -703,11 +699,11 @@ const wordProblemsCompareSmaller: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete': {
-        question = `${template}\n\n${name1}: ${dots(bigger)}\n${name2}: ?`;
+        question = `${template}\n\n${name1}: ${bigger}\n${name2}: ?`;
         questionParts = [
           { type: 'text', value: template },
           { type: 'text', value: `${name1}:` },
-          { type: 'dots', value: dots(bigger), count: bigger },
+          { type: 'image', value: `counters-${bigger}` },
           { type: 'text', value: `${name2} has ${difference} fewer` },
         ];
         hint = `${name1} has ${bigger}. ${name2} has ${difference} fewer. Take away ${difference} from ${bigger}.`;

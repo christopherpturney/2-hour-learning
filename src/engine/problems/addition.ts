@@ -1,5 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-import { randomInt, generateId, dots, makeChoices } from './utils';
+import { randomInt, generateId, makeChoices } from './utils';
 
 // ============================================
 // Addition Within 5
@@ -17,15 +17,12 @@ const additionWithin5: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Count all the dots: ${dots(a)} and ${dots(b)}. How many in all?`;
+        question = `Count all the counters: ${a} and ${b}. How many in all?`;
         questionParts = [
-          { type: 'text', value: 'Count all the dots:' },
-          { type: 'dots', value: dots(a), count: a },
-          { type: 'text', value: 'and' },
-          { type: 'dots', value: dots(b), count: b },
-          { type: 'text', value: 'How many in all?' },
+          { type: 'text', value: 'Count all the counters. How many in all?' },
+          { type: 'image', value: `counters-${a}-${b}` },
         ];
-        hint = `Count each dot one by one: ${dots(a)}${dots(b)}`;
+        hint = `Count each counter one by one.`;
         break;
       case 'representational':
         question = `Use the number line: Start at ${a}, jump ${b} more. Where do you land?`;
@@ -75,14 +72,12 @@ const additionWithin10: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Count all the dots: ${dots(a)} and ${dots(b)}. How many altogether?`;
+        question = `Count all the counters: ${a} and ${b}. How many altogether?`;
         questionParts = [
-          { type: 'text', value: 'Count all the dots:' },
-          { type: 'dots', value: dots(a), count: a },
-          { type: 'text', value: 'and' },
-          { type: 'dots', value: dots(b), count: b },
+          { type: 'text', value: 'Count all the counters. How many altogether?' },
+          { type: 'image', value: `counters-${a}-${b}` },
         ];
-        hint = `Count each dot: ${dots(a)}${dots(b)}`;
+        hint = `Count each counter one by one.`;
         break;
       case 'representational':
         question = `Use the number line: Start at ${a}, jump ${b} more. Where do you land?`;
@@ -132,13 +127,12 @@ const additionFluency10: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `How many dots in all? ${dots(a)} + ${dots(b)}`;
+        question = `How many in all? ${a} + ${b}`;
         questionParts = [
-          { type: 'dots', value: dots(a), count: a },
-          { type: 'text', value: '+' },
-          { type: 'dots', value: dots(b), count: b },
+          { type: 'text', value: 'How many in all?' },
+          { type: 'image', value: `counters-${a}-${b}` },
         ];
-        hint = `Count all the dots together.`;
+        hint = `Count all the counters together.`;
         break;
       case 'representational':
         question = `What is ${a} + ${b}? Use the number line to help.`;
@@ -187,19 +181,14 @@ const additionWithin20: ProblemGenerator = {
     let hint: string | undefined;
 
     switch (scaffolding) {
-      case 'concrete': {
-        const groupA = a <= 10 ? dots(a) : `${dots(10)} ${dots(a - 10)}`;
-        const groupB = b <= 10 ? dots(b) : `${dots(10)} ${dots(b - 10)}`;
-        question = `Count all the dots: ${groupA} and ${groupB}. How many in all?`;
+      case 'concrete':
+        question = `Count all the counters: ${a} and ${b}. How many in all?`;
         questionParts = [
-          { type: 'text', value: 'Count all the dots:' },
-          { type: 'dots', value: groupA, count: a },
-          { type: 'text', value: 'and' },
-          { type: 'dots', value: groupB, count: b },
+          { type: 'text', value: 'Count all the counters. How many in all?' },
+          { type: 'image', value: `counters-${a}-${b}` },
         ];
         hint = `Try grouping by tens first, then count the rest.`;
         break;
-      }
       case 'representational':
         question = `Use the number line: Start at ${a}, jump ${b} more. Where do you land?`;
         questionParts = [
@@ -249,15 +238,14 @@ const addThreeNumbers: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Count all the dots: ${dots(a)} and ${dots(b)} and ${dots(c)}. How many in all?`;
+        question = `Count all the counters: ${a} and ${b} and ${c}. How many in all?`;
         questionParts = [
-          { type: 'dots', value: dots(a), count: a },
+          { type: 'text', value: 'Count all the counters. How many in all?' },
+          { type: 'image', value: `counters-${a}-${b}` },
           { type: 'text', value: '+' },
-          { type: 'dots', value: dots(b), count: b },
-          { type: 'text', value: '+' },
-          { type: 'dots', value: dots(c), count: c },
+          { type: 'image', value: `counters-${c}` },
         ];
-        hint = `Count all the dots from left to right.`;
+        hint = `Count all the counters from left to right.`;
         break;
       case 'representational':
         question = `${a} + ${b} + ${c} = ? Use the number line.`;
@@ -311,17 +299,14 @@ const commutativeProperty: ProblemGenerator = {
       // True case: a + b = b + a
       switch (scaffolding) {
         case 'concrete':
-          question = `Is this true? ${dots(a)} + ${dots(b)} = ${dots(b)} + ${dots(a)}`;
+          question = `Is this true? ${a} + ${b} = ${b} + ${a}`;
           questionParts = [
-            { type: 'dots', value: dots(a), count: a },
-            { type: 'text', value: '+' },
-            { type: 'dots', value: dots(b), count: b },
+            { type: 'text', value: 'Is this true?' },
+            { type: 'image', value: `counters-${a}-${b}` },
             { type: 'text', value: '=' },
-            { type: 'dots', value: dots(b), count: b },
-            { type: 'text', value: '+' },
-            { type: 'dots', value: dots(a), count: a },
+            { type: 'image', value: `counters-${b}-${a}` },
           ];
-          hint = `Count the dots on each side.`;
+          hint = `Count the counters on each side.`;
           break;
         case 'representational':
           question = `Is ${a} + ${b} the same as ${b} + ${a}?`;
@@ -359,17 +344,14 @@ const commutativeProperty: ProblemGenerator = {
       const wrongSum = wrongSecondA + b;
       switch (scaffolding) {
         case 'concrete':
-          question = `Is this true? ${dots(a)} + ${dots(b)} = ${dots(b)} + ${dots(wrongSecondA)}`;
+          question = `Is this true? ${a} + ${b} = ${b} + ${wrongSecondA}`;
           questionParts = [
-            { type: 'dots', value: dots(a), count: a },
-            { type: 'text', value: '+' },
-            { type: 'dots', value: dots(b), count: b },
+            { type: 'text', value: 'Is this true?' },
+            { type: 'image', value: `counters-${a}-${b}` },
             { type: 'text', value: '=' },
-            { type: 'dots', value: dots(b), count: b },
-            { type: 'text', value: '+' },
-            { type: 'dots', value: dots(wrongSecondA), count: wrongSecondA },
+            { type: 'image', value: `counters-${b}-${wrongSecondA}` },
           ];
-          hint = `Count the dots on each side carefully.`;
+          hint = `Count the counters on each side carefully.`;
           break;
         case 'representational':
           question = `Is ${a} + ${b} the same as ${b} + ${wrongSecondA}?`;
@@ -422,13 +404,12 @@ const countingOnStrategy: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Start with ${bigger} (hold it in your head!). Now count on ${smaller} more: ${dots(smaller)}. What number do you reach?`;
+        question = `Start with ${bigger}. Now count on ${smaller} more. What number do you reach?`;
         questionParts = [
-          { type: 'text', value: `Start with ${bigger}.` },
-          { type: 'text', value: `Count on ${smaller} more:` },
-          { type: 'dots', value: dots(smaller), count: smaller },
+          { type: 'text', value: `Start with ${bigger}. Count on ${smaller} more:` },
+          { type: 'image', value: `counters-${smaller}` },
         ];
-        hint = `Say "${bigger}" in your head, then count on ${smaller} more. Use the dots to help!`;
+        hint = `Say "${bigger}" in your head, then count on ${smaller} more. Use the counters to help!`;
         break;
       case 'representational':
         question = `Start at ${bigger} on the number line. Count on ${smaller}. Where do you land?`;
@@ -482,14 +463,12 @@ const makingTenStrategy: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${dots(a)} + ${dots(b)} = ? Make a group of 10 first!`;
+        question = `${a} + ${b} = ? Make a group of 10 first!`;
         questionParts = [
-          { type: 'dots', value: dots(a), count: a },
-          { type: 'text', value: '+' },
-          { type: 'dots', value: dots(b), count: b },
           { type: 'text', value: 'Make a ten!' },
+          { type: 'image', value: `counters-${a}-${b}` },
         ];
-        hint = `Move ${needToMakeTen} dots from the second group to the first to make 10. Then you have 10 + ${leftover}.`;
+        hint = `Move ${needToMakeTen} counters from the second group to the first to make 10. Then you have 10 + ${leftover}.`;
         break;
       case 'representational':
         question = `Make a 10 to solve: ${a} + ${b} = ? Break ${b} into ${needToMakeTen} and ${leftover}.`;
@@ -551,21 +530,21 @@ const fluencyAddSub20: ProblemGenerator = {
     let hint: string | undefined;
 
     switch (scaffolding) {
-      case 'concrete': {
-        const groupA = a <= 10 ? dots(a) : `${dots(10)} ${dots(a - 10)}`;
+      case 'concrete':
         question = isAddition
-          ? `${groupA} + ${dots(b)} = ?`
-          : `${groupA} take away ${dots(b)} = ?`;
-        questionParts = [
-          { type: 'dots', value: groupA, count: a },
-          { type: 'text', value: isAddition ? '+' : 'take away' },
-          { type: 'dots', value: dots(b), count: b },
-        ];
+          ? `${a} + ${b} = ?`
+          : `${a} take away ${b} = ?`;
+        questionParts = isAddition
+          ? [
+              { type: 'image', value: `counters-${a}-${b}` },
+            ]
+          : [
+              { type: 'image', value: `counters-${a}-cross-${b}` },
+            ];
         hint = isAddition
-          ? `Count all the dots together.`
-          : `Start with ${a} dots and take away ${b}. Count what is left.`;
+          ? `Count all the counters together.`
+          : `Start with ${a} counters and take away ${b}. Count what is left.`;
         break;
-      }
       case 'representational':
         question = `${equation} Use the number line.`;
         questionParts = [

@@ -49,7 +49,7 @@ const identify2DShapes: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Look at this shape: ${shape.visual}. What is this shape called?`;
+        question = `Look at this shape. What is this shape called?`;
         questionParts = [
           { type: 'image', value: `shape-${shape.name}` },
           { type: 'text', value: 'What shape is this?' },

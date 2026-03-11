@@ -1,14 +1,6 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
 import { randomInt, generateId, shuffle, makeChoices, generateWrongAnswers } from './utils';
 
-function tensBlock(tens: number): string {
-  return '▮'.repeat(tens);
-}
-
-function onesBlock(ones: number): string {
-  return '●'.repeat(ones);
-}
-
 // ============================================
 // Count to 120
 // ============================================
@@ -106,12 +98,10 @@ const readWriteNumerals120: ProblemGenerator = {
       const correctWord = word;
       switch (scaffolding) {
         case 'concrete':
-          question = `Here are ${tens} tens ${tensBlock(tens)} and ${ones} ones ${onesBlock(ones)}. What number is this? Write it as a word.`;
+          question = `Here are ${tens} tens and ${ones} ones. What number is this? Write it as a word.`;
           questionParts = [
-            { type: 'text', value: `${tens} tens:` },
-            { type: 'dots', value: tensBlock(tens), count: tens },
-            { type: 'text', value: `${ones} ones:` },
-            { type: 'dots', value: onesBlock(ones), count: ones },
+            { type: 'image', value: `base10-0-${tens}-${ones}` },
+            { type: 'text', value: `What number is this? Write it as a word.` },
           ];
           hint = `Count the tens: ${tens} tens = ${tens * 10}. Plus ${ones} ones = ${number}.`;
           break;
@@ -207,19 +197,15 @@ const understandTensOnes: ProblemGenerator = {
     switch (scaffolding) {
       case 'concrete':
         question = askTens
-          ? `Look at the blocks for ${number}: ${tensBlock(tens)} tens and ${onesBlock(ones)} ones. How many tens?`
-          : `Look at the blocks for ${number}: ${tensBlock(tens)} tens and ${onesBlock(ones)} ones. How many ones?`;
+          ? `Look at the blocks for ${number}: ${tens} tens and ${ones} ones. How many tens?`
+          : `Look at the blocks for ${number}: ${tens} tens and ${ones} ones. How many ones?`;
         questionParts = [
-          { type: 'text', value: `${number}` },
-          { type: 'dots', value: tensBlock(tens), count: tens },
-          { type: 'text', value: 'tens' },
-          { type: 'dots', value: onesBlock(ones), count: ones },
-          { type: 'text', value: 'ones' },
+          { type: 'image', value: `base10-0-${tens}-${ones}` },
           { type: 'text', value: askTens ? 'How many tens?' : 'How many ones?' },
         ];
         hint = askTens
-          ? `Count the long blocks (tens). Each ▮ = 10.`
-          : `Count the small dots (ones). Each ● = 1.`;
+          ? `Count the long blocks (tens). Each block = 10.`
+          : `Count the small cubes (ones). Each cube = 1.`;
         break;
       case 'representational':
         question = askTens
@@ -276,12 +262,10 @@ const teenNumbersComposition: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Here is a group of ten: ${tensBlock(1)} and ${ones} more: ${onesBlock(ones)}. What number is this?`;
+        question = `Here is a group of ten and ${ones} more. What number is this?`;
         questionParts = [
-          { type: 'text', value: 'One ten:' },
-          { type: 'dots', value: tensBlock(1), count: 1 },
-          { type: 'text', value: `and ${ones} ones:` },
-          { type: 'dots', value: onesBlock(ones), count: ones },
+          { type: 'image', value: `base10-0-1-${ones}` },
+          { type: 'text', value: `What number is this?` },
         ];
         hint = `One group of ten is 10. Plus ${ones} more is?`;
         break;
@@ -332,10 +316,9 @@ const decadeNumbers: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `How many is ${tens} groups of ten? ${tensBlock(tens)}`;
+        question = `How many is ${tens} groups of ten?`;
         questionParts = [
-          { type: 'text', value: `${tens} groups of ten:` },
-          { type: 'dots', value: tensBlock(tens), count: tens },
+          { type: 'image', value: `base10-0-${tens}-0` },
           { type: 'text', value: 'How many in all?' },
         ];
         hint = `Count by tens: 10, 20, 30... Count ${tens} groups.`;
@@ -398,12 +381,11 @@ const compareTwoDigit: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Compare: ${tensBlock(tensA)}${onesBlock(onesA)} (${a}) and ${tensBlock(tensB)}${onesBlock(onesB)} (${b}). Which is greater?`;
+        question = `Compare ${a} and ${b}. Which is greater?`;
         questionParts = [
-          { type: 'dots', value: `${tensBlock(tensA)}${onesBlock(onesA)}`, count: a },
-          { type: 'text', value: `(${a})` },
-          { type: 'text', value: '___' },
-          { type: 'dots', value: `${tensBlock(tensB)}${onesBlock(onesB)}`, count: b },
+          { type: 'image', value: `base10-0-${tensA}-${onesA}` },
+          { type: 'text', value: `(${a})  ___` },
+          { type: 'image', value: `base10-0-${tensB}-${onesB}` },
           { type: 'text', value: `(${b})` },
         ];
         hint = `Compare the tens first. ${a} has ${tensA} tens and ${b} has ${tensB} tens.`;
@@ -460,11 +442,11 @@ const addTwoDigitPlusOne: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${tensBlock(tens)}${onesBlock(ones)} + ${onesBlock(oneDigit)} = ? Add the ones together.`;
+        question = `${twoDigit} + ${oneDigit} = ? Add the ones together.`;
         questionParts = [
-          { type: 'dots', value: `${tensBlock(tens)}${onesBlock(ones)}`, count: twoDigit },
+          { type: 'image', value: `base10-0-${tens}-${ones}` },
           { type: 'text', value: '+' },
-          { type: 'dots', value: onesBlock(oneDigit), count: oneDigit },
+          { type: 'image', value: `base10-0-0-${oneDigit}` },
         ];
         hint = `Keep the ${tens} tens. Add the ones: ${ones} + ${oneDigit} = ${ones + oneDigit}.`;
         break;
@@ -519,12 +501,11 @@ const addTwoDigitPlusTens: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${tensBlock(tens)}${onesBlock(ones)} + ${tensBlock(addTensCount)} = ? Add the tens together.`;
+        question = `${twoDigit} + ${addTens} = ? Add the tens together.`;
         questionParts = [
-          { type: 'dots', value: `${tensBlock(tens)}${onesBlock(ones)}`, count: twoDigit },
+          { type: 'image', value: `base10-0-${tens}-${ones}` },
           { type: 'text', value: '+' },
-          { type: 'dots', value: tensBlock(addTensCount), count: addTensCount },
-          { type: 'text', value: 'tens' },
+          { type: 'image', value: `base10-0-${addTensCount}-0` },
         ];
         hint = `Add the tens: ${tens} tens + ${addTensCount} tens = ${tens + addTensCount} tens. The ones stay the same (${ones}).`;
         break;
@@ -580,9 +561,9 @@ const mentalTenMoreLess: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `What is ${action} ${number}? ${tensBlock(tens)}${onesBlock(ones)} ${isMore ? '+ ▮' : '- ▮'}`;
+        question = `What is ${action} ${number}?`;
         questionParts = [
-          { type: 'dots', value: `${tensBlock(tens)}${onesBlock(ones)}`, count: number },
+          { type: 'image', value: `base10-0-${tens}-${ones}` },
           { type: 'text', value: isMore ? '+ 1 ten' : '- 1 ten' },
         ];
         hint = isMore
@@ -640,12 +621,11 @@ const subtractMultiplesOfTen: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${tensBlock(tensA)} take away ${tensBlock(tensB)} = ? Each block is 10.`;
+        question = `${a} take away ${b} = ? Each block is 10.`;
         questionParts = [
-          { type: 'dots', value: tensBlock(tensA), count: tensA },
-          { type: 'text', value: `(${a})` },
-          { type: 'text', value: 'take away' },
-          { type: 'dots', value: tensBlock(tensB), count: tensB },
+          { type: 'image', value: `base10-0-${tensA}-0` },
+          { type: 'text', value: `(${a})  take away` },
+          { type: 'image', value: `base10-0-${tensB}-0` },
           { type: 'text', value: `(${b})` },
         ];
         hint = `${tensA} tens take away ${tensB} tens = ${tensA - tensB} tens.`;
@@ -706,10 +686,7 @@ const understandHundreds: ProblemGenerator = {
       case 'concrete':
         question = `The number ${number} has ${hundreds} hundreds, ${tens} tens, and ${ones} ones. How many ${placeWord}?`;
         questionParts = [
-          { type: 'text', value: `${number}` },
-          { type: 'text', value: `${'■'.repeat(hundreds)} hundreds` },
-          { type: 'text', value: `${'▮'.repeat(tens)} tens` },
-          { type: 'text', value: `${'●'.repeat(ones)} ones` },
+          { type: 'image', value: `base10-${hundreds}-${tens}-${ones}` },
           { type: 'text', value: `How many ${placeWord}?` },
         ];
         hint = `Count the ${placeWord} blocks.`;

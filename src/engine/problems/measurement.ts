@@ -50,16 +50,13 @@ const orderObjectsByLength: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete': {
-        const visuals = objects.map(o => `${o.name}: ${'━'.repeat(o.typicalLength)}`).join('\n');
-        question = `Look at these objects:\n${visuals}\n\nWhich one is the shortest?`;
+        const comparePairs = objects.map(o => `${o.name.replace(/\s+/g, '_')}:${o.typicalLength}`).join(',');
+        question = `Look at these objects. Which one is the shortest?`;
         questionParts = [
           { type: 'text', value: 'Which is shortest?' },
-          ...objects.map(o => ({
-            type: 'text' as const,
-            value: `${o.name}: ${'━'.repeat(o.typicalLength)}`,
-          })),
+          { type: 'image', value: `compare-${comparePairs}-units` },
         ];
-        hint = `Compare the lines. The shortest line shows the shortest object.`;
+        hint = `Compare the bars. The shortest bar shows the shortest object.`;
         break;
       }
       case 'representational':
@@ -115,17 +112,12 @@ const measureNonstandardUnits: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete': {
-        const unitVisual = '▢'.repeat(length);
-        const objectVisual = '━'.repeat(length * 2);
-        question = `The ${object.name} is this long: ${objectVisual}\nEach ${unit.slice(0, -1)} is: ▢\nCount the ${unit}: ${unitVisual}\nHow many ${unit} long is the ${object.name}?`;
+        question = `How many ${unit} long is the ${object.name}?`;
         questionParts = [
-          { type: 'text', value: `${object.name}:` },
-          { type: 'text', value: objectVisual },
-          { type: 'text', value: `Measured in ${unit}:` },
-          { type: 'text', value: unitVisual },
+          { type: 'image', value: `measure-${object.name}:${length}-${unit.replace(/\s+/g, '_')}` },
           { type: 'text', value: `How many ${unit}?` },
         ];
-        hint = `Count each ▢ one by one.`;
+        hint = `Count the marks on the ruler.`;
         break;
       }
       case 'representational':

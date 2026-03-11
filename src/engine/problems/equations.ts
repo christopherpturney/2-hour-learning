@@ -1,5 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-import { randomInt, generateId, dots } from './utils';
+import { randomInt, generateId } from './utils';
 
 // ============================================
 // Equal Sign Meaning
@@ -32,15 +32,14 @@ const equalSignMeaning: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Is this true? ${dots(a)} + ${dots(b)} = ${dots(rightSide)}`;
+        question = `Is this true? ${a} + ${b} = ${rightSide}`;
         questionParts = [
-          { type: 'dots', value: dots(a), count: a },
-          { type: 'text', value: '+' },
-          { type: 'dots', value: dots(b), count: b },
+          { type: 'text', value: 'Is this true?' },
+          { type: 'image', value: `counters-${a}-${b}` },
           { type: 'text', value: '=' },
-          { type: 'dots', value: dots(rightSide), count: rightSide },
+          { type: 'image', value: `counters-${rightSide}` },
         ];
-        hint = `Count the dots on each side. Are there the same number?`;
+        hint = `Count the counters on each side. Are there the same number?`;
         break;
       case 'representational':
         question = `Is this true? ${a} + ${b} = ${rightSide}. Does the left side equal the right side?`;
@@ -112,33 +111,32 @@ const missingNumberEquations: ProblemGenerator = {
     switch (scaffolding) {
       case 'concrete':
         if (position === 2) {
-          question = `${dots(a)} + ${dots(b)} = ? Count all the dots.`;
+          question = `${a} + ${b} = ? Count all the counters.`;
           questionParts = [
-            { type: 'dots', value: dots(a), count: a },
-            { type: 'text', value: '+' },
-            { type: 'dots', value: dots(b), count: b },
+            { type: 'text', value: 'Count all the counters:' },
+            { type: 'image', value: `counters-${a}-${b}` },
             { type: 'text', value: '= ?' },
           ];
-          hint = `Count all the dots together.`;
+          hint = `Count all the counters together.`;
         } else if (position === 0) {
-          question = `? + ${dots(b)} = ${dots(c)}. How many dots are missing from the first group?`;
+          question = `? + ${b} = ${c}. How many are missing from the first group?`;
           questionParts = [
             { type: 'blank', value: '?' },
             { type: 'text', value: '+' },
-            { type: 'dots', value: dots(b), count: b },
+            { type: 'image', value: `counters-${b}` },
             { type: 'text', value: '=' },
-            { type: 'dots', value: dots(c), count: c },
+            { type: 'image', value: `counters-${c}` },
           ];
-          hint = `You need ${c} dots total. You already have ${b}. How many more do you need?`;
+          hint = `You need ${c} total. You already have ${b}. How many more do you need?`;
         } else {
-          question = `${dots(a)} + ? = ${dots(c)}. How many dots are missing?`;
+          question = `${a} + ? = ${c}. How many are missing?`;
           questionParts = [
-            { type: 'dots', value: dots(a), count: a },
+            { type: 'image', value: `counters-${a}` },
             { type: 'text', value: '+ ?' },
             { type: 'text', value: '=' },
-            { type: 'dots', value: dots(c), count: c },
+            { type: 'image', value: `counters-${c}` },
           ];
-          hint = `You have ${a} dots and need ${c} total. How many more?`;
+          hint = `You have ${a} and need ${c} total. How many more?`;
         }
         break;
       case 'representational':

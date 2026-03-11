@@ -27,7 +27,7 @@ export default function Layout({ children, studentName, onSignOut }: LayoutProps
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <Calculator className="w-6 h-6 text-indigo-600" />
             <h1 className="text-lg font-bold text-slate-800 tracking-tight">Math Mastery</h1>
@@ -51,14 +51,14 @@ export default function Layout({ children, studentName, onSignOut }: LayoutProps
       </header>
 
       {/* Content — add bottom padding when nav is visible */}
-      <main className={`flex-1 ${location.pathname === '/skills' ? 'max-w-full' : 'max-w-3xl'} mx-auto w-full px-4 py-5 ${hideNav ? '' : 'pb-24'}`}>
+      <main className={`flex-1 max-w-5xl mx-auto w-full px-4 py-5 ${hideNav ? '' : 'pb-24'}`}>
         {children}
       </main>
 
       {/* Bottom Tab Bar */}
       {!hideNav && (
         <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-30 pb-[env(safe-area-inset-bottom,0px)]">
-          <div className="max-w-3xl mx-auto flex">
+          <div className="max-w-5xl mx-auto flex">
             {tabs.map((tab) => {
               const isActive = location.pathname === tab.path;
               return (

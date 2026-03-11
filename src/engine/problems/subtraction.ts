@@ -1,5 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-import { randomInt, generateId, dots, crossedDots, makeChoices } from './utils';
+import { randomInt, generateId, makeChoices } from './utils';
 
 // ============================================
 // Subtraction Within 5
@@ -17,14 +17,12 @@ const subtractionWithin5: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `You have ${dots(a)}. Take away ${b}. How many are left? ${crossedDots(a, b)}`;
+        question = `You have ${a}. Take away ${b}. How many are left?`;
         questionParts = [
-          { type: 'text', value: `You have ${a} dots.` },
-          { type: 'dots', value: dots(a), count: a },
-          { type: 'text', value: `Take away ${b}.` },
-          { type: 'dots', value: crossedDots(a, b), count: a },
+          { type: 'text', value: `You have ${a}. Take away ${b}. How many are left?` },
+          { type: 'image', value: `counters-${a}-cross-${b}` },
         ];
-        hint = `Start with ${a} dots and cross out ${b}. Count what is left.`;
+        hint = `Start with ${a} counters and cross out ${b}. Count what is left.`;
         break;
       case 'representational':
         question = `Use the number line: Start at ${a}, jump back ${b}. Where do you land?`;
@@ -74,12 +72,12 @@ const subtractionWithin10: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `You have ${dots(a)}. Take away ${b}. How many are left?`;
+        question = `You have ${a}. Take away ${b}. How many are left?`;
         questionParts = [
-          { type: 'dots', value: dots(a), count: a },
-          { type: 'text', value: `Take away ${b}. How many are left?` },
+          { type: 'text', value: `You have ${a}. Take away ${b}. How many are left?` },
+          { type: 'image', value: `counters-${a}-cross-${b}` },
         ];
-        hint = `Cross out ${b} dots from ${dots(a)} and count what is left.`;
+        hint = `Cross out ${b} counters and count what is left.`;
         break;
       case 'representational':
         question = `Use the number line: Start at ${a}, jump back ${b}. Where do you land?`;
@@ -129,11 +127,9 @@ const subtractionFluency10: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${dots(a)} take away ${dots(b)} = ?`;
+        question = `${a} take away ${b} = ?`;
         questionParts = [
-          { type: 'dots', value: dots(a), count: a },
-          { type: 'text', value: 'take away' },
-          { type: 'dots', value: dots(b), count: b },
+          { type: 'image', value: `counters-${a}-cross-${b}` },
         ];
         hint = `Count what is left after removing ${b}.`;
         break;
@@ -183,17 +179,14 @@ const subtractionWithin20: ProblemGenerator = {
     let hint: string | undefined;
 
     switch (scaffolding) {
-      case 'concrete': {
-        const groupA = `${dots(10)} ${dots(a - 10)}`;
-        question = `You have ${a} dots: ${groupA}. Take away ${b}. How many are left?`;
+      case 'concrete':
+        question = `You have ${a}. Take away ${b}. How many are left?`;
         questionParts = [
-          { type: 'text', value: `You have ${a} dots:` },
-          { type: 'dots', value: groupA, count: a },
-          { type: 'text', value: `Take away ${b}. How many are left?` },
+          { type: 'text', value: `You have ${a}. Take away ${b}. How many are left?` },
+          { type: 'image', value: `counters-${a}-cross-${b}` },
         ];
         hint = `Think about groups of ten. ${a} = 10 + ${a - 10}. Now take away ${b}.`;
         break;
-      }
       case 'representational':
         question = `Start at ${a} on the number line. Jump back ${b}. Where do you land?`;
         questionParts = [
@@ -242,12 +235,11 @@ const subtractionAsUnknownAddend: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `You have ${dots(known)} dots. You need ${total} in all. How many more dots do you need?`;
+        question = `You have ${known} counters. You need ${total} in all. How many more do you need?`;
         questionParts = [
           { type: 'text', value: `You have:` },
-          { type: 'dots', value: dots(known), count: known },
-          { type: 'text', value: `You need ${total} in all.` },
-          { type: 'text', value: 'How many more?' },
+          { type: 'image', value: `counters-${known}` },
+          { type: 'text', value: `You need ${total} in all. How many more?` },
         ];
         hint = `Count up from ${known} to ${total}.`;
         break;

@@ -116,8 +116,7 @@ export default function ParentDashboard({ student, scores, sessions }: ParentDas
   const ringOffset = ringCircumference - (progressPercent / 100) * ringCircumference;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
-      <div className="max-w-6xl mx-auto">
+    <div>
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -475,7 +474,6 @@ export default function ParentDashboard({ student, scores, sessions }: ParentDas
             </span>
           ))}
         </div>
-      </div>
     </div>
   );
 }

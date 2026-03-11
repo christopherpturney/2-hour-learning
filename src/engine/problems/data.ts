@@ -31,23 +31,10 @@ function generateDataSet(categories: string[]): Record<string, number> {
   return data;
 }
 
-function tallies(n: number): string {
-  const fullGroups = Math.floor(n / 5);
-  const remainder = n % 5;
-  let result = '';
-  for (let i = 0; i < fullGroups; i++) {
-    result += '||||̸ '; // tally group of 5
-  }
-  result += '|'.repeat(remainder);
-  return result.trim();
-}
-
-function barChart(data: Record<string, number>): string {
-  const lines: string[] = [];
-  for (const [category, count] of Object.entries(data)) {
-    lines.push(`${category}: ${'█'.repeat(count)} (${count})`);
-  }
-  return lines.join('\n');
+/** Build a barchart-... value string from data */
+function barChartValue(data: Record<string, number>): string {
+  const pairs = Object.entries(data).map(([k, v]) => `${k}:${v}`).join(',');
+  return `barchart-${pairs}`;
 }
 
 // ============================================
@@ -70,29 +57,28 @@ const organizeDataCategories: ProblemGenerator = {
     switch (scaffolding) {
       case 'concrete': {
         const tallyDisplay = themeData.categories
-          .map(cat => `${cat}: ${tallies(data[cat])}`)
-          .join('\n');
-        question = `Kids voted for their ${themeData.theme}. Here are the tallies:\n${tallyDisplay}\n\nHow many picked ${askCategory}?`;
+          .map(cat => `${cat}: ${data[cat]}`)
+          .join(', ');
+        question = `Kids voted for their ${themeData.theme}. Here are the tallies: ${tallyDisplay}. How many picked ${askCategory}?`;
         questionParts = [
           { type: 'text', value: `${themeData.theme} votes:` },
-          ...themeData.categories.map(cat => ({
-            type: 'text' as const,
-            value: `${cat}: ${tallies(data[cat])}`,
-          })),
+          ...themeData.categories.flatMap(cat => [
+            { type: 'text' as const, value: `${cat}:` },
+            { type: 'image' as const, value: `tally-${data[cat]}` },
+          ]),
           { type: 'text', value: `How many picked ${askCategory}?` },
         ];
-        hint = `Count the tally marks next to ${askCategory}. Remember, each group of 5 looks like ||||̸.`;
+        hint = `Count the tally marks next to ${askCategory}. Remember, each group of 5 has a line through it.`;
         break;
       }
       case 'representational': {
-        const chart = barChart(data);
-        question = `Look at the chart for ${themeData.theme}:\n${chart}\n\nHow many picked ${askCategory}?`;
+        const dataDisplay = themeData.categories
+          .map(cat => `${cat}: ${data[cat]}`)
+          .join(', ');
+        question = `Look at the chart for ${themeData.theme}: ${dataDisplay}. How many picked ${askCategory}?`;
         questionParts = [
           { type: 'text', value: `${themeData.theme} chart:` },
-          ...themeData.categories.map(cat => ({
-            type: 'text' as const,
-            value: `${cat}: ${'█'.repeat(data[cat])} (${data[cat]})`,
-          })),
+          { type: 'image', value: barChartValue(data) },
           { type: 'text', value: `How many picked ${askCategory}?` },
         ];
         hint = `Look at the bar for ${askCategory}. How long is it?`;
@@ -152,10 +138,6 @@ const interpretData: ProblemGenerator = {
     let hint: string | undefined;
     let correctAnswer: string;
 
-    const chartDisplay = themeData.categories
-      .map(cat => `${cat}: ${'█'.repeat(data[cat])} (${data[cat]})`)
-      .join('\n');
-
     switch (qType) {
       case 'most':
         correctAnswer = most[0];
@@ -182,13 +164,10 @@ const interpretData: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Look at the chart for ${themeData.theme}:\n${chartDisplay}\n\n${questionText[qType]}`;
+        question = `Look at the chart for ${themeData.theme}. ${questionText[qType]}`;
         questionParts = [
           { type: 'text', value: `${themeData.theme} chart:` },
-          ...themeData.categories.map(cat => ({
-            type: 'text' as const,
-            value: `${cat}: ${'█'.repeat(data[cat])} (${data[cat]})`,
-          })),
+          { type: 'image', value: barChartValue(data) },
           { type: 'text', value: questionText[qType] },
         ];
         if (qType === 'most' || qType === 'least') {
@@ -200,7 +179,7 @@ const interpretData: ProblemGenerator = {
         }
         break;
       case 'representational':
-        question = `${themeData.theme} data:\n${chartDisplay}\n\n${questionText[qType]}`;
+        question = `${themeData.theme} data: ${themeData.categories.map(cat => `${cat}: ${data[cat]}`).join(', ')}. ${questionText[qType]}`;
         questionParts = [
           { type: 'text', value: `${themeData.theme}:` },
           ...themeData.categories.map(cat => ({

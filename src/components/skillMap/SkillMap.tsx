@@ -209,8 +209,7 @@ export default function SkillMap({ scores }: SkillMapProps) {
   const progressPercent = Math.round((counts.mastered / totalSkills) * 100);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4 sm:p-6" onClick={() => setSelectedSkillId(null)}>
-      <div className="max-w-full mx-auto">
+    <div onClick={() => setSelectedSkillId(null)}>
         {/* Header */}
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">My Math Skills</h1>
         <p className="text-gray-500 mb-6">Track your progress across all math skills</p>
@@ -350,7 +349,6 @@ export default function SkillMap({ scores }: SkillMapProps) {
             ))}
           </div>
         </div>
-      </div>
     </div>
   );
 }

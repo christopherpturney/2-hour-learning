@@ -450,8 +450,7 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
 
   // ---- Render editor view ----
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
-      <div className="max-w-5xl mx-auto">
+    <div>
         <h1 className="text-2xl font-bold text-gray-800 mb-1">Worksheet Generator</h1>
         <p className="text-gray-500 mb-6">
           Create custom practice worksheets for offline learning
@@ -543,7 +542,7 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
                               className="w-4 h-4 rounded text-blue-600"
                             />
                             <span className={`w-2 h-2 rounded-full shrink-0 ${getMasteryDotColor(skill.id)}`} />
-                            <span className="truncate">{skill.name}</span>
+                            <span>{skill.name}</span>
                             <span className="text-[10px] text-gray-400 ml-auto capitalize shrink-0">
                               {getMasteryLabel(skill.id)}
                             </span>
@@ -723,7 +722,6 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }

@@ -3,6 +3,11 @@ import type { FormEvent } from 'react';
 import type { Problem } from '../../types';
 import ClockFace, { parseClockValue } from '../ClockFace';
 import ShapeVisual, { parseShapeValue } from '../ShapeVisual';
+import CounterGroup, { parseCounterValue } from '../visuals/CounterGroup';
+import Base10Blocks, { parseBase10Value } from '../visuals/Base10Blocks';
+import TallyMarks, { parseTallyValue } from '../visuals/TallyMarks';
+import BarChart, { parseBarChartValue } from '../visuals/BarChart';
+import MeasurementBar, { parseMeasurementValue } from '../visuals/MeasurementBar';
 
 interface ProblemDisplayProps {
   problem: Problem;
@@ -57,6 +62,46 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
                 return (
                   <div key={idx} className="w-full flex justify-center my-2">
                     <ShapeVisual value={part.value} size={180} />
+                  </div>
+                );
+              }
+              const counterInfo = parseCounterValue(part.value);
+              if (counterInfo) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <CounterGroup value={part.value} />
+                  </div>
+                );
+              }
+              const base10Info = parseBase10Value(part.value);
+              if (base10Info) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <Base10Blocks value={part.value} />
+                  </div>
+                );
+              }
+              const tallyInfo = parseTallyValue(part.value);
+              if (tallyInfo) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <TallyMarks value={part.value} />
+                  </div>
+                );
+              }
+              const barChartInfo = parseBarChartValue(part.value);
+              if (barChartInfo) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <BarChart value={part.value} />
+                  </div>
+                );
+              }
+              const measureInfo = parseMeasurementValue(part.value);
+              if (measureInfo) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <MeasurementBar value={part.value} />
                   </div>
                 );
               }
@@ -160,13 +205,13 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
       {/* Answer input area */}
       <div className="space-y-3">
         {problem.type === 'multiple_choice' && problem.choices && (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             {problem.choices.map((choice, idx) => (
               <button
                 key={idx}
                 onClick={() => !disabled && onAnswer(choice)}
                 disabled={disabled}
-                className="bg-slate-50 active:bg-indigo-100 border-2 border-slate-200 active:border-indigo-400 text-slate-800 py-5 px-4 rounded-2xl text-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[64px]"
+                className="bg-slate-50 active:bg-indigo-100 border-2 border-slate-200 active:border-indigo-400 text-slate-800 py-4 px-10 rounded-2xl text-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[56px] min-w-[80px]"
               >
                 {choice}
               </button>
