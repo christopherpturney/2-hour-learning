@@ -8,9 +8,10 @@ interface StudentSelectorProps {
   activeStudent: Student | null;
   onSelect: (student: Student) => void;
   onAdd: (name: string) => void;
+  onAddSample?: () => void;
 }
 
-export default function StudentSelector({ students, activeStudent, onSelect, onAdd }: StudentSelectorProps) {
+export default function StudentSelector({ students, activeStudent, onSelect, onAdd, onAddSample }: StudentSelectorProps) {
   const [showAddForm, setShowAddForm] = useState(students.length === 0);
   const [name, setName] = useState('');
 
@@ -103,6 +104,16 @@ export default function StudentSelector({ students, activeStudent, onSelect, onA
           className="w-full py-4 rounded-2xl border-2 border-dashed border-slate-300 text-slate-500 active:border-indigo-300 active:text-indigo-500 text-lg font-semibold transition-colors min-h-[52px]"
         >
           + Add Another Student
+        </button>
+      )}
+
+      {/* Sample student shortcut */}
+      {onAddSample && (
+        <button
+          onClick={onAddSample}
+          className="w-full py-4 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white text-lg font-bold active:from-violet-600 active:to-purple-700 transition-colors shadow-sm min-h-[52px]"
+        >
+          Try Sample Student (Mid-1st Grade)
         </button>
       )}
     </div>
