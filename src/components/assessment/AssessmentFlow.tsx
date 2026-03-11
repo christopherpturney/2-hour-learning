@@ -10,6 +10,36 @@ import {
 import ProblemDisplay from '../session/ProblemDisplay';
 import { PartyPopper, Trophy, TrendingUp, ClipboardList, ArrowRight, X } from 'lucide-react';
 
+const ASSESSMENT_STORAGE_KEY = (studentId: string) => `active_assessment_${studentId}`;
+
+interface SavedAssessmentState {
+  state: AssessmentState;
+  scores: Record<string, SkillScore>;
+}
+
+function saveAssessmentState(studentId: string, state: AssessmentState, scores: Map<string, SkillScore>) {
+  const obj: Record<string, SkillScore> = {};
+  for (const [k, v] of scores) obj[k] = v;
+  const data: SavedAssessmentState = { state, scores: obj };
+  localStorage.setItem(ASSESSMENT_STORAGE_KEY(studentId), JSON.stringify(data));
+}
+
+function loadAssessmentState(studentId: string): SavedAssessmentState | null {
+  try {
+    const raw = localStorage.getItem(ASSESSMENT_STORAGE_KEY(studentId));
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch { return null; }
+}
+
+export function clearSavedAssessment(studentId: string) {
+  localStorage.removeItem(ASSESSMENT_STORAGE_KEY(studentId));
+}
+
+export function hasSavedAssessment(studentId: string): boolean {
+  return localStorage.getItem(ASSESSMENT_STORAGE_KEY(studentId)) !== null;
+}
+
 interface AssessmentFlowProps {
   student: Student;
   scores: Map<string, SkillScore>;
@@ -21,8 +51,26 @@ type ViewState = 'problem' | 'complete';
 
 export default function AssessmentFlow({ student, scores, onComplete, onExit }: AssessmentFlowProps) {
   // Use refs for mutable state to avoid stale closures
-  const stateRef = useRef<AssessmentState>(createAssessment());
-  const scoresRef = useRef<Map<string, SkillScore>>(new Map(scores));
+  const initializedRef = useRef(false);
+  const stateRef = useRef<AssessmentState>(null!);
+  const scoresRef = useRef<Map<string, SkillScore>>(null!);
+
+  if (!initializedRef.current) {
+    initializedRef.current = true;
+    const saved = loadAssessmentState(student.id);
+    if (saved) {
+      stateRef.current = saved.state;
+      const restoredScores = new Map<string, SkillScore>();
+      for (const [k, v] of Object.entries(saved.scores)) restoredScores.set(k, v);
+      for (const [k, v] of scores) {
+        if (!restoredScores.has(k)) restoredScores.set(k, v);
+      }
+      scoresRef.current = restoredScores;
+    } else {
+      stateRef.current = createAssessment();
+      scoresRef.current = new Map(scores);
+    }
+  }
 
   // Render trigger — increment to force re-render after ref mutations
   const [, setRenderCount] = useState(0);
@@ -138,7 +186,13 @@ export default function AssessmentFlow({ student, scores, onComplete, onExit }: 
     }
   }
 
+  function handleExit() {
+    saveAssessmentState(student.id, stateRef.current, scoresRef.current);
+    onExit();
+  }
+
   function handleComplete() {
+    clearSavedAssessment(student.id);
     onComplete(scoresRef.current);
   }
 
@@ -224,7 +278,7 @@ export default function AssessmentFlow({ student, scores, onComplete, onExit }: 
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
         <div className="flex items-center justify-between mb-2">
           <button
-            onClick={onExit}
+            onClick={handleExit}
             className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 active:bg-slate-200 transition-colors"
             aria-label="Exit assessment"
           >
