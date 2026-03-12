@@ -4,6 +4,8 @@ import type { Problem } from '../../types';
 import ClockFace, { parseClockValue } from '../ClockFace';
 import ShapeVisual, { parseShapeValue } from '../ShapeVisual';
 import CounterGroup, { parseCounterValue } from '../visuals/CounterGroup';
+import ObjectGroup, { parseObjectGroupValue } from '../visuals/ObjectGroup';
+import PictographRow, { parsePictographValue } from '../visuals/PictographRow';
 import Base10Blocks, { parseBase10Value } from '../visuals/Base10Blocks';
 import TallyMarks, { parseTallyValue } from '../visuals/TallyMarks';
 import BarChart, { parseBarChartValue } from '../visuals/BarChart';
@@ -44,6 +46,8 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
   function renderQuestionParts() {
     if (!problem.questionParts || problem.questionParts.length === 0) return null;
 
+    const equationCount = problem.questionParts.filter(p => p.type === 'equation').length;
+
     return (
       <div className="flex flex-wrap items-center justify-center gap-2 my-4">
         {problem.questionParts.map((part, idx) => {
@@ -62,6 +66,22 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
                 return (
                   <div key={idx} className="w-full flex justify-center my-2">
                     <ShapeVisual value={part.value} size={180} />
+                  </div>
+                );
+              }
+              const objectGroupInfo = parseObjectGroupValue(part.value);
+              if (objectGroupInfo) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <ObjectGroup value={part.value} />
+                  </div>
+                );
+              }
+              const pictographInfo = parsePictographValue(part.value);
+              if (pictographInfo) {
+                return (
+                  <div key={idx} className="w-full flex justify-center my-2">
+                    <PictographRow value={part.value} />
                   </div>
                 );
               }
@@ -117,10 +137,17 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
                 />
               );
             case 'equation':
+              if (equationCount > 1) {
+                return (
+                  <span key={idx} className="text-3xl font-bold text-slate-800">
+                    {part.value}
+                  </span>
+                );
+              }
               return (
-                <span key={idx} className="text-3xl font-bold text-slate-800">
+                <div key={idx} className="w-full text-center text-3xl font-bold text-slate-800">
                   {part.value}
-                </span>
+                </div>
               );
             case 'text':
               return (
@@ -173,7 +200,7 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
       {/* Scaffolding indicator */}
       {problem.scaffolding === 'concrete' && (
         <div className="text-center text-sm text-blue-600 font-semibold bg-blue-50 rounded-xl px-3 py-2 inline-block">
-          Use the dots to help you count!
+          Use the pictures to help you count!
         </div>
       )}
 

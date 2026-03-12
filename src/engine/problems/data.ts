@@ -59,16 +59,16 @@ const organizeDataCategories: ProblemGenerator = {
         const tallyDisplay = themeData.categories
           .map(cat => `${cat}: ${data[cat]}`)
           .join(', ');
-        question = `Kids voted for their ${themeData.theme}. Here are the tallies: ${tallyDisplay}. How many picked ${askCategory}?`;
+        question = `Kids voted for their ${themeData.theme}. Here are the results: ${tallyDisplay}. How many picked ${askCategory}?`;
         questionParts = [
           { type: 'text', value: `${themeData.theme} votes:` },
           ...themeData.categories.flatMap(cat => [
             { type: 'text' as const, value: `${cat}:` },
-            { type: 'image' as const, value: `tally-${data[cat]}` },
+            { type: 'image' as const, value: `pictograph-${cat.replace(/\s+/g, '_')}-${data[cat]}` },
           ]),
           { type: 'text', value: `How many picked ${askCategory}?` },
         ];
-        hint = `Count the tally marks next to ${askCategory}. Remember, each group of 5 has a line through it.`;
+        hint = `Count the pictures next to ${askCategory}.`;
         break;
       }
       case 'representational': {
