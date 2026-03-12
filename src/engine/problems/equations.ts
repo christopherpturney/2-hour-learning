@@ -1,5 +1,5 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
-import { randomInt, generateId } from './utils';
+import { randomInt, generateId, shuffle } from './utils';
 
 // ============================================
 // Equal Sign Meaning
@@ -7,19 +7,84 @@ import { randomInt, generateId } from './utils';
 const equalSignMeaning: ProblemGenerator = {
   skillId: 'equal-sign-meaning',
   generate(scaffolding: ScaffoldingLevel): Problem {
-    // Generate equations to test if both sides are equal
+    // Randomly choose between true/false format and "find the missing number" format
+    const useMissingNumber = Math.random() > 0.5;
+
+    if (useMissingNumber) {
+      // "Which number makes this true: 5 + 3 = ___ + 2?"
+      const a = randomInt(1, 7);
+      const b = randomInt(1, 9 - a);
+      const sum = a + b;
+      // Pick a number for one side, answer is what balances it
+      const c = randomInt(1, sum - 1);
+      const answer = sum - c;
+
+      let question: string;
+      let questionParts: QuestionPart[] | undefined;
+      let hint: string | undefined;
+
+      switch (scaffolding) {
+        case 'concrete':
+          question = `What number makes this true? ${a} + ${b} = ? + ${c}`;
+          questionParts = [
+            { type: 'image', value: `counters-${a}-${b}` },
+            { type: 'text', value: '=' },
+            { type: 'text', value: `? + ${c}` },
+          ];
+          hint = `Count the left side: ${a} + ${b} = ${sum}. What plus ${c} also equals ${sum}?`;
+          break;
+        case 'representational':
+          question = `What number makes this true? ${a} + ${b} = ? + ${c}`;
+          questionParts = [
+            { type: 'equation', value: `${a} + ${b} = ? + ${c}` },
+          ];
+          hint = `Both sides must be equal. ${a} + ${b} = ${sum}. What + ${c} = ${sum}?`;
+          break;
+        case 'abstract':
+          question = `Find the missing number: ${a} + ${b} = ? + ${c}`;
+          questionParts = [
+            { type: 'equation', value: `${a} + ${b} = ? + ${c}` },
+          ];
+          hint = `The = sign means both sides are the same. ${sum} = ? + ${c}. So ? = ${sum} - ${c}.`;
+          break;
+      }
+
+      // Generate 4 unique wrong-ish choices, ensuring the correct answer is included
+      const candidates = new Set([answer, answer + 1, answer > 1 ? answer - 1 : answer + 2, sum]);
+      // Pad to 4 if duplicates were removed
+      let pad = answer + 3;
+      while (candidates.size < 4) {
+        if (!candidates.has(pad)) candidates.add(pad);
+        pad++;
+      }
+      const choices = [...candidates].slice(0, 4).map(String);
+      if (!choices.includes(String(answer))) choices[0] = String(answer);
+
+      return {
+        id: generateId(),
+        skillId: 'equal-sign-meaning',
+        type: 'multiple_choice',
+        scaffolding,
+        question,
+        questionParts,
+        correctAnswer: answer.toString(),
+        choices: shuffle(choices),
+        hint,
+        explanation: `${a} + ${b} = ${sum}. We need ? + ${c} = ${sum}. So ? = ${answer}. Check: ${answer} + ${c} = ${sum}. Both sides are equal!`,
+      };
+    }
+
+    // Original true/false format
     const a = randomInt(1, 8);
     const b = randomInt(1, 10 - a);
     const sum = a + b;
 
-    // Decide if we show a true or false equation
     const isTrue = Math.random() > 0.4;
     let rightSide: number;
 
     if (isTrue) {
       rightSide = sum;
     } else {
-      // Pick a wrong right side
       rightSide = sum + (Math.random() > 0.5 ? 1 : -1) * randomInt(1, 2);
       if (rightSide < 0) rightSide = sum + 1;
     }

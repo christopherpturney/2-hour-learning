@@ -121,12 +121,12 @@ const measureNonstandardUnits: ProblemGenerator = {
         break;
       }
       case 'representational':
-        question = `A ${object.name} is measured using ${unit}. It takes ${length} ${unit} laid end to end. How many ${unit} long is it?`;
+        question = `A ${object.name} is measured using ${unit}. How many ${unit} long is it?`;
         questionParts = [
-          { type: 'text', value: `${object.name} = ? ${unit}` },
-          { type: 'text', value: `You used ${length} ${unit}.` },
+          { type: 'image', value: `measure-${object.name}:${length}-${unit.replace(/\s+/g, '_')}` },
+          { type: 'text', value: `How many ${unit}?` },
         ];
-        hint = `How many ${unit} did you line up?`;
+        hint = `Count the ${unit} from one end to the other.`;
         break;
       case 'abstract': {
         const otherObjects = MEDIUM_OBJECTS.filter(o => o.name !== object.name);

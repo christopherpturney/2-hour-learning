@@ -7,7 +7,7 @@ import { randomInt, generateId, shuffle, makeChoices, generateWrongAnswers } fro
 const countTo120: ProblemGenerator = {
   skillId: 'count-to-120',
   generate(scaffolding: ScaffoldingLevel): Problem {
-    const start = randomInt(1, 115);
+    const start = randomInt(3, 115);
     const answer = start + 1;
 
     let question: string;
@@ -16,10 +16,10 @@ const countTo120: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `What number comes after ${start}? Count: ...${start - 2}, ${start - 1}, ${start}, ?`;
+        question = `What number comes after ${start}? Count the blocks to help.`;
         questionParts = [
-          { type: 'text', value: `Count:` },
-          { type: 'text', value: `...${start - 2}, ${start - 1}, ${start}, ?` },
+          { type: 'image', value: `counters-${Math.min(start, 20)}` },
+          { type: 'text', value: `Count: ...${start - 2}, ${start - 1}, ${start}, ?` },
         ];
         hint = `Say the numbers out loud: ${start - 2}, ${start - 1}, ${start}... what comes next?`;
         break;
@@ -63,7 +63,8 @@ const readWriteNumerals120: ProblemGenerator = {
   generate(scaffolding: ScaffoldingLevel): Problem {
     const number = randomInt(10, 120);
     const ones = number % 10;
-    const tens = Math.floor(number / 10);
+    const hundreds = Math.floor(number / 100);
+    const tens = Math.floor((number % 100) / 10);
     const numberWords: Record<number, string> = {
       0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five',
       6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten',
@@ -97,14 +98,20 @@ const readWriteNumerals120: ProblemGenerator = {
     if (numberToWord) {
       const correctWord = word;
       switch (scaffolding) {
-        case 'concrete':
-          question = `Here are ${tens} tens and ${ones} ones. What number is this? Write it as a word.`;
+        case 'concrete': {
+          const placeDesc = hundreds > 0
+            ? `${hundreds} hundred${hundreds > 1 ? 's' : ''}, ${tens} tens, and ${ones} ones`
+            : `${tens} tens and ${ones} ones`;
+          question = `Here are ${placeDesc}. What number is this? Write it as a word.`;
           questionParts = [
-            { type: 'image', value: `base10-0-${tens}-${ones}` },
+            { type: 'image', value: `base10-${hundreds}-${tens}-${ones}` },
             { type: 'text', value: `What number is this? Write it as a word.` },
           ];
-          hint = `Count the tens: ${tens} tens = ${tens * 10}. Plus ${ones} ones = ${number}.`;
+          hint = hundreds > 0
+            ? `${hundreds} hundred = ${hundreds * 100}. Plus ${tens} tens = ${tens * 10}. Plus ${ones} ones = ${number}.`
+            : `Count the tens: ${tens} tens = ${tens * 10}. Plus ${ones} ones = ${number}.`;
           break;
+        }
         case 'representational':
           question = `How do you say this number? ${number}`;
           questionParts = [
@@ -448,7 +455,9 @@ const addTwoDigitPlusOne: ProblemGenerator = {
           { type: 'text', value: '+' },
           { type: 'image', value: `base10-0-0-${oneDigit}` },
         ];
-        hint = `Keep the ${tens} tens. Add the ones: ${ones} + ${oneDigit} = ${ones + oneDigit}.`;
+        hint = ones + oneDigit >= 10
+          ? `Add the ones: ${ones} + ${oneDigit} = ${ones + oneDigit}. That's more than 9, so regroup: ${tens} tens becomes ${tens + 1} tens.`
+          : `Keep the ${tens} tens. Add the ones: ${ones} + ${oneDigit} = ${ones + oneDigit}.`;
         break;
       case 'representational':
         question = `${twoDigit} + ${oneDigit} = ? Think about tens and ones.`;
@@ -759,11 +768,12 @@ const addSubtractWithin100: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${equation} Use tens and ones blocks.`;
+        question = `${equation} Use the blocks to help.`;
         questionParts = [
-          { type: 'text', value: `${a} = ${tensA} tens, ${onesA} ones` },
-          { type: 'text', value: isAddition ? '+' : '-' },
-          { type: 'text', value: `${b} = ${tensB} tens, ${onesB} ones` },
+          { type: 'image', value: `base10-0-${tensA}-${onesA}` },
+          { type: 'equation', value: isAddition ? '+' : '−' },
+          { type: 'image', value: `base10-0-${tensB}-${onesB}` },
+          { type: 'equation', value: '= ?' },
         ];
         hint = isAddition
           ? `Add the tens: ${tensA} + ${tensB}. Add the ones: ${onesA} + ${onesB}. Regroup if needed.`

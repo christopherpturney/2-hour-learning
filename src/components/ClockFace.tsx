@@ -132,6 +132,6 @@ export function parseClockValue(value: string): { hour: number; minute: number }
   if (!match) return null;
   const hour = parseInt(match[1], 10);
   const minute = parseInt(match[2], 10);
-  if (hour < 1 || hour > 12 || (minute !== 0 && minute !== 30)) return null;
+  if (hour < 1 || hour > 12 || minute < 0 || minute > 59) return null;
   return { hour, minute };
 }

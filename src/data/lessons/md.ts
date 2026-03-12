@@ -89,7 +89,7 @@ export const mdLessons: Lesson[] = [
         title: 'Reading the Hour',
         content: 'A clock has two hands. The short hand points to the hour. When the long hand points to 12, it is exactly on the hour.',
         visual: [
-          { type: 'image', value: 'clock:3:00' },
+          { type: 'image', value: 'clock-3-00' },
         ],
         tip: 'Short hand = hour. Long hand on 12 = o\'clock.',
       },
@@ -98,7 +98,7 @@ export const mdLessons: Lesson[] = [
         title: 'Watch: 3 O\'Clock',
         content: 'The short hand points to 3. The long hand points to 12. It is 3 o\'clock (3:00).',
         visual: [
-          { type: 'image', value: 'clock:3:00' },
+          { type: 'image', value: 'clock-3-00' },
         ],
       },
       {
@@ -106,7 +106,7 @@ export const mdLessons: Lesson[] = [
         title: 'Watch: 8 O\'Clock',
         content: 'The short hand points to 8. The long hand points to 12. It is 8 o\'clock (8:00).',
         visual: [
-          { type: 'image', value: 'clock:8:00' },
+          { type: 'image', value: 'clock-8-00' },
         ],
       },
       {
@@ -124,7 +124,7 @@ export const mdLessons: Lesson[] = [
         title: 'Half Past the Hour',
         content: 'When the long hand points to 6, it is half past the hour. The short hand will be between two numbers.',
         visual: [
-          { type: 'image', value: 'clock:3:30' },
+          { type: 'image', value: 'clock-3-30' },
         ],
         tip: 'Long hand on 6 = half past (or :30).',
       },
@@ -133,7 +133,7 @@ export const mdLessons: Lesson[] = [
         title: 'Watch: Half Past 3',
         content: 'The long hand points to 6. The short hand is between 3 and 4. It is 3:30 (half past 3).',
         visual: [
-          { type: 'image', value: 'clock:3:30' },
+          { type: 'image', value: 'clock-3-30' },
         ],
       },
       {
@@ -141,7 +141,7 @@ export const mdLessons: Lesson[] = [
         title: 'Watch: Half Past 7',
         content: 'The long hand points to 6. The short hand is between 7 and 8. It is 7:30 (half past 7).',
         visual: [
-          { type: 'image', value: 'clock:7:30' },
+          { type: 'image', value: 'clock-7-30' },
         ],
       },
       {

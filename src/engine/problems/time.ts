@@ -1,11 +1,6 @@
 import type { Problem, ProblemGenerator, ScaffoldingLevel, QuestionPart } from '../../types';
 import { randomInt, generateId, shuffle } from './utils';
 
-function clockFace(hour: number, minute: number): string {
-  const mm = minute.toString().padStart(2, '0');
-  return `${hour}:${mm}`;
-}
-
 // ============================================
 // Tell Time to the Hour
 // ============================================
@@ -159,7 +154,7 @@ const tellTimeFiveMinutes: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `Look at the clock: ${clockFace(hour, minute)}. The short hand is near ${hour}. The long hand points to ${minuteNumber}. What time is it?`;
+        question = `Look at the clock. The short hand is near ${hour}. The long hand points to ${minuteNumber}. What time is it?`;
         questionParts = [
           { type: 'image', value: `clock-${hour}-${minuteStr}` },
           { type: 'text', value: `Short hand: near ${hour}` },
@@ -169,7 +164,7 @@ const tellTimeFiveMinutes: ProblemGenerator = {
         hint = `The long hand on ${minuteNumber} means ${minute} minutes. Count by fives: 5, 10, 15... up to the ${minuteNumber}.`;
         break;
       case 'representational':
-        question = `The clock shows ${clockFace(hour, minute)}. The minute hand is on ${minuteNumber}. What time is it?`;
+        question = `Look at the clock. The minute hand is on ${minuteNumber}. What time is it?`;
         questionParts = [
           { type: 'image', value: `clock-${hour}-${minuteStr}` },
           { type: 'text', value: 'What time?' },
@@ -177,7 +172,7 @@ const tellTimeFiveMinutes: ProblemGenerator = {
         hint = `Each number on the clock means 5 more minutes. Count by 5s from 12 to the minute hand.`;
         break;
       case 'abstract':
-        question = `What time does this clock show? ${clockFace(hour, minute)}`;
+        question = `What time does this clock show?`;
         questionParts = [
           { type: 'image', value: `clock-${hour}-${minuteStr}` },
         ];

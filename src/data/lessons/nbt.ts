@@ -329,7 +329,7 @@ export const nbtLessons: Lesson[] = [
           { type: 'equation', value: '70 − 30 = 40' },
           { type: 'text', value: '7 tens − 3 tens = 4 tens' },
         ],
-        tip: 'Think in tens, then multiply by 10.',
+        tip: 'Think in tens: subtract the tens digits, then put a zero at the end.',
       },
       {
         type: 'example',

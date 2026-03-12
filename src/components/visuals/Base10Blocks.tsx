@@ -86,7 +86,7 @@ export default function Base10Blocks({ value }: Base10BlocksProps) {
             ))}
           </div>
           <span className="text-xs font-semibold text-slate-500">
-            {hundreds} {hundreds === 1 ? 'hundred' : 'hundreds'}
+            hundreds
           </span>
         </div>
       )}
@@ -100,7 +100,7 @@ export default function Base10Blocks({ value }: Base10BlocksProps) {
             ))}
           </div>
           <span className="text-xs font-semibold text-slate-500">
-            {tens} {tens === 1 ? 'ten' : 'tens'}
+            tens
           </span>
         </div>
       )}
@@ -114,7 +114,7 @@ export default function Base10Blocks({ value }: Base10BlocksProps) {
             ))}
           </div>
           <span className="text-xs font-semibold text-slate-500">
-            {ones} {ones === 1 ? 'one' : 'ones'}
+            ones
           </span>
         </div>
       )}

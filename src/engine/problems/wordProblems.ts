@@ -14,6 +14,17 @@ function pickObject(): string {
   return OBJECTS[randomInt(0, OBJECTS.length - 1)];
 }
 
+/** Return singular form when count is 1, plural otherwise */
+function objCount(count: number, plural: string): string {
+  if (count !== 1) return `${count} ${plural}`;
+  // Simple singularize: handle common patterns
+  if (plural === 'fish') return '1 fish';
+  if (plural === 'toy cars') return '1 toy car';
+  if (plural === 'cookies') return '1 cookie';
+  if (plural.endsWith('s')) return `1 ${plural.slice(0, -1)}`;
+  return `1 ${plural}`;
+}
+
 /** Encode object name for image value strings (spaces → underscores) */
 function objKey(name: string): string {
   return name.replace(/\s+/g, '_');
@@ -33,9 +44,9 @@ const wordProblemsAddTo: ProblemGenerator = {
 
     // Vary the word problem template
     const templates = [
-      `${name} has ${start} ${object}. ${name} gets ${added} more ${object}. How many ${object} does ${name} have now?`,
-      `There are ${start} ${object} on the table. ${name} puts ${added} more ${object} on the table. How many ${object} are on the table now?`,
-      `${name} found ${start} ${object}. Then ${name} found ${added} more. How many ${object} did ${name} find in all?`,
+      `${name} has ${objCount(start, object)}. ${name} gets ${added} more ${object}. How many ${object} does ${name} have now?`,
+      `There are ${objCount(start, object)} on the table. ${name} puts ${added} more ${object} on the table. How many ${object} are on the table now?`,
+      `${name} found ${objCount(start, object)}. Then ${name} found ${added} more. How many ${object} did ${name} find in all?`,
     ];
     const template = templates[randomInt(0, templates.length - 1)];
 
@@ -79,7 +90,7 @@ const wordProblemsAddTo: ProblemGenerator = {
       correctAnswer: answer.toString(),
       choices: makeChoices(answer, 0, 20),
       hint,
-      explanation: `${name} started with ${start} ${object} and got ${added} more. ${start} + ${added} = ${answer}. ${name} has ${answer} ${object} now.`,
+      explanation: `${name} started with ${objCount(start, object)} and got ${added} more. ${start} + ${added} = ${answer}. ${name} has ${objCount(answer, object)} now.`,
     };
   },
 };
@@ -97,9 +108,9 @@ const wordProblemsTakeFrom: ProblemGenerator = {
     const answer = start - removed;
 
     const templates = [
-      `${name} has ${start} ${object}. ${name} gives away ${removed} ${object}. How many ${object} does ${name} have left?`,
-      `There are ${start} ${object} on a shelf. ${name} takes ${removed} ${object}. How many ${object} are left on the shelf?`,
-      `${name} had ${start} ${object}. ${removed} ${object} fell down. How many ${object} are left?`,
+      `${name} has ${objCount(start, object)}. ${name} gives away ${objCount(removed, object)}. How many ${object} does ${name} have left?`,
+      `There are ${objCount(start, object)} on a shelf. ${name} takes ${objCount(removed, object)}. How many ${object} are left on the shelf?`,
+      `${name} had ${objCount(start, object)}. ${objCount(removed, object)} fell down. How many ${object} are left?`,
     ];
     const template = templates[randomInt(0, templates.length - 1)];
 
@@ -115,7 +126,7 @@ const wordProblemsTakeFrom: ProblemGenerator = {
           { type: 'image', value: `objects-${objKey(object)}-${start}-cross-${removed}` },
           { type: 'text', value: `Cross out ${removed}.` },
         ];
-        hint = `Start with ${start} ${object}. Cross out ${removed}. Count what is left.`;
+        hint = `Start with ${objCount(start, object)}. Cross out ${removed}. Count what is left.`;
         break;
       }
       case 'representational':
@@ -145,7 +156,7 @@ const wordProblemsTakeFrom: ProblemGenerator = {
       correctAnswer: answer.toString(),
       choices: makeChoices(answer, 0, 20),
       hint,
-      explanation: `${name} started with ${start} ${object} and ${removed} were taken away. ${start} - ${removed} = ${answer}. There are ${answer} ${object} left.`,
+      explanation: `${name} started with ${objCount(start, object)} and ${removed} were taken away. ${start} - ${removed} = ${answer}. There are ${objCount(answer, object)} left.`,
     };
   },
 };
@@ -210,7 +221,7 @@ const wordProblemsPutTogether: ProblemGenerator = {
     } else {
       // Unknown addend version: tell total and one part, ask for other part
       correctAnswer = groupB;
-      const template = `${name} has ${answer} ${object}. ${groupA} are on the table. The rest are in a box. How many ${object} are in the box?`;
+      const template = `${name} has ${objCount(answer, object)}. ${groupA} are on the table. The rest are in a box. How many ${object} are in the box?`;
 
       switch (scaffolding) {
         case 'concrete':
@@ -252,7 +263,7 @@ const wordProblemsPutTogether: ProblemGenerator = {
       choices: makeChoices(correctAnswer, 0, 20),
       hint,
       explanation: askTotal
-        ? `Put the groups together: ${groupA} + ${groupB} = ${answer}. There are ${answer} ${object} in all.`
+        ? `Put the groups together: ${groupA} + ${groupB} = ${answer}. There are ${objCount(answer, object)} in all.`
         : `${answer} total - ${groupA} on the table = ${groupB} in the box. ${groupA} + ${groupB} = ${answer}.`,
     };
   },
@@ -279,17 +290,17 @@ const wordProblemsCompare: ProblemGenerator = {
     switch (questionType) {
       case 0:
         // How many more?
-        template = `${name1} has ${bigger} ${object}. ${name2} has ${smaller} ${object}. How many more ${object} does ${name1} have than ${name2}?`;
+        template = `${name1} has ${objCount(bigger, object)}. ${name2} has ${objCount(smaller, object)}. How many more ${object} does ${name1} have than ${name2}?`;
         correctAnswer = difference;
         break;
       case 1:
         // How many fewer?
-        template = `${name1} has ${bigger} ${object}. ${name2} has ${smaller} ${object}. How many fewer ${object} does ${name2} have than ${name1}?`;
+        template = `${name1} has ${objCount(bigger, object)}. ${name2} has ${objCount(smaller, object)}. How many fewer ${object} does ${name2} have than ${name1}?`;
         correctAnswer = difference;
         break;
       default:
         // Who has more and by how much?
-        template = `${name1} has ${bigger} ${object}. ${name2} has ${smaller} ${object}. What is the difference?`;
+        template = `${name1} has ${objCount(bigger, object)}. ${name2} has ${objCount(smaller, object)}. What is the difference?`;
         correctAnswer = difference;
         break;
     }
@@ -355,9 +366,9 @@ const wordProblemsAddToChange: ProblemGenerator = {
     const answer = total - start;
 
     const templates = [
-      `${name} has ${start} ${object}. ${name} gets some more ${object}. Now ${name} has ${total} ${object}. How many ${object} did ${name} get?`,
-      `There are ${start} ${object} on a table. ${name} puts some more on the table. Now there are ${total} ${object}. How many did ${name} put on the table?`,
-      `${name} had ${start} ${object} in a bag. After getting some more, ${name} has ${total}. How many more ${object} did ${name} get?`,
+      `${name} has ${objCount(start, object)}. ${name} gets some more ${object}. Now ${name} has ${objCount(total, object)}. How many ${object} did ${name} get?`,
+      `There are ${objCount(start, object)} on a table. ${name} puts some more on the table. Now there are ${objCount(total, object)}. How many did ${name} put on the table?`,
+      `${name} had ${objCount(start, object)} in a bag. After getting some more, ${name} has ${total}. How many more ${object} did ${name} get?`,
     ];
     const template = templates[randomInt(0, templates.length - 1)];
 
@@ -423,7 +434,7 @@ const wordProblemsAddToStart: ProblemGenerator = {
 
     const templates = [
       `${name} had some ${object}. ${name} got ${added} more. Now ${name} has ${total}. How many did ${name} have at first?`,
-      `Some ${object} were on a shelf. ${name} put ${added} more on the shelf. Now there are ${total} ${object}. How many were on the shelf at first?`,
+      `Some ${object} were on a shelf. ${name} put ${added} more on the shelf. Now there are ${objCount(total, object)}. How many were on the shelf at first?`,
       `There were some ${object} in a box. ${name} added ${added} more. Now there are ${total}. How many were in the box at first?`,
     ];
     const template = templates[randomInt(0, templates.length - 1)];
@@ -471,7 +482,7 @@ const wordProblemsAddToStart: ProblemGenerator = {
       correctAnswer: answer.toString(),
       choices: makeChoices(answer, 0, 20),
       hint,
-      explanation: `${name} ended with ${total} and ${added} were added. ${total} - ${added} = ${answer}. ${name} had ${answer} ${object} at first.`,
+      explanation: `${name} ended with ${total} and ${added} were added. ${total} - ${added} = ${answer}. ${name} had ${objCount(answer, object)} at first.`,
     };
   },
 };
@@ -489,9 +500,9 @@ const wordProblemsTakeFromChange: ProblemGenerator = {
     const answer = start - remainder;
 
     const templates = [
-      `${name} had ${start} ${object}. ${name} gave some away. Now ${name} has ${remainder} ${object}. How many did ${name} give away?`,
-      `There were ${start} ${object} on a shelf. Some fell off. Now there are ${remainder}. How many fell off?`,
-      `${name} had ${start} ${object}. After losing some, ${name} has ${remainder} left. How many did ${name} lose?`,
+      `${name} had ${objCount(start, object)}. ${name} gave some away. Now ${name} has ${objCount(remainder, object)}. How many did ${name} give away?`,
+      `There were ${objCount(start, object)} on a shelf. Some fell off. Now there are ${remainder}. How many fell off?`,
+      `${name} had ${objCount(start, object)}. After losing some, ${name} has ${remainder} left. How many did ${name} lose?`,
     ];
     const template = templates[randomInt(0, templates.length - 1)];
 
@@ -538,7 +549,7 @@ const wordProblemsTakeFromChange: ProblemGenerator = {
       correctAnswer: answer.toString(),
       choices: makeChoices(answer, 0, 20),
       hint,
-      explanation: `${name} started with ${start} and now has ${remainder}. ${start} - ${remainder} = ${answer}. ${name} gave away ${answer} ${object}.`,
+      explanation: `${name} started with ${start} and now has ${remainder}. ${start} - ${remainder} = ${answer}. ${name} gave away ${objCount(answer, object)}.`,
     };
   },
 };
@@ -605,7 +616,7 @@ const wordProblemsTakeFromStart: ProblemGenerator = {
       correctAnswer: answer.toString(),
       choices: makeChoices(answer, 0, 20),
       hint,
-      explanation: `${removed} were taken away and ${remainder} are left. ${removed} + ${remainder} = ${answer}. ${name} had ${answer} ${object} at first.`,
+      explanation: `${removed} were taken away and ${remainder} are left. ${removed} + ${remainder} = ${answer}. ${name} had ${objCount(answer, object)} at first.`,
     };
   },
 };
@@ -624,9 +635,9 @@ const wordProblemsCompareBigger: ProblemGenerator = {
     const answer = smaller + difference;
 
     const templates = [
-      `${name2} has ${smaller} ${object}. ${name1} has ${difference} more ${object} than ${name2}. How many ${object} does ${name1} have?`,
-      `${name2} found ${smaller} ${object}. ${name1} found ${difference} more than ${name2}. How many did ${name1} find?`,
-      `${name1} has ${difference} more ${object} than ${name2}. ${name2} has ${smaller} ${object}. How many ${object} does ${name1} have?`,
+      `${name2} has ${objCount(smaller, object)}. ${name1} has ${difference} more ${object} than ${name2}. How many ${object} does ${name1} have?`,
+      `${name2} found ${objCount(smaller, object)}. ${name1} found ${difference} more than ${name2}. How many did ${name1} find?`,
+      `${name1} has ${difference} more ${object} than ${name2}. ${name2} has ${objCount(smaller, object)}. How many ${object} does ${name1} have?`,
     ];
     const template = templates[randomInt(0, templates.length - 1)];
 
@@ -673,7 +684,7 @@ const wordProblemsCompareBigger: ProblemGenerator = {
       correctAnswer: answer.toString(),
       choices: makeChoices(answer, 0, 20),
       hint,
-      explanation: `${name2} has ${smaller} and ${name1} has ${difference} more. ${smaller} + ${difference} = ${answer}. ${name1} has ${answer} ${object}.`,
+      explanation: `${name2} has ${smaller} and ${name1} has ${difference} more. ${smaller} + ${difference} = ${answer}. ${name1} has ${objCount(answer, object)}.`,
     };
   },
 };
@@ -692,9 +703,9 @@ const wordProblemsCompareSmaller: ProblemGenerator = {
     const answer = bigger - difference;
 
     const templates = [
-      `${name1} has ${bigger} ${object}. ${name1} has ${difference} more than ${name2}. How many ${object} does ${name2} have?`,
-      `${name1} collected ${bigger} ${object}. ${name2} collected ${difference} fewer. How many did ${name2} collect?`,
-      `${name2} has ${difference} fewer ${object} than ${name1}. ${name1} has ${bigger} ${object}. How many does ${name2} have?`,
+      `${name1} has ${objCount(bigger, object)}. ${name1} has ${difference} more than ${name2}. How many ${object} does ${name2} have?`,
+      `${name1} collected ${objCount(bigger, object)}. ${name2} collected ${difference} fewer. How many did ${name2} collect?`,
+      `${name2} has ${difference} fewer ${object} than ${name1}. ${name1} has ${objCount(bigger, object)}. How many does ${name2} have?`,
     ];
     const template = templates[randomInt(0, templates.length - 1)];
 
@@ -741,7 +752,7 @@ const wordProblemsCompareSmaller: ProblemGenerator = {
       correctAnswer: answer.toString(),
       choices: makeChoices(answer, 0, 15),
       hint,
-      explanation: `${name1} has ${bigger} and ${name2} has ${difference} fewer. ${bigger} - ${difference} = ${answer}. ${name2} has ${answer} ${object}.`,
+      explanation: `${name1} has ${bigger} and ${name2} has ${difference} fewer. ${bigger} - ${difference} = ${answer}. ${name2} has ${objCount(answer, object)}.`,
     };
   },
 };
@@ -763,14 +774,16 @@ const wordProblemsWithin100: ProblemGenerator = {
       // Two-step: add then subtract, or add then add
       const a = randomInt(10, 40);
       const b = randomInt(5, 30);
-      const c = randomInt(5, 20);
+      // Ensure c <= a + b so the answer is never negative
+      const maxC = Math.min(20, a + b);
+      const c = randomInt(5, Math.max(5, maxC));
       const addThenSubtract = Math.random() > 0.5;
       if (addThenSubtract) {
         answer = a + b - c;
-        template = `${name} has ${a} ${object}. ${name} gets ${b} more. Then ${name} gives away ${c}. How many ${object} does ${name} have now?`;
+        template = `${name} has ${objCount(a, object)}. ${name} gets ${b} more. Then ${name} gives away ${c}. How many ${object} does ${name} have now?`;
       } else {
         answer = a + b + c;
-        template = `${name} has ${a} ${object}. ${name} finds ${b} more. Then ${name} gets ${c} more as a gift. How many ${object} does ${name} have now?`;
+        template = `${name} has ${objCount(a, object)}. ${name} finds ${b} more. Then ${name} gets ${c} more as a gift. How many ${object} does ${name} have now?`;
       }
     } else {
       // One-step with larger numbers
@@ -779,12 +792,12 @@ const wordProblemsWithin100: ProblemGenerator = {
         const a = randomInt(20, 60);
         const b = randomInt(10, 100 - a);
         answer = a + b;
-        template = `${name} has ${a} ${object}. ${name} gets ${b} more. How many ${object} does ${name} have now?`;
+        template = `${name} has ${objCount(a, object)}. ${name} gets ${b} more. How many ${object} does ${name} have now?`;
       } else {
         const a = randomInt(30, 90);
         const b = randomInt(10, a);
         answer = a - b;
-        template = `${name} has ${a} ${object}. ${name} gives away ${b}. How many ${object} does ${name} have left?`;
+        template = `${name} has ${objCount(a, object)}. ${name} gives away ${b}. How many ${object} does ${name} have left?`;
       }
     }
 
