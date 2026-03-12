@@ -4,6 +4,13 @@ import { skills, domainNames } from '../../data/skills';
 import { generateProblem, getRegisteredSkillIds } from '../../engine/problems/index';
 import ClockFace, { parseClockValue } from '../ClockFace';
 import ShapeVisual, { parseShapeValue } from '../ShapeVisual';
+import CounterGroup, { parseCounterValue } from '../visuals/CounterGroup';
+import ObjectGroup, { parseObjectGroupValue } from '../visuals/ObjectGroup';
+import PictographRow, { parsePictographValue } from '../visuals/PictographRow';
+import Base10Blocks, { parseBase10Value } from '../visuals/Base10Blocks';
+import TallyMarks, { parseTallyValue } from '../visuals/TallyMarks';
+import BarChart, { parseBarChartValue } from '../visuals/BarChart';
+import MeasurementBar, { parseMeasurementValue } from '../visuals/MeasurementBar';
 
 interface WorksheetGeneratorProps {
   scores: Map<string, SkillScore>;
@@ -199,6 +206,35 @@ export default function WorksheetGenerator({ scores }: WorksheetGeneratorProps) 
         elements.push(
           <ShapeVisual key={i} value={part.value} size={size} />
         );
+        continue;
+      }
+      if (parseObjectGroupValue(part.value)) {
+        elements.push(<ObjectGroup key={i} value={part.value} />);
+        continue;
+      }
+      if (parsePictographValue(part.value)) {
+        elements.push(<PictographRow key={i} value={part.value} />);
+        continue;
+      }
+      if (parseCounterValue(part.value)) {
+        elements.push(<CounterGroup key={i} value={part.value} />);
+        continue;
+      }
+      if (parseBase10Value(part.value)) {
+        elements.push(<Base10Blocks key={i} value={part.value} />);
+        continue;
+      }
+      if (parseTallyValue(part.value)) {
+        elements.push(<TallyMarks key={i} value={part.value} />);
+        continue;
+      }
+      if (parseBarChartValue(part.value)) {
+        elements.push(<BarChart key={i} value={part.value} />);
+        continue;
+      }
+      if (parseMeasurementValue(part.value)) {
+        elements.push(<MeasurementBar key={i} value={part.value} />);
+        continue;
       }
     }
     if (elements.length === 0) return null;
