@@ -17,8 +17,8 @@ const OUT_DIR = path.resolve(__dirname, '../public/audio/lessons');
 
 // ElevenLabs config
 const API_KEY = process.env.ELEVENLABS_API_KEY;
-// "Rachel" voice — warm, friendly, clear enunciation. Good for kids.
-const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM';
+// "Roger" voice — clear, engaging, good for educational content.
+const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'CwhRBWXzGAHq8TQ4Fs17';
 const MODEL_ID = 'eleven_turbo_v2_5';
 const API_URL = `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`;
 
