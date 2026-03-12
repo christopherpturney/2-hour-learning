@@ -12,6 +12,7 @@ import SessionManager from './components/session/SessionManager';
 import SkillMap from './components/skillMap/SkillMap';
 import WorksheetGenerator from './components/worksheets/WorksheetGenerator';
 import ProblemPreview from './components/problems/ProblemPreview';
+import LessonPreview from './components/lessons/LessonPreview';
 import ParentDashboard from './components/parent/ParentDashboard';
 import HowItWorks from './components/HowItWorks';
 import { Loader2 } from 'lucide-react';
@@ -366,6 +367,10 @@ function AppContent() {
         <Route
           path="/problems"
           element={<ProblemPreview />}
+        />
+        <Route
+          path="/lessons"
+          element={<LessonPreview />}
         />
         <Route
           path="/parent"
