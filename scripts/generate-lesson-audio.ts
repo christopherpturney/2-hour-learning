@@ -28,39 +28,39 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-// Dynamically import lesson data
+// Parse lesson data from all module files in src/data/lessons/
 async function loadLessons() {
-  // We need to import the compiled lessons. Use a dynamic approach.
-  const lessonsPath = path.resolve(__dirname, '../src/data/lessons.ts');
-  const content = fs.readFileSync(lessonsPath, 'utf-8');
+  const lessonsDir = path.resolve(__dirname, '../src/data/lessons');
+  const moduleFiles = fs.readdirSync(lessonsDir)
+    .filter(f => f.endsWith('.ts') && f !== 'index.ts')
+    .map(f => path.join(lessonsDir, f));
 
-  // Extract lesson data by parsing the file structure
-  // Match skillId and content fields
   const lessons: { skillId: string; steps: { content: string }[] }[] = [];
-  let currentSkillId = '';
-  let currentSteps: { content: string }[] = [];
 
-  const lines = content.split('\n');
-  for (const line of lines) {
-    const skillMatch = line.match(/skillId:\s*'([^']+)'/);
-    if (skillMatch) {
-      if (currentSkillId && currentSteps.length > 0) {
-        lessons.push({ skillId: currentSkillId, steps: [...currentSteps] });
+  for (const filePath of moduleFiles) {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    let currentSkillId = '';
+    let currentSteps: { content: string }[] = [];
+
+    for (const line of content.split('\n')) {
+      const skillMatch = line.match(/skillId:\s*'([^']+)'/);
+      if (skillMatch) {
+        if (currentSkillId && currentSteps.length > 0) {
+          lessons.push({ skillId: currentSkillId, steps: [...currentSteps] });
+        }
+        currentSkillId = skillMatch[1];
+        currentSteps = [];
       }
-      currentSkillId = skillMatch[1];
-      currentSteps = [];
-    }
 
-    const contentMatch = line.match(/^\s*content:\s*'(.+)',?\s*$/);
-    if (contentMatch && currentSkillId) {
-      // Unescape single quotes
-      const text = contentMatch[1].replace(/\\'/g, "'");
-      currentSteps.push({ content: text });
+      const contentMatch = line.match(/^\s*content:\s*'(.+)',?\s*$/);
+      if (contentMatch && currentSkillId) {
+        const text = contentMatch[1].replace(/\\'/g, "'");
+        currentSteps.push({ content: text });
+      }
     }
-  }
-  // Push last lesson
-  if (currentSkillId && currentSteps.length > 0) {
-    lessons.push({ skillId: currentSkillId, steps: currentSteps });
+    if (currentSkillId && currentSteps.length > 0) {
+      lessons.push({ skillId: currentSkillId, steps: [...currentSteps] });
+    }
   }
 
   return lessons;
