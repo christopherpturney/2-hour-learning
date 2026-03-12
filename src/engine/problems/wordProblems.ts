@@ -774,8 +774,8 @@ const wordProblemsWithin100: ProblemGenerator = {
       // Two-step: add then subtract, or add then add
       const a = randomInt(10, 40);
       const b = randomInt(5, 30);
-      // Ensure c <= a + b so the answer is never negative
-      const maxC = Math.min(20, a + b);
+      // Ensure answer is at least 1 (c < a + b)
+      const maxC = Math.min(20, a + b - 1);
       const c = randomInt(5, Math.max(5, maxC));
       const addThenSubtract = Math.random() > 0.5;
       if (addThenSubtract) {
