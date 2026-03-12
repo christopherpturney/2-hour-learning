@@ -13,6 +13,16 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Load .env.local if present
+const envLocalPath = path.resolve(__dirname, '../.env.local');
+if (fs.existsSync(envLocalPath)) {
+  const lines = fs.readFileSync(envLocalPath, 'utf8').split('\n');
+  for (const line of lines) {
+    const match = line.match(/^\s*([^#=\s][^=]*?)\s*=\s*(.*?)\s*$/);
+    if (match) process.env[match[1]] ??= match[2].replace(/^['"]|['"]$/g, '');
+  }
+}
 const OUT_DIR = path.resolve(__dirname, '../public/audio/lessons');
 
 // ElevenLabs config
