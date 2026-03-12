@@ -20,8 +20,8 @@ Full manual audit of all 53 skills — tested in-browser via the preview app and
 
 | Severity | Count |
 |----------|-------|
-| Critical | 8 |
-| Major | 15 |
+| Critical | 9 |
+| Major | 16 |
 | Moderate | 5 |
 | Minor | 8 |
 
@@ -271,7 +271,7 @@ Full manual audit of all 53 skills — tested in-browser via the preview app and
 
 **Problem:** Questions focus on true/false "Is X = Y correct?" format. Doesn't test deeper understanding of equality (e.g., "Which makes this true: 5 + 3 = ___ + 2?").
 
-### M14. Worksheet visuals limited to clock and shape only
+### Mo5. Worksheet visuals limited to clock and shape only
 
 **Affected:** All skills with visuals beyond clock/shape
 
@@ -408,5 +408,5 @@ Full manual audit of all 53 skills — tested in-browser via the preview app and
 14. **Improve making-ten-strategy problems** (M8) — currently just tests addition, not the strategy
 15. **Fix ambiguous geometry questions** (M9, M12) — multiple valid answers accepted as wrong
 16. **Remove division symbol from first-grade content** (M10) — kids don't know ÷
-17. **Add worksheet visual support** (M14) — worksheets only render clock + shape visuals
+17. **Add worksheet visual support** (Mo5) — worksheets only render clock + shape visuals
 18. **Fix lesson content issues** (m19-m22) — incorrect vocabulary, missing answers, wrong symbols
