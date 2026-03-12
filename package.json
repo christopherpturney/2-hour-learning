@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-audio": "node --env-file=.env.local --import tsx/esm scripts/generate-lesson-audio.ts"
+    "generate-audio": "npx tsx scripts/generate-lesson-audio.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.0",
