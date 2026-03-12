@@ -22,6 +22,9 @@ const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'CwhRBWXzGAHq8TQ4Fs17';
 const MODEL_ID = 'eleven_turbo_v2_5';
 const API_URL = `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`;
 
+// Set to Infinity to generate all files
+const MAX_FILES = 10;
+
 if (!API_KEY) {
   console.error('Error: ELEVENLABS_API_KEY environment variable is required.');
   console.error('Usage: ELEVENLABS_API_KEY=sk-... npx tsx scripts/generate-lesson-audio.ts');
@@ -103,7 +106,9 @@ async function main() {
   let skipped = 0;
 
   for (const lesson of lessons) {
+    if (generated >= MAX_FILES) break;
     for (let i = 0; i < lesson.steps.length; i++) {
+      if (generated >= MAX_FILES) break;
       total++;
       const filename = `${lesson.skillId}-${i}.mp3`;
       const outputPath = path.join(OUT_DIR, filename);
