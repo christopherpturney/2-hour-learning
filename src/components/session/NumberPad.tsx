@@ -1,13 +1,13 @@
+import { useEffect, useCallback } from 'react';
+
 interface NumberPadProps {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
   disabled?: boolean;
-  /** Allow negative sign for problems that might need it */
-  allowNegative?: boolean;
 }
 
-export default function NumberPad({ value, onChange, onSubmit, disabled, allowNegative }: NumberPadProps) {
+export default function NumberPad({ value, onChange, onSubmit, disabled }: NumberPadProps) {
   function handleDigit(digit: string) {
     if (disabled) return;
     onChange(value + digit);
@@ -22,6 +22,22 @@ export default function NumberPad({ value, onChange, onSubmit, disabled, allowNe
     if (disabled || !value.trim()) return;
     onSubmit();
   }
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (disabled) return;
+    if (e.key >= '0' && e.key <= '9') {
+      onChange(value + e.key);
+    } else if (e.key === 'Backspace') {
+      onChange(value.slice(0, -1));
+    } else if (e.key === 'Enter' && value.trim()) {
+      onSubmit();
+    }
+  }, [disabled, value, onChange, onSubmit]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   const buttonClass =
     'bg-slate-50 active:bg-indigo-100 border-2 border-slate-200 active:border-indigo-400 text-slate-800 rounded-2xl text-2xl font-bold transition-all disabled:opacity-50 min-h-[56px]';

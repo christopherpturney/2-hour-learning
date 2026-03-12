@@ -49,7 +49,15 @@ const equalSignMeaning: ProblemGenerator = {
           break;
       }
 
-      const choices = shuffle([answer, answer + 1, answer > 1 ? answer - 1 : answer + 2, sum].filter((v, i, arr) => arr.indexOf(v) === i)).slice(0, 4).map(String);
+      // Generate 4 unique wrong-ish choices, ensuring the correct answer is included
+      const candidates = new Set([answer, answer + 1, answer > 1 ? answer - 1 : answer + 2, sum]);
+      // Pad to 4 if duplicates were removed
+      let pad = answer + 3;
+      while (candidates.size < 4) {
+        if (!candidates.has(pad)) candidates.add(pad);
+        pad++;
+      }
+      const choices = shuffle([...candidates].slice(0, 4)).map(String);
       if (!choices.includes(String(answer))) choices[0] = String(answer);
 
       return {
