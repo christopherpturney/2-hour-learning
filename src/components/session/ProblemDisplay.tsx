@@ -136,9 +136,9 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
               );
             case 'equation':
               return (
-                <span key={idx} className="text-3xl font-bold text-slate-800">
+                <div key={idx} className="w-full text-center text-3xl font-bold text-slate-800">
                   {part.value}
-                </span>
+                </div>
               );
             case 'text':
               return (
