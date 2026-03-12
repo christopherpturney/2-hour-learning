@@ -174,8 +174,8 @@ const composeShapes: ProblemGenerator = {
       { result: 'rectangle', parts: ['2 squares'], partCount: 2, partShape: 'square' },
       { result: 'square', parts: ['2 triangles'], partCount: 2, partShape: 'triangle' },
       { result: 'hexagon', parts: ['6 triangles'], partCount: 6, partShape: 'triangle' },
-      { result: 'rectangle', parts: ['2 triangles'], partCount: 2, partShape: 'triangle' },
       { result: 'bigger square', parts: ['4 squares'], partCount: 4, partShape: 'square' },
+      { result: 'bigger rectangle', parts: ['2 rectangles'], partCount: 2, partShape: 'rectangle' },
     ];
     const comp = compositions[randomInt(0, compositions.length - 1)];
 
@@ -209,7 +209,7 @@ const composeShapes: ProblemGenerator = {
         break;
     }
 
-    const allResults = ['rectangle', 'square', 'triangle', 'hexagon', 'circle', 'bigger square'];
+    const allResults = ['rectangle', 'square', 'triangle', 'hexagon', 'circle', 'bigger square', 'bigger rectangle'];
     const wrongChoices = shuffle(allResults.filter(r => r !== comp.result)).slice(0, 3);
     const choices = shuffle([comp.result, ...wrongChoices]);
 
