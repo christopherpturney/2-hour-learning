@@ -71,7 +71,7 @@ export const grade2Lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: Sticker Problem',
-        content: 'You had 75 stickers and gave away 38. How many left? The ones: 5 minus 8 is tricky! Borrow a ten. 15 minus 8 is 7. The tens: 60 minus 30 is 30. So 30 plus 7 is 37!',
+        content: 'You had 75 stickers and gave away 38. How many left? The ones: 5 minus 8 is tricky! Regroup a ten. 15 minus 8 is 7. The tens: 60 minus 30 is 30. So 30 plus 7 is 37!',
         visual: [
           { type: 'equation', value: '75 − 38' },
           { type: 'text', value: '15 − 8 = 7 (regroup 1 ten)' },
@@ -116,7 +116,7 @@ export const grade2Lessons: Lesson[] = [
         visual: [
           { type: 'text', value: '4 hundreds = 400' },
           { type: 'text', value: '40 tens = 400' },
-          { type: 'equation', value: '400 = 4 × 100' },
+          { type: 'equation', value: '100 + 100 + 100 + 100 = 400' },
         ],
       },
       {
@@ -152,7 +152,7 @@ export const grade2Lessons: Lesson[] = [
       {
         type: 'example',
         title: 'Watch: 83 − 26',
-        content: 'Ones first: 3 minus 6? Not enough! Borrow a ten. Now 13 minus 6 is 7. Tens: 70 minus 20 is 50. So 50 plus 7 is 57!',
+        content: 'Ones first: 3 minus 6? Not enough! Regroup a ten. Now 13 minus 6 is 7. Tens: 70 minus 20 is 50. So 50 plus 7 is 57!',
         visual: [
           { type: 'text', value: 'Ones: 13 − 6 = 7 (regroup 1 ten)' },
           { type: 'text', value: 'Tens: 70 − 20 = 50' },
@@ -174,7 +174,7 @@ export const grade2Lessons: Lesson[] = [
         title: 'Reading Minutes',
         content: 'Each number on the clock means 5 minutes. Count by 5s from 12 to read the minutes. The short hand is the hour. The long hand is the minutes.',
         visual: [
-          { type: 'image', value: 'clock:2:15' },
+          { type: 'image', value: 'clock-2-15' },
           { type: 'text', value: 'Count by 5s: 5, 10, 15 minutes' },
         ],
         tip: 'Long hand on 1 = :05, on 2 = :10, on 3 = :15, and so on.',
@@ -184,7 +184,7 @@ export const grade2Lessons: Lesson[] = [
         title: 'Watch: 2:15',
         content: 'Short hand near 2 = 2 hours. Long hand on 3. Count by 5s: 5, 10, 15 minutes. It is 2:15.',
         visual: [
-          { type: 'image', value: 'clock:2:15' },
+          { type: 'image', value: 'clock-2-15' },
           { type: 'equation', value: '2:15' },
         ],
       },
@@ -193,7 +193,7 @@ export const grade2Lessons: Lesson[] = [
         title: 'Watch: 7:40',
         content: 'Short hand past 7 = 7 hours. Long hand on 8. Count by 5s: 5, 10, 15, 20, 25, 30, 35, 40 minutes. It is 7:40.',
         visual: [
-          { type: 'image', value: 'clock:7:40' },
+          { type: 'image', value: 'clock-7-40' },
           { type: 'equation', value: '7:40' },
         ],
       },

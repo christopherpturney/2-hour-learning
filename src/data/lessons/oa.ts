@@ -294,7 +294,7 @@ export const oaLessons: Lesson[] = [
         title: 'Story Problems: Taking Away',
         content: 'In these stories, you start with some and some go away. Subtract to find what is left!',
         visual: [
-          { type: 'text', value: 'How many had − how many left = how many gone' },
+          { type: 'text', value: 'How many had − how many gone = how many left' },
           { type: 'equation', value: '8 − 3 = ?' },
         ],
         tip: 'Look for words like "left", "remaining", "went away", or "ate".',
@@ -431,10 +431,11 @@ export const oaLessons: Lesson[] = [
           { type: 'dots', value: '●●', count: 2 },
           { type: 'text', value: '+' },
           { type: 'dots', value: '●●●●●●●', count: 7 },
-          { type: 'text', value: '=' },
+          { type: 'text', value: '= 9' },
           { type: 'dots', value: '●●●●●●●', count: 7 },
           { type: 'text', value: '+' },
           { type: 'dots', value: '●●', count: 2 },
+          { type: 'text', value: '= 9' },
         ],
       },
       {

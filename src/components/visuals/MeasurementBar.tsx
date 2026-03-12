@@ -101,7 +101,7 @@ export default function MeasurementBar({ value }: MeasurementBarProps) {
               style={{ width: barWidth, backgroundColor: BAR_COLORS[i % BAR_COLORS.length], minWidth: 4 }}
             />
             <span className="text-xs font-bold text-slate-700">
-              {item.length} {info.unit}
+              {info.unit}
             </span>
           </div>
         );

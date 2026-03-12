@@ -90,8 +90,8 @@ export default function CounterGroup({ value }: CounterGroupProps) {
           <CircleRow count={crossedOut} color="#6366f1" crossed />
         </div>
         <div className="flex gap-4 text-xs font-semibold text-slate-500">
-          <span>{remaining} left</span>
-          <span className="text-red-400">{crossedOut} taken away</span>
+          <span>not crossed out</span>
+          <span className="text-red-400">crossed out</span>
         </div>
       </div>
     );
@@ -111,8 +111,8 @@ export default function CounterGroup({ value }: CounterGroupProps) {
           </div>
         </div>
         <div className="flex gap-4 text-xs font-semibold text-slate-500">
-          <span className="text-indigo-600">{groupA}</span>
-          <span className="text-amber-600">{groupB}</span>
+          <span className="text-indigo-600">group 1</span>
+          <span className="text-amber-600">group 2</span>
         </div>
       </div>
     );

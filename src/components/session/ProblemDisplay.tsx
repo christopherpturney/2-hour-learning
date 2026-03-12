@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import type { FormEvent } from 'react';
 import type { Problem } from '../../types';
+import NumberPad from './NumberPad';
 import ClockFace, { parseClockValue } from '../ClockFace';
 import ShapeVisual, { parseShapeValue } from '../ShapeVisual';
 import CounterGroup, { parseCounterValue } from '../visuals/CounterGroup';
@@ -26,8 +26,7 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
     setShowHint(false);
   }, [problem.id]);
 
-  function handleInputSubmit(e: FormEvent) {
-    e.preventDefault();
+  function handleNumberPadSubmit() {
     if (!inputValue.trim() || disabled) return;
     onAnswer(inputValue.trim());
     setInputValue('');
@@ -247,24 +246,12 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
         )}
 
         {problem.type === 'number_input' && (
-          <form onSubmit={handleInputSubmit} className="flex gap-3 justify-center">
-            <input
-              type="number"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              disabled={disabled}
-              autoFocus
-              placeholder="?"
-              className="w-32 text-center text-3xl font-bold py-3 px-4 rounded-2xl border-2 border-slate-200 focus:border-indigo-400 focus:outline-none disabled:opacity-50 min-h-[56px]"
-            />
-            <button
-              type="submit"
-              disabled={disabled || !inputValue.trim()}
-              className="bg-indigo-600 text-white py-3 px-8 rounded-2xl text-xl font-bold active:bg-indigo-700 transition-colors disabled:opacity-50 shadow-sm min-h-[56px]"
-            >
-              Go!
-            </button>
-          </form>
+          <NumberPad
+            value={inputValue}
+            onChange={setInputValue}
+            onSubmit={handleNumberPadSubmit}
+            disabled={disabled}
+          />
         )}
 
         {problem.type === 'true_false' && (
@@ -302,24 +289,12 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
         )}
 
         {problem.type === 'fill_blank' && (
-          <form onSubmit={handleInputSubmit} className="flex gap-3 justify-center">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              disabled={disabled}
-              autoFocus
-              placeholder="?"
-              className="w-32 text-center text-3xl font-bold py-3 px-4 rounded-2xl border-2 border-slate-200 focus:border-indigo-400 focus:outline-none disabled:opacity-50 min-h-[56px]"
-            />
-            <button
-              type="submit"
-              disabled={disabled || !inputValue.trim()}
-              className="bg-indigo-600 text-white py-3 px-8 rounded-2xl text-xl font-bold active:bg-indigo-700 transition-colors disabled:opacity-50 shadow-sm min-h-[56px]"
-            >
-              Go!
-            </button>
-          </form>
+          <NumberPad
+            value={inputValue}
+            onChange={setInputValue}
+            onSubmit={handleNumberPadSubmit}
+            disabled={disabled}
+          />
         )}
       </div>
     </div>

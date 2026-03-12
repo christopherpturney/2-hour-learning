@@ -21,15 +21,15 @@ interface Shape3D {
 const SHAPES_2D: Shape2D[] = [
   { name: 'circle', sides: 0, corners: 0, description: 'round with no sides or corners', visual: '○' },
   { name: 'triangle', sides: 3, corners: 3, description: '3 sides and 3 corners', visual: '△' },
-  { name: 'square', sides: 4, corners: 4, description: '4 equal sides and 4 corners', visual: '□' },
-  { name: 'rectangle', sides: 4, corners: 4, description: '4 sides, 4 corners, opposite sides are equal', visual: '▭' },
-  { name: 'trapezoid', sides: 4, corners: 4, description: '4 sides with one pair of parallel sides', visual: '⏢' },
+  { name: 'square', sides: 4, corners: 4, description: '4 equal sides and 4 square corners', visual: '□' },
+  { name: 'rectangle', sides: 4, corners: 4, description: '4 sides with 2 long sides and 2 short sides', visual: '▭' },
+  { name: 'trapezoid', sides: 4, corners: 4, description: '4 sides with only one pair of parallel sides', visual: '⏢' },
   { name: 'hexagon', sides: 6, corners: 6, description: '6 sides and 6 corners', visual: '⬡' },
 ];
 
 const SHAPES_3D: Shape3D[] = [
   { name: 'cube', faces: 6, edges: 12, vertices: 8, description: '6 square faces, all the same size', realWorldExample: 'a dice or a block' },
-  { name: 'rectangular prism', faces: 6, edges: 12, vertices: 8, description: '6 rectangular faces', realWorldExample: 'a cereal box or a brick' },
+  { name: 'rectangular prism', faces: 6, edges: 12, vertices: 8, description: '6 faces, some long and some short, like a box', realWorldExample: 'a cereal box or a brick' },
   { name: 'cone', faces: 1, edges: 0, vertices: 1, description: 'a flat circle on the bottom and a point on top', realWorldExample: 'an ice cream cone or a party hat' },
   { name: 'cylinder', faces: 2, edges: 0, vertices: 0, description: '2 flat circles and a curved surface', realWorldExample: 'a can or a roll of paper towels' },
   { name: 'sphere', faces: 0, edges: 0, vertices: 0, description: 'perfectly round like a ball, no flat faces', realWorldExample: 'a basketball or a globe' },
@@ -455,7 +455,7 @@ const describeSharesWholes: ProblemGenerator = {
       case 'abstract':
         question = `If 1 whole is shared equally among ${numPeople}, each share is called a ___.`;
         questionParts = [
-          { type: 'text', value: `1 whole ÷ ${numPeople} equal shares = ?` },
+          { type: 'text', value: `1 whole shared equally among ${numPeople} = ?` },
         ];
         hint = `Splitting into ${numPeople} equal parts gives ${numPeople === 2 ? 'halves' : 'fourths'}.`;
         break;
@@ -533,8 +533,12 @@ const drawShapesAttributes: ProblemGenerator = {
         break;
     }
 
-    const allNames = SHAPE_ATTRIBUTES.map(s => s.shapeName);
-    const wrongChoices = shuffle(allNames.filter(n => n !== item.shapeName)).slice(0, 3);
+    const is3D = ['cube', 'cone', 'cylinder', 'sphere', 'rectangular prism'].includes(item.shapeName);
+    const sameTypeNames = SHAPE_ATTRIBUTES.filter(s => {
+      const s3D = ['cube', 'cone', 'cylinder', 'sphere', 'rectangular prism'].includes(s.shapeName);
+      return s3D === is3D;
+    }).map(s => s.shapeName);
+    const wrongChoices = shuffle(sameTypeNames.filter(n => n !== item.shapeName)).slice(0, 3);
     const choices = shuffle([item.shapeName, ...wrongChoices]);
 
     return {

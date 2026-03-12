@@ -463,10 +463,11 @@ const makingTenStrategy: ProblemGenerator = {
 
     switch (scaffolding) {
       case 'concrete':
-        question = `${a} + ${b} = ? Make a group of 10 first!`;
+        question = `${a} + ${b} = ? Move ${needToMakeTen} from the second group to make 10.`;
         questionParts = [
-          { type: 'text', value: 'Make a ten!' },
+          { type: 'text', value: `Break apart ${b} into ${needToMakeTen} and ${leftover}.` },
           { type: 'image', value: `counters-${a}-${b}` },
+          { type: 'text', value: `${a} + ${needToMakeTen} = 10, then 10 + ${leftover} = ?` },
         ];
         hint = `Move ${needToMakeTen} counters from the second group to the first to make 10. Then you have 10 + ${leftover}.`;
         break;
@@ -485,7 +486,7 @@ const makingTenStrategy: ProblemGenerator = {
         questionParts = [
           { type: 'equation', value: `${a} + ${b} = ?` },
         ];
-        hint = `Can you break apart one number to make a ten?`;
+        hint = `Break apart ${b} into ${needToMakeTen} and ${leftover}. ${a} + ${needToMakeTen} = 10. Then 10 + ${leftover} = ?`;
         break;
     }
 
