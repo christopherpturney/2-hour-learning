@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Map, FileText, Play, BarChart3, Calculator, HelpCircle } from 'lucide-react';
+import { Home, Map, FileText, Play, BookOpen, BarChart3, Calculator, HelpCircle } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -13,6 +13,7 @@ const tabs = [
   { path: '/skills', Icon: Map, label: 'Skills' },
   { path: '/worksheets', Icon: FileText, label: 'Sheets' },
   { path: '/problems', Icon: Play, label: 'Problems' },
+  { path: '/lessons', Icon: BookOpen, label: 'Lessons' },
   { path: '/parent', Icon: BarChart3, label: 'Progress' },
   { path: '/how-it-works', Icon: HelpCircle, label: 'How' },
 ];

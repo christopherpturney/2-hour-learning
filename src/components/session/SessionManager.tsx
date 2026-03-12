@@ -46,7 +46,6 @@ export function clearSavedSession(studentId: string) {
 export function hasSavedSession(studentId: string): boolean {
   return localStorage.getItem(SESSION_STORAGE_KEY(studentId)) !== null;
 }
-main
 
 interface SessionManagerProps {
   student: Student;
