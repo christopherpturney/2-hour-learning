@@ -64,15 +64,26 @@ const identify2DShapes: ProblemGenerator = {
         ];
         hint = `Think about shapes you know. Which one is ${shape.description}?`;
         break;
-      case 'abstract':
-        question = shape.sides === 0
-          ? `Which shape has no sides and no corners?`
-          : `Which shape has ${shape.sides} sides and ${shape.corners} corners?`;
+      case 'abstract': {
+        // Use the full description to avoid ambiguity when multiple shapes
+        // share the same number of sides and corners (e.g. square, rectangle, trapezoid).
+        const isUniqueBySidesAndCorners = SHAPES_2D.filter(
+          s => s.sides === shape.sides && s.corners === shape.corners
+        ).length === 1;
+
+        if (isUniqueBySidesAndCorners) {
+          question = shape.sides === 0
+            ? `Which shape has no sides and no corners?`
+            : `Which shape has ${shape.sides} sides and ${shape.corners} corners?`;
+        } else {
+          question = `Which shape is ${shape.description}?`;
+        }
         questionParts = [
           { type: 'text', value: question },
         ];
         hint = `Think about the shapes you know. How many sides and corners does each one have?`;
         break;
+      }
     }
 
     const otherShapes = SHAPES_2D.filter(s => s.name !== shape.name);
