@@ -64,15 +64,26 @@ const identify2DShapes: ProblemGenerator = {
         ];
         hint = `Think about shapes you know. Which one is ${shape.description}?`;
         break;
-      case 'abstract':
-        question = shape.sides === 0
-          ? `Which shape has no sides and no corners?`
-          : `Which shape has ${shape.sides} sides and ${shape.corners} corners?`;
+      case 'abstract': {
+        // Use the full description to avoid ambiguity when multiple shapes
+        // share the same number of sides and corners (e.g. square, rectangle, trapezoid).
+        const isUniqueBySidesAndCorners = SHAPES_2D.filter(
+          s => s.sides === shape.sides && s.corners === shape.corners
+        ).length === 1;
+
+        if (isUniqueBySidesAndCorners) {
+          question = shape.sides === 0
+            ? `Which shape has no sides and no corners?`
+            : `Which shape has ${shape.sides} sides and ${shape.corners} corners?`;
+        } else {
+          question = `Which shape is ${shape.description}?`;
+        }
         questionParts = [
           { type: 'text', value: question },
         ];
         hint = `Think about the shapes you know. How many sides and corners does each one have?`;
         break;
+      }
     }
 
     const otherShapes = SHAPES_2D.filter(s => s.name !== shape.name);
@@ -163,8 +174,8 @@ const composeShapes: ProblemGenerator = {
       { result: 'rectangle', parts: ['2 squares'], partCount: 2, partShape: 'square' },
       { result: 'square', parts: ['2 triangles'], partCount: 2, partShape: 'triangle' },
       { result: 'hexagon', parts: ['6 triangles'], partCount: 6, partShape: 'triangle' },
-      { result: 'rectangle', parts: ['2 triangles'], partCount: 2, partShape: 'triangle' },
       { result: 'bigger square', parts: ['4 squares'], partCount: 4, partShape: 'square' },
+      { result: 'bigger rectangle', parts: ['2 rectangles'], partCount: 2, partShape: 'rectangle' },
     ];
     const comp = compositions[randomInt(0, compositions.length - 1)];
 
@@ -198,7 +209,7 @@ const composeShapes: ProblemGenerator = {
         break;
     }
 
-    const allResults = ['rectangle', 'square', 'triangle', 'hexagon', 'circle', 'bigger square'];
+    const allResults = ['rectangle', 'square', 'triangle', 'hexagon', 'circle', 'bigger square', 'bigger rectangle'];
     const wrongChoices = shuffle(allResults.filter(r => r !== comp.result)).slice(0, 3);
     const choices = shuffle([comp.result, ...wrongChoices]);
 
