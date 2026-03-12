@@ -22,9 +22,9 @@ const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'CwhRBWXzGAHq8TQ4Fs17';
 const MODEL_ID = 'eleven_turbo_v2_5';
 const API_URL = `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`;
 
-// Override with: npm run generate-audio -- --limit=10
-const limitArg = process.argv.find(a => a.startsWith('--limit='));
-const MAX_FILES = limitArg ? parseInt(limitArg.split('=')[1]) : Infinity;
+// Pass a number to limit output: npm run generate-audio -- 10
+const limitArg = process.argv[2];
+const MAX_FILES = limitArg ? parseInt(limitArg) : Infinity;
 
 if (!API_KEY) {
   console.error('Error: ELEVENLABS_API_KEY environment variable is required.');
