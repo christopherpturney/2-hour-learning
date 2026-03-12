@@ -46,6 +46,8 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
   function renderQuestionParts() {
     if (!problem.questionParts || problem.questionParts.length === 0) return null;
 
+    const equationCount = problem.questionParts.filter(p => p.type === 'equation').length;
+
     return (
       <div className="flex flex-wrap items-center justify-center gap-2 my-4">
         {problem.questionParts.map((part, idx) => {
@@ -135,10 +137,17 @@ export default function ProblemDisplay({ problem, onAnswer, disabled }: ProblemD
                 />
               );
             case 'equation':
+              if (equationCount > 1) {
+                return (
+                  <span key={idx} className="text-3xl font-bold text-slate-800">
+                    {part.value}
+                  </span>
+                );
+              }
               return (
-                <span key={idx} className="text-3xl font-bold text-slate-800">
+                <div key={idx} className="w-full text-center text-3xl font-bold text-slate-800">
                   {part.value}
-                </span>
+                </div>
               );
             case 'text':
               return (
