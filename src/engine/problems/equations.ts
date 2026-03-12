@@ -57,7 +57,7 @@ const equalSignMeaning: ProblemGenerator = {
         if (!candidates.has(pad)) candidates.add(pad);
         pad++;
       }
-      const choices = shuffle([...candidates].slice(0, 4)).map(String);
+      const choices = [...candidates].slice(0, 4).map(String);
       if (!choices.includes(String(answer))) choices[0] = String(answer);
 
       return {

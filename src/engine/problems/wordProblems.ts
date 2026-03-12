@@ -20,7 +20,7 @@ function objCount(count: number, plural: string): string {
   // Simple singularize: handle common patterns
   if (plural === 'fish') return '1 fish';
   if (plural === 'toy cars') return '1 toy car';
-  if (plural.endsWith('ies')) return `1 ${plural.slice(0, -3)}y`;
+  if (plural === 'cookies') return '1 cookie';
   if (plural.endsWith('s')) return `1 ${plural.slice(0, -1)}`;
   return `1 ${plural}`;
 }
