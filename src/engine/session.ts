@@ -1,7 +1,7 @@
 import type { ActiveSession, Problem, SessionPlan, SessionPhase, SkillScore, TeachingProgress } from '../types';
 import { selectLearningSkills, selectWarmupSkills, selectPracticeSkills } from './zpd';
 import { generateProblem } from './problems';
-import { recordAttempt } from './mastery';
+import { recordAttempt, createEmptyScore } from './mastery';
 
 // Problem counts per phase
 const WARMUP_PROBLEMS = 6;
@@ -127,10 +127,8 @@ export function recordAnswer(
   };
 
   // Update student's skill score
-  const currentScore = newScores.get(skillId);
-  if (currentScore) {
-    newScores.set(skillId, recordAttempt(currentScore, correct));
-  }
+  const currentScore = newScores.get(skillId) || createEmptyScore('', skillId);
+  newScores.set(skillId, recordAttempt(currentScore, correct));
 
   // Track guided practice progress
   if (session.phase === 'guided_practice') {
@@ -142,7 +140,9 @@ export function recordAnswer(
   }
 
   // Determine next phase
-  newSession.phase = determinePhase(newSession);
+  const next = determinePhase(newSession);
+  newSession.phase = next.phase;
+  newSession.currentTeachingIndex = next.currentTeachingIndex;
 
   return { session: newSession, scores: newScores };
 }
@@ -159,7 +159,7 @@ function getIndependentIndex(session: ActiveSession): number {
   return session.problemsCompleted - warmupDone - guidedDone;
 }
 
-function determinePhase(session: ActiveSession): SessionPhase {
+function determinePhase(session: ActiveSession): { phase: SessionPhase; currentTeachingIndex: number } {
   const { plan } = session;
 
   // Warmup phase
@@ -167,15 +167,15 @@ function determinePhase(session: ActiveSession): SessionPhase {
     const warmupDone = session.problemsCompleted;
     if (warmupDone >= WARMUP_PROBLEMS || warmupDone >= plan.warmupSkills.length) {
       // Move to teach (or skip to independent if no learning skills)
-      if (plan.learningSkills.length > 0) return 'teach';
-      return 'independent_practice';
+      if (plan.learningSkills.length > 0) return { phase: 'teach', currentTeachingIndex: session.currentTeachingIndex };
+      return { phase: 'independent_practice', currentTeachingIndex: session.currentTeachingIndex };
     }
-    return 'warmup';
+    return { phase: 'warmup', currentTeachingIndex: session.currentTeachingIndex };
   }
 
   // Teach phase — stays until lesson display triggers advance
   if (session.phase === 'teach') {
-    return 'teach';
+    return { phase: 'teach', currentTeachingIndex: session.currentTeachingIndex };
   }
 
   // Guided practice
@@ -186,25 +186,24 @@ function determinePhase(session: ActiveSession): SessionPhase {
       const nextIndex = session.currentTeachingIndex + 1;
       if (nextIndex < session.teachingProgress.length) {
         // More skills to teach
-        session.currentTeachingIndex = nextIndex;
-        return 'teach';
+        return { phase: 'teach', currentTeachingIndex: nextIndex };
       }
       // All teaching done — move to independent practice
-      return 'independent_practice';
+      return { phase: 'independent_practice', currentTeachingIndex: session.currentTeachingIndex };
     }
-    return 'guided_practice';
+    return { phase: 'guided_practice', currentTeachingIndex: session.currentTeachingIndex };
   }
 
   // Independent practice
   if (session.phase === 'independent_practice') {
     const idx = getIndependentIndex(session);
     if (idx >= INDEPENDENT_PROBLEMS) {
-      return 'celebration';
+      return { phase: 'celebration', currentTeachingIndex: session.currentTeachingIndex };
     }
-    return 'independent_practice';
+    return { phase: 'independent_practice', currentTeachingIndex: session.currentTeachingIndex };
   }
 
-  return 'celebration';
+  return { phase: 'celebration', currentTeachingIndex: session.currentTeachingIndex };
 }
 
 // Called by SessionManager when the lesson display is complete

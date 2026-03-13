@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import type { Student, Session, SkillScore, AttemptRecord } from './types';
 import { skills } from './data/skills';
@@ -151,39 +151,42 @@ function AppContent() {
   const [demoMode] = useState(!hasSupabase);
   const [demoUser, setDemoUser] = useState<boolean>(() => loadLocal('demo_logged_in', false));
   const [students, setStudents] = useState<Student[]>(() => loadLocal('demo_students', []));
-  const [activeStudent, setActiveStudent] = useState<Student | null>(null);
-  const [scores, setScores] = useState<Map<string, SkillScore>>(new Map());
-  const [recentSessions, setRecentSessions] = useState<Session[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [activeStudent, setActiveStudent] = useState<Student | null>(() => {
+    if (!hasSupabase) {
+      const user = loadLocal('demo_logged_in', false);
+      const studs = loadLocal<Student[]>('demo_students', []);
+      if (user && studs.length > 0) return studs[0];
+    }
+    return null;
+  });
+  const [scores, setScores] = useState<Map<string, SkillScore>>(() => {
+    if (!hasSupabase) {
+      const user = loadLocal('demo_logged_in', false);
+      const studs = loadLocal<Student[]>('demo_students', []);
+      if (user && studs.length > 0) return loadScoresMap(studs[0].id);
+    }
+    return new Map();
+  });
+  const [recentSessions, setRecentSessions] = useState<Session[]>(() => {
+    if (!hasSupabase) {
+      const user = loadLocal('demo_logged_in', false);
+      const studs = loadLocal<Student[]>('demo_students', []);
+      if (user && studs.length > 0) return loadLocal(`sessions_${studs[0].id}`, []);
+    }
+    return [];
+  });
+  const [loading] = useState(false);
 
   const navigate = useNavigate();
 
-  // Supabase mode hooks (only used when configured)
-  // For now, always use demo mode — Supabase integration activates when env vars are set
-
-  // Initialize
-  useEffect(() => {
+  // Select a student and load their data from localStorage
+  const selectStudent = useCallback((student: Student) => {
+    setActiveStudent(student);
     if (demoMode) {
-      if (demoUser && students.length > 0) {
-        const student = students[0];
-        setActiveStudent(student);
-        setScores(loadScoresMap(student.id));
-        setRecentSessions(loadLocal(`sessions_${student.id}`, []));
-      }
-      setLoading(false);
-    } else {
-      // Supabase mode — import and use hooks dynamically
-      setLoading(false);
+      setScores(loadScoresMap(student.id));
+      setRecentSessions(loadLocal(`sessions_${student.id}`, []));
     }
-  }, []);
-
-  // Update scores when active student changes
-  useEffect(() => {
-    if (activeStudent && demoMode) {
-      setScores(loadScoresMap(activeStudent.id));
-      setRecentSessions(loadLocal(`sessions_${activeStudent.id}`, []));
-    }
-  }, [activeStudent?.id]);
+  }, [demoMode]);
 
   const handleDemoLogin = useCallback(() => {
     setDemoUser(true);
@@ -310,7 +313,7 @@ function AppContent() {
         <StudentSelector
           students={students}
           activeStudent={activeStudent}
-          onSelect={(student) => setActiveStudent(student)}
+          onSelect={selectStudent}
           onAdd={handleAddStudent}
           onAddSample={handleAddSampleStudent}
         />

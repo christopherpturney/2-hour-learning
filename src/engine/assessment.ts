@@ -128,6 +128,9 @@ export function getAssessmentSummary(
   results: Record<string, { attempted: number; correct: number }>
 ): { skillId: string; score: number; label: string }[] {
   return Object.entries(results).map(([skillId, r]) => {
+    if (r.attempted === 0) {
+      return { skillId, score: 0, label: 'Not Started' };
+    }
     const score = Math.round((r.correct / r.attempted) * 100);
     let label: string;
     if (r.correct === r.attempted) label = 'Proficient';

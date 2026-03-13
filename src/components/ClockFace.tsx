@@ -40,7 +40,7 @@ export default function ClockFace({ hour, minute, size = 200, className = '' }: 
       height={size}
       viewBox={`0 0 ${size} ${size}`}
       className={className}
-      aria-label={`Clock showing ${hour}:${minute === 0 ? '00' : minute}`}
+      aria-label={`Clock showing ${hour}:${minute.toString().padStart(2, '0')}`}
     >
       {/* Clock face background */}
       <circle

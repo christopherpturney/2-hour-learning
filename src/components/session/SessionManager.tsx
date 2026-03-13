@@ -312,7 +312,7 @@ export default function SessionManager({ student, scores, onComplete, onExit }: 
                 Keep Going
               </button>
               <button
-                onClick={handleComplete}
+                onClick={handleExit}
                 className="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold text-base active:bg-red-600"
               >
                 Leave
@@ -338,7 +338,7 @@ export default function SessionManager({ student, scores, onComplete, onExit }: 
           <div className={`bg-gradient-to-r ${phaseColors[progress.phase] || phaseColors.teach} rounded-2xl p-4 text-white shadow-sm`}>
             <div className="flex items-center justify-between mb-2">
               <button
-                onClick={handleExit}
+                onClick={() => setShowExitConfirm(true)}
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 active:bg-white/30 transition-colors"
                 aria-label="Exit session"
               >
